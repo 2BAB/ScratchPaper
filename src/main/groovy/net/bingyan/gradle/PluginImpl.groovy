@@ -12,9 +12,7 @@ import static net.bingyan.gradle.Util.findIcons
 
 public class PluginImpl implements Plugin<Project> {
     void apply(Project project) {
-        project.task('testTask') << {
-            println "Hello Gradle Plugin"
-        }
+
         project.gradle.addListener(new TimeListener())
 
         if (!project.plugins.hasPlugin(AppPlugin)) {
@@ -47,7 +45,7 @@ public class PluginImpl implements Plugin<Project> {
                             def buildName = variant.flavorName + " " + variant.buildType.name
                             def version = variant.versionName
 
-                            addTextToImage(icon, config, buildName, version)
+                            addTextToImage(icon, config, buildName, version, config.extraText)
                         }
                     }
                 }

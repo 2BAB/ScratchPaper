@@ -14,6 +14,8 @@ class IconCoverConfig {
 
     String backgroundColor = "#CC000000"
 
+    String extraText = ""
+
     public Color getBackgroundColor() {
         int[] color = hexColorToRGBIntArray(backgroundColor)
         return new Color(color[1], color[2], color[3], color[0])
