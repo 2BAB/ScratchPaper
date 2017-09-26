@@ -13,7 +13,7 @@ import static net.bingyan.gradle.Util.findIcons
 public class PluginImpl implements Plugin<Project> {
     void apply(Project project) {
 
-        project.gradle.addListener(new TimeListener())
+        // project.gradle.addListener(new TimeListener())
 
         if (!project.plugins.hasPlugin(AppPlugin)) {
             throw new IllegalStateException("'com.android.application' plugin required.")

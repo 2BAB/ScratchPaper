@@ -1,5 +1,5 @@
 group 'net.bingyan.gradle'
-version '1.0.1'
+version '1.0.2'
 
 apply plugin: 'groovy'
 apply plugin: 'maven'
