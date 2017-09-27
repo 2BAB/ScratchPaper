@@ -10,16 +10,15 @@ import org.gradle.api.Project
 import static net.bingyan.gradle.Util.addTextToImage
 import static net.bingyan.gradle.Util.findIcons
 
-public class PluginImpl implements Plugin<Project> {
-    void apply(Project project) {
+class PluginImpl implements Plugin<Project> {
 
-        // project.gradle.addListener(new TimeListener())
+    void apply(Project project) {
 
         if (!project.plugins.hasPlugin(AppPlugin)) {
             throw new IllegalStateException("'com.android.application' plugin required.")
         }
 
-        IconCoverConfig config = project.extensions.create("iconCoverConfig", IconCoverConfig)
+        IconCoverConfig config = project.extensions.create("iconCoverConfig", IconCoverConfig, project)
 
         def log = project.logger
         project.android.applicationVariants.all { BaseVariant variant ->
@@ -45,11 +44,12 @@ public class PluginImpl implements Plugin<Project> {
                             def buildName = variant.flavorName + " " + variant.buildType.name
                             def version = variant.versionName
 
-                            addTextToImage(icon, config, buildName, version, config.extraText)
+                            addTextToImage(icon, config, buildName, version, config.extraInfo)
                         }
                     }
                 }
             }
         }
     }
+
 }

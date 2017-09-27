@@ -1,5 +1,7 @@
 package net.bingyan.gradle
 
+import org.gradle.api.Project
+
 import java.awt.*
 
 class IconCoverConfig {
@@ -14,7 +16,12 @@ class IconCoverConfig {
 
     String backgroundColor = "#CC000000"
 
-    String extraText = ""
+    String extraInfo = ""
+
+    IconCoverConfig(Project project) {
+
+    }
+
 
     public Color getBackgroundColor() {
         int[] color = hexColorToRGBIntArray(backgroundColor)
