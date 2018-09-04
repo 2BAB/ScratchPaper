@@ -11,7 +11,7 @@ def issueUrl = "${baseUrl}/issues"
 def licenseIds = ['Apache-2.0']
 def licenseNames = ['The Apache Software License, Version 2.0']
 def licenseUrls = ['http://www.apache.org/licenses/LICENSE-2.0.txt']
-def inception = '2016'
+def inception = '2018'
 
 def username = '2BAB'
 
@@ -55,13 +55,13 @@ install {
 }
 
 task sourcesJar(type: Jar) {
-    from sourceSets.main.allGroovy
+    from sourceSets.main.allSource
     classifier = 'sources'
 }
 
 
-task javadocJar(type: Jar, dependsOn: groovydoc) {
-    from groovydoc.destinationDir
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    from javadoc.destinationDir
     classifier = 'javadoc'
 }
 
@@ -83,7 +83,7 @@ bintray {
         websiteUrl = siteUrl
         issueTrackerUrl = issueUrl
         vcsUrl = gitUrl
-        labels = ['gradle', 'plugin', 'icon', 'cover']
+        labels = ['gradle', 'plugin', 'scratch-paper', 'cover', 'debug']
         licenses = licenseIds
         publish = true
         publicDownloadNumbers = true

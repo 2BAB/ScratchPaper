@@ -1,21 +1,24 @@
-group 'net.bingyan.gradle'
-version '1.1.0'
-
-apply plugin: 'groovy'
-apply plugin: 'maven'
-apply from: 'bintray.gradle'
+// must keep the order among `buildscript` `plugins` `repositories` blocks
 
 buildscript {
+    ext.kotlin_version = '1.2.61'
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.0'
+        classpath 'com.github.dcendents:android-maven-plugin:1.2'
+    }
+
     repositories {
         google()
         jcenter()
         mavenCentral()
     }
+}
 
-    dependencies {
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.0'
-        classpath 'com.github.dcendents:android-maven-plugin:1.2'
-    }
+plugins {
+    id 'maven'
+    id "org.jetbrains.kotlin.jvm" version "1.2.61"
 }
 
 allprojects {
@@ -27,16 +30,14 @@ allprojects {
 }
 
 dependencies {
-    compile gradleApi()
-    compile localGroovy()
-    compile 'com.android.tools.build:gradle:3.1.4'
-
+    implementation gradleApi()
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    implementation 'com.android.tools.build:gradle:3.1.4'
 }
 
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url: uri(System.getProperty("user.home") + '/.m2/repository'))
-        }
-    }
-}
+// publish
+group 'me.xx2bab.gradle'
+version '2.0.0-SNAPSHOT'
+apply from: 'bintray.gradle'
+apply from: 'mavenlocal.gradle'
