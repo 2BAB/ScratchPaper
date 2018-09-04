@@ -1,8 +1,9 @@
 # ScratchPaper (V2)
 
-[English][[中文说明]](./README_zh.md)
+[中文说明][[English]](./README.md)
 
 ## How it works
+
 
 ## Usage
 
