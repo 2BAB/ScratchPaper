@@ -1,11 +1,12 @@
 package me.xx2bab.gradle.scratchpaper
 
-import org.gradle.api.Project
 import java.awt.Color
 
-open class IconCoverConfig(project: Project) {
+open class ScratchPaperExtension {
 
-    // val DEFAULT_CONFIG = IconCoverConfig()
+    companion object {
+        val DEFAULT_CONFIG = ScratchPaperExtension()
+    }
 
     val textSize = 12
 
@@ -29,14 +30,14 @@ open class IconCoverConfig(project: Project) {
     }
 
 
-    fun hexColorToRGBIntArray(hexColor: String): IntArray {
+    private fun hexColorToRGBIntArray(hexColor: String): IntArray {
         val processedHexColor: String
         if (!hexColor.startsWith("#")) {
             throw IllegalArgumentException()
         } else {
             processedHexColor = hexColor.replace("#", "")
         }
-        val argbIntArray: IntArray = intArrayOf(0, 0, 0, 0)
+        val argbIntArray = intArrayOf(0, 0, 0, 0)
         val colorLength = processedHexColor.length
         val octetHexColor: String
 
@@ -52,7 +53,7 @@ open class IconCoverConfig(project: Project) {
             }
         }
 
-        for (i in 0..4) {
+        for (i in 0..3) {
             argbIntArray[i] = Integer.parseInt(octetHexColor.substring(2 * i, 2 * i + 1)
                     + octetHexColor.substring(2 * i + 1, 2 * i + 2), 16)
         }
