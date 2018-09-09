@@ -45,8 +45,10 @@ class SPUtils {
                             dir.name.contains("mipmap") || dir.name.contains("drawable")
                         }
                         .forEach { file ->
-                            file.walk().forEach {image ->
-                                if (image.isFile && image.nameWithoutExtension == iconName) {
+                            file.walk().forEach { image ->
+                                if (image.isFile
+                                        && image.nameWithoutExtension == iconName
+                                        && image.extension != "xml") {
                                     result.add(image)
                                 }
                             }
@@ -67,7 +69,6 @@ class SPUtils {
                            config: ScratchPaperExtension = ScratchPaperExtension.DEFAULT_CONFIG,
                            vararg lines: String) {
             val bufferedImage: BufferedImage = ImageIO.read(image)
-
             val backgroundOverlayColor: Color = config.getBackgroundColor()
             val textColor: Color = config.getTextColor()
             val fontSize: Int = config.textSize
@@ -87,15 +88,15 @@ class SPUtils {
                 // Draw each line of our text
                 this.font = Font(Font.SANS_SERIF, Font.PLAIN, fontSize)
                 this.color = textColor
-                for ((i, line) in lines.withIndex()) {
-                    val  strWidth = this.fontMetrics.stringWidth(line)
+                for ((i, line) in lines.reversed().withIndex()) {
+                    val strWidth = this.fontMetrics.stringWidth(line)
 
                     var x = 0
                     if (imgWidth >= strWidth) {
                         x = ((imgWidth - strWidth) / 2)
                     }
 
-                    val y = imgHeight -(fontSize * i) - ((i + 1) * linePadding)
+                    val y = imgHeight - (fontSize * i) - ((i + 1) * linePadding)
 
                     this.drawString(line, x, y)
                 }

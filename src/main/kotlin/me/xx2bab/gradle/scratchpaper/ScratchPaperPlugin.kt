@@ -39,8 +39,8 @@ class ScratchPaperPlugin : Plugin<Project> {
                             "AndroidManifest.xml")
                     val resDirs = variant.sourceSets[0].resDirectories
                     val buildName = variant.flavorName + " " + variant.buildType.name
-                    val version = ""
-                    SPUtils.findIcons(resDirs, mergedManifestFile).forEach{ icon ->
+                    val version = "@" + variant.mergedFlavor.versionName
+                    SPUtils.findIcons(resDirs, mergedManifestFile).forEach { icon ->
                         SPUtils.addTextToImage(icon, config, buildName, version, config.extraInfo)
                     }
                 }
