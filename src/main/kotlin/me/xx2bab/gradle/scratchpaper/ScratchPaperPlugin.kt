@@ -35,15 +35,13 @@ class ScratchPaperPlugin : Plugin<Project> {
                 val processManifestTask: MergeManifests = output.processManifest as MergeManifests
 
                 output.processResources.doFirst {
+                    val processedIcons = arrayListOf<File>()
                     val mergedManifestFile = File(processManifestTask.manifestOutputDirectory,
                             "AndroidManifest.xml")
                     val resDirs = variant.sourceSets[0].resDirectories
-
-
                     val version = "@" + variant.mergedFlavor.versionName
-                    val processedIcons = arrayListOf<File>()
-
-                    ResUtils.findIcons(resDirs, mergedManifestFile).forEach { icon ->
+                    val iconName = ResUtils.getIconName(mergedManifestFile)
+                    ResUtils.findIcons(resDirs, iconName).forEach { icon ->
                         val processedIcon = ResUtils.addTextToImage(project, buildName,
                                 icon, config, buildName, version, config.extraInfo)
                         processedIcons.add(processedIcon)
@@ -53,6 +51,9 @@ class ScratchPaperPlugin : Plugin<Project> {
                     val mergeResTask = project.tasks.getByName(mergeResTaskName) as MergeResources
                     val mergedResDir = mergeResTask.outputDir
                     Aapt2Utils.compileResDir(project, mergedResDir, processedIcons)
+                    if (config.enableXmlIconRemove) {
+                        ResUtils.removeXmlIconFiles(iconName, mergedResDir)
+                    }
                 }
             }
         }

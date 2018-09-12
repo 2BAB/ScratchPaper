@@ -8,15 +8,17 @@ open class ScratchPaperExtension {
         val DEFAULT_CONFIG = ScratchPaperExtension()
     }
 
-    val textSize = 12
+    var textSize = 12
 
-    val textColor = "#FFFFFFFF"
+    var textColor = "#FFFFFFFF"
 
-    val verticalLinePadding = 4
+    var verticalLinePadding = 4
 
-    val backgroundColor = "#CC000000"
+    var backgroundColor = "#CC000000"
 
-    val extraInfo = ""
+    var extraInfo = ""
+
+    var enableXmlIconRemove = false
 
 
     fun getBackgroundColor(): Color {

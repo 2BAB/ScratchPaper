@@ -44,14 +44,14 @@ class ResUtils {
          * Icon name to search for in the app drawable folders
          * if none can be found in the app manifest
          */
-        private fun getIconName(manifestFile: File): String? {
+        fun getIconName(manifestFile: File): String {
             if (manifestFile.isDirectory || !manifestFile.exists()) {
                 return ""
             }
             val manifestXml = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(manifestFile)
             val fileName = manifestXml.getElementsByTagName("application").item(0)
                     .attributes.getNamedItem("android:icon")?.nodeValue
-            return fileName?.split("/")?.get(1)
+            return fileName?.split("/")?.get(1) ?: DEFAULT_ICON_NAME
         }
 
         /**
@@ -59,8 +59,7 @@ class ResUtils {
          *
          * If no icon can be found in the manifest, a default of {@link ResUtils#DEFAULT_ICON_NAME} will be used
          */
-        fun findIcons(where: Collection<File>, manifest: File): List<File> {
-            val iconName: String = getIconName(manifest) ?: DEFAULT_ICON_NAME
+        fun findIcons(where: Collection<File>, iconName: String): List<File> {
             val result: MutableList<File> = Lists.newArrayList()
             where.forEach {
                 it.walk()
@@ -69,8 +68,7 @@ class ResUtils {
                         }
                         .forEach { file ->
                             file.walk().forEach { image ->
-                                if (image.isFile
-                                        && image.nameWithoutExtension == iconName
+                                if (isIconFile(iconName, image)
                                         && image.extension != "xml") {
                                     result.add(image)
                                 }
@@ -134,6 +132,27 @@ class ResUtils {
             ImageIO.write(bufferedImage, "png", destImage)
             return destImage
         }
+
+        fun removeXmlIconFiles(iconName: String, mergedResDir: File) {
+            if (mergedResDir.isFile) {
+                return
+            }
+            val xmlIconsWillBeDeleted = arrayListOf<File>()
+            mergedResDir.walk().forEach { file ->
+                if (file.isFile
+                        && (file.name.contains("$iconName.xml.flat")
+                                || file.name.contains("${iconName}_round.xml.flat"))) {
+                    file.delete()
+                }
+            }
+        }
+
+        private fun isIconFile(namePrefix: String, file: File): Boolean {
+            return file.isFile
+                    && (file.nameWithoutExtension == namePrefix
+                    || file.nameWithoutExtension == "${namePrefix}_round")
+        }
+
     }
 
 
