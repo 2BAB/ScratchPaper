@@ -27,7 +27,7 @@ class ResUtils {
             try {
                 Class.forName(System.getProperty("java.awt.graphicsenv"))
             } catch (e: ClassNotFoundException) {
-                System.err.println("[WARN] java.awt.graphicsenv: $e")
+                Logger.e("java.awt.graphicsenv: $e")
                 System.setProperty("java.awt.graphicsenv", "sun.awt.CGraphicsEnvironment")
             }
 
@@ -35,7 +35,7 @@ class ResUtils {
             try {
                 Class.forName(System.getProperty("awt.toolkit"))
             } catch (e: ClassNotFoundException) {
-                System.err.println("[WARN] awt.toolkit: $e")
+                Logger.e("awt.toolkit: $e")
                 System.setProperty("awt.toolkit", "sun.lwawt.macosx.LWCToolkit")
             }
         }
@@ -127,7 +127,7 @@ class ResUtils {
                 }
             }
             val destDir = File(CacheUtils.getCacheDir(project, buildName), image.parentFile.name)
-            if (!destDir.exists() && destDir.mkdir()) {
+            if (!destDir.exists() && !destDir.mkdirs()) {
                 Logger.e("Can not create cache directory for ScratchPaper.")
             }
             val destImage = File(destDir, image.name)

@@ -11,7 +11,7 @@ class CacheUtils {
         fun mkdir(project: Project, variant: BaseVariant, buildName: String) {
             variant.preBuild.doLast {
                 val cacheDir = getCacheDir(project, buildName)
-                if (!cacheDir.exists() && cacheDir.mkdirs()) {
+                if (!cacheDir.exists() && !cacheDir.mkdirs()) {
                     Logger.e("Can not create cache directory for ScratchPaper.")
                 }
             }

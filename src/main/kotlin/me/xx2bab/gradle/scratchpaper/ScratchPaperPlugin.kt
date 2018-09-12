@@ -2,10 +2,8 @@ package me.xx2bab.gradle.scratchpaper
 
 import com.android.build.gradle.AppExtension
 import com.android.build.gradle.AppPlugin
-import com.android.build.gradle.api.BaseVariant
 import com.android.build.gradle.tasks.MergeManifests
 import com.android.build.gradle.tasks.MergeResources
-import org.gradle.api.DomainObjectCollection
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import java.io.File
@@ -19,17 +17,19 @@ class ScratchPaperPlugin : Plugin<Project> {
         Logger.init(project)
 
         val android = project.extensions.findByType(AppExtension::class.java)
-        val variants: DomainObjectCollection<out BaseVariant> = android!!.applicationVariants
-        val config = project.extensions.create("iconCoverConfig", ScratchPaperExtension::class.java)
+        val variants = android!!.applicationVariants
+        val config = project.extensions.create("scratchPaper", ScratchPaperExtension::class.java)
 
         variants.all { variant ->
 
             if (!variant.buildType.isDebuggable) {
-                Logger.i("IconVersionPlugin. Skipping non-debuggable variant: ${variant.name}")
+                Logger.i("Skipping non-debuggable variant: ${variant.name}")
                 return@all
             }
-            val buildName = variant.flavorName + " " + variant.buildType.name
+
+            val buildName = variant.flavorName + variant.buildType.name.capitalize()
             CacheUtils.mkdir(project, variant, buildName)
+            ResUtils.setAwtEnv()
 
             variant.outputs.forEach { output ->
                 val processManifestTask: MergeManifests = output.processManifest as MergeManifests
@@ -38,18 +38,20 @@ class ScratchPaperPlugin : Plugin<Project> {
                     val mergedManifestFile = File(processManifestTask.manifestOutputDirectory,
                             "AndroidManifest.xml")
                     val resDirs = variant.sourceSets[0].resDirectories
+
+
                     val version = "@" + variant.mergedFlavor.versionName
                     val processedIcons = arrayListOf<File>()
-                    ResUtils.setAwtEnv()
+
                     ResUtils.findIcons(resDirs, mergedManifestFile).forEach { icon ->
                         val processedIcon = ResUtils.addTextToImage(project, buildName,
                                 icon, config, buildName, version, config.extraInfo)
                         processedIcons.add(processedIcon)
                     }
 
-                    val mergeResourceTaskName = "merge${variant.buildType.name.capitalize()}Resources"
-                    val mergeResourceTask = project.tasks.getByName(mergeResourceTaskName) as MergeResources
-                    val mergedResDir = mergeResourceTask.outputDir
+                    val mergeResTaskName = "merge${variant.buildType.name.capitalize()}Resources"
+                    val mergeResTask = project.tasks.getByName(mergeResTaskName) as MergeResources
+                    val mergedResDir = mergeResTask.outputDir
                     Aapt2Utils.compileResDir(project, mergedResDir, processedIcons)
                 }
             }
