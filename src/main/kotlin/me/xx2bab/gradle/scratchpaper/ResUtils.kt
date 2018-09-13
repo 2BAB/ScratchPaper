@@ -16,8 +16,18 @@ class ResUtils {
 
     companion object {
 
+        // default icon name of Android is ic_launcher
         private const val DEFAULT_ICON_NAME: String = "ic_launcher"
 
+        // to make sure the fontSize can be a regular number (like 14, 16, 18 that develops usually use)
+        // I test 14 on all dpi generating, and found 96 (which is the xhdpi icon size) can fits it well
+        // so we just make it as a standard size and compute the ratio for others to scale
+        private const val PRETTY_IMAGE_SIZE_FITS_14_FONT_SIZE = 96.0
+
+        /**
+         * To hack the awt on AS and Gradle building environment,
+         * This is inherit from v1.x which forked from icon-version@akonior
+         */
         fun setAwtEnv() {
             // We want our font to come out looking pretty
             System.setProperty("awt.useSystemAAFontSettings", "on")
@@ -42,7 +52,7 @@ class ResUtils {
 
         /**
          * Icon name to search for in the app drawable folders
-         * if none can be found in the app manifest
+         * If no icon can be found in the manifest, ResUtils#DEFAULT_ICON_NAME will be used
          */
         fun getIconName(manifestFile: File): String {
             if (manifestFile.isDirectory || !manifestFile.exists()) {
@@ -56,8 +66,6 @@ class ResUtils {
 
         /**
          * Finds all icon files matching the icon specified in the given manifest.
-         *
-         * If no icon can be found in the manifest, a default of {@link ResUtils#DEFAULT_ICON_NAME} will be used
          */
         fun findIcons(where: Collection<File>, iconName: String): List<File> {
             val result: MutableList<File> = Lists.newArrayList()
@@ -80,24 +88,29 @@ class ResUtils {
 
 
         /**
-         * Draws the given text over an image
+         * Draws the given background and text over an image
          *
-         * @param image The image file which will be written too
-         * @param config The configuration which controls how the overlay will appear
-         * @param lines The lines of text to be displayed
+         * @param project   The Instance of org.gradle.api.Project
+         * @param buildName The Instance of org.gradle.api.Project
+         * @param image     The icon file that will be decorated
+         * @param config    The configuration which controls how the overlay will appear
+         * @param lines     The lines of text to be displayed
          */
-        fun addTextToImage(project: Project,
-                           buildName: String,
-                           image: File,
-                           config: ScratchPaperExtension = ScratchPaperExtension.DEFAULT_CONFIG,
-                           vararg lines: String): File {
+        fun addTextToIcon(project: Project,
+                          buildName: String,
+                          image: File,
+                          config: ScratchPaperExtension = ScratchPaperExtension.DEFAULT_CONFIG,
+                          vararg lines: String): File {
             val bufferedImage: BufferedImage = ImageIO.read(image)
             val backgroundOverlayColor: Color = config.getBackgroundColor()
             val textColor: Color = config.getTextColor()
-            val fontSize: Int = config.textSize
-            val linePadding: Int = config.verticalLinePadding
+
             val imgWidth: Int = bufferedImage.width
-            val imgHeight: Int = bufferedImage.width
+            val imgHeight: Int = bufferedImage.height
+            val ratio = imgWidth / PRETTY_IMAGE_SIZE_FITS_14_FONT_SIZE
+
+            val fontSize: Int = (config.textSize * ratio).toInt()
+            val linePadding: Int = (config.verticalLinePadding * ratio).toInt()
             val lineCount: Int = lines.size
             val totalLineHeight: Int = (fontSize * lineCount) + ((linePadding + 1) * lineCount)
 
@@ -133,11 +146,18 @@ class ResUtils {
             return destImage
         }
 
+        /**
+         * Experimental:
+         * For now I didn't find an elegant approach to add a cover for xml icon,
+         * so the ScratchPaper provide a temporary function to remove them.
+         *
+         * @param iconName     the icon defined in the AndroidManifest.xml
+         * @param mergedResDir it's a directory like /build/intermediates/res/merged/debug
+         */
         fun removeXmlIconFiles(iconName: String, mergedResDir: File) {
             if (mergedResDir.isFile) {
                 return
             }
-            val xmlIconsWillBeDeleted = arrayListOf<File>()
             mergedResDir.walk().forEach { file ->
                 if (file.isFile
                         && (file.name.contains("$iconName.xml.flat")

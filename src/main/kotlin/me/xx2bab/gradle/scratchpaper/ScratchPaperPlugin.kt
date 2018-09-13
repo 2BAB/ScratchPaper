@@ -42,7 +42,7 @@ class ScratchPaperPlugin : Plugin<Project> {
                     val version = "@" + variant.mergedFlavor.versionName
                     val iconName = ResUtils.getIconName(mergedManifestFile)
                     ResUtils.findIcons(resDirs, iconName).forEach { icon ->
-                        val processedIcon = ResUtils.addTextToImage(project, buildName,
+                        val processedIcon = ResUtils.addTextToIcon(project, buildName,
                                 icon, config, buildName, version, config.extraInfo)
                         processedIcons.add(processedIcon)
                     }

@@ -27,7 +27,7 @@ dependencies {
 }
 
 scratchPaper {
-    textSize = 32
+    textSize = 14
     textColor = "#FF912839"
     verticalLinePadding = 4
     backgroundColor = "#88123788"

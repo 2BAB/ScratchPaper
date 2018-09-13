@@ -18,6 +18,8 @@ open class ScratchPaperExtension {
 
     var extraInfo = ""
 
+    // Experimental field
+    // @see ResUtils#removeXmlIconFiles
     var enableXmlIconRemove = false
 
 
