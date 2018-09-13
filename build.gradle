@@ -37,7 +37,7 @@ dependencies {
 }
 
 // publish
-group 'me.xx2bab.gradle'
-version '2.0.0-SNAPSHOT'
+group 'me.2bab'
+version '2.0.0'
 apply from: 'bintray.gradle'
 apply from: 'mavenlocal.gradle'

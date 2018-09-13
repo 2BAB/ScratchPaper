@@ -1,4 +1,4 @@
-package me.xx2bab.gradle.scratchpaper
+package me.xx2bab.scratchpaper
 
 import java.awt.Color
 

@@ -1,4 +1,4 @@
-package me.xx2bab.gradle.scratchpaper
+package me.xx2bab.scratchpaper
 
 import com.android.tools.r8.com.google.common.collect.Lists
 import org.gradle.api.Project

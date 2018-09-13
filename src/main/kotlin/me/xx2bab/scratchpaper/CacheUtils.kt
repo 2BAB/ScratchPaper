@@ -1,4 +1,4 @@
-package me.xx2bab.gradle.scratchpaper
+package me.xx2bab.scratchpaper
 
 import com.android.build.gradle.api.BaseVariant
 import org.gradle.api.Project

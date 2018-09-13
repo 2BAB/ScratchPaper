@@ -1,9 +1,9 @@
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
 
-def projectName = "icon-cover"
+def projectName = "scratch-paper"
 def mavenDesc = 'Add text on your Android app icon'
-def baseUrl = 'https://github.com/2BAB/icon-cover'
+def baseUrl = 'https://github.com/2BAB/ScratchPaper'
 def siteUrl = baseUrl
 def gitUrl = "${baseUrl}.git"
 def issueUrl = "${baseUrl}/issues"
@@ -83,7 +83,7 @@ bintray {
         websiteUrl = siteUrl
         issueTrackerUrl = issueUrl
         vcsUrl = gitUrl
-        labels = ['gradle', 'plugin', 'scratch-paper', 'cover', 'debug']
+        labels = ['gradle', 'plugin', 'scratch-paper', 'overlay', 'debug']
         licenses = licenseIds
         publish = true
         publicDownloadNumbers = true

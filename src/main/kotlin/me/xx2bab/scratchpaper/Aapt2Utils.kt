@@ -1,4 +1,4 @@
-package me.xx2bab.gradle.scratchpaper
+package me.xx2bab.scratchpaper
 
 import com.android.sdklib.BuildToolInfo
 import org.gradle.api.Project

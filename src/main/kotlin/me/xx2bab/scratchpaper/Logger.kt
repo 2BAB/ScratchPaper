@@ -1,4 +1,4 @@
-package me.xx2bab.gradle.scratchpaper
+package me.xx2bab.scratchpaper
 
 import org.gradle.api.Project
 import org.gradle.api.logging.Logger
