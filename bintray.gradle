@@ -83,7 +83,7 @@ bintray {
         websiteUrl = siteUrl
         issueTrackerUrl = issueUrl
         vcsUrl = gitUrl
-        labels = ['gradle', 'plugin', 'scratch-paper', 'overlay', 'debug']
+        labels = ['2BAB', 'Gradle', 'ScratchPaper', 'Overlay', 'BuildType', 'Debug']
         licenses = licenseIds
         publish = true
         publicDownloadNumbers = true
