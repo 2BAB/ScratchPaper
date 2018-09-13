@@ -10,7 +10,7 @@ ScatchPaper 可以在你的 App icon 上加一个蒙层用以区分出各个 Bui
 
 > 如果你同时打了多个测试包给测试或者产品（例如基于多个复合分支），当他们给你反馈的问题时候你和他们可能都很难分别出每个 App 对应的具体的分支或者 commit 节点。
 
-ScatchPaper 支持生成编译信息并打包到你的 Apk 及输出一份拷贝到 `/build/output` 文件夹，包括:
+ScatchPaper 支持生成编译信息并打包到你的 Apk 及输出一份拷贝到 `/build/output` 文件夹，包括：
 
 - Build Time
 - Latest Commit ID
@@ -49,7 +49,7 @@ apply plugin: 'me.2bab.scratchpaper'
 
 ## 兼容性
 
-目前 ScratchPaper 只会支持和测试最新两个 Minor 版本的 Android Gradle Plugin:
+ScratchPaper 只会支持最新两个 Minor 版本的 Android Gradle Plugin：
 
 AGP Version|Compatible Status
 -----------|-----------------
@@ -61,7 +61,7 @@ AGP Version|Compatible Status
 
 ## v1.x (Deprecated)
 
-The v1.x `IconCover` forked from [icon-version@akonior](https://github.com/akonior/icon-version). It provided icon editor functions and compatible with `Aapt1`, and I added some little enhancement like hex color support, custom text support. As time goes by, we have to move to `Aapt2` sooner or later. So I decide to revamp the whole project and add more fancy features. **If you are still using `Aapt1` with `IconCover`, now is the time to consider moving into the new one.**
+The v1.x `IconCover` forked from [icon-version@akonior](https://github.com/akonior/icon-version). It provided icon editor functions that compatible with `Aapt1`, and I added some little enhancement like hex color support, custom text support. As time goes by, we have to move to `Aapt2` sooner or later. So I decide to revamp the whole project and add more fancy features. **If you are still using `Aapt1` with `IconCover`, now is the time to consider moving into the new one.**
 
 ## License
 

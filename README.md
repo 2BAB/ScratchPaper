@@ -49,7 +49,7 @@ apply plugin: 'me.2bab.scratchpaper'
 
 ## Compatible
 
-For me, would ONLY test in 2 latest minor version of Android Gradle Plugin.
+ScratchPaper only tests in Latest TWO Minor versions of Android Gradle Plugin.
 
 AGP Version|Compatible Status
 -----------|-----------------
@@ -61,7 +61,7 @@ AGP Version|Compatible Status
 
 ## v1.x (Deprecated)
 
-The v1.x `IconCover` forked from [icon-version@akonior](https://github.com/akonior/icon-version). It provided icon editor functions and compatible with `Aapt1`, and I added some little enhancement like hex color support, custom text support. As time goes by, we have to move to `Aapt2` sooner or later. So I decide to revamp the whole project and add more fancy features. **If you are still using `Aapt1` with `IconCover`, now is the time to consider moving into the new one.**
+The v1.x `IconCover` forked from [icon-version@akonior](https://github.com/akonior/icon-version). It provided icon editor functions that compatible with `Aapt1`, and I added some little enhancement like hex color support, custom text support. As time goes by, we have to move to `Aapt2` sooner or later. So I decide to revamp the whole project and add more fancy features. **If you are still using `Aapt1` with `IconCover`, now is the time to consider moving into the new one.**
 
 ## License
 
