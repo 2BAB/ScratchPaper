@@ -26,13 +26,13 @@ class ScratchPaperPlugin : Plugin<Project> {
             val buildName = variant.flavorName + variantCapedName
             CacheUtils.mkdir(project, variant, buildName)
 
+            val params = GeneratorParams(project, variant, variantCapedName, buildName,
+                    config, android)
             if (config.enableGenerateIconOverlay ?: variant.buildType.isDebuggable) {
-                IconOverlayGenerator(GeneratorParams(project, variant, variantCapedName, buildName,
-                        config)).process()
+                IconOverlayGenerator(params).process()
             }
             if (config.enableGenerateBuildInfo ?: variant.buildType.isDebuggable) {
-                BuildInfoGenerator(GeneratorParams(project, variant, variantCapedName, buildName,
-                        config)).process()
+                BuildInfoGenerator(params).process()
             }
 
         }
