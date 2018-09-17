@@ -8,6 +8,10 @@ open class ScratchPaperExtension {
         val DEFAULT_CONFIG = ScratchPaperExtension()
     }
 
+    var enableGenerateIconOverlay: Boolean? = null
+
+    var enableGenerateBuildInfo: Boolean? = null
+
     var textSize = 12
 
     var textColor = "#FFFFFFFF"
@@ -19,7 +23,7 @@ open class ScratchPaperExtension {
     var extraInfo = ""
 
     // Experimental field
-    // @see ResUtils#removeXmlIconFiles
+    // @see IconOverlayGenerator#removeXmlIconFiles
     var enableXmlIconRemove = false
 
 

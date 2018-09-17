@@ -2,13 +2,14 @@ package me.xx2bab.scratchpaper
 
 import com.android.build.gradle.AppExtension
 import com.android.build.gradle.AppPlugin
-import com.android.build.gradle.tasks.MergeManifests
-import com.android.build.gradle.tasks.MergeResources
+import me.xx2bab.scratchpaper.utils.CacheUtils
+import me.xx2bab.scratchpaper.utils.Logger
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import java.io.File
 
 class ScratchPaperPlugin : Plugin<Project> {
+
+    private val extensionName = "scratchPaper"
 
     override fun apply(project: Project) {
         if (!project.plugins.hasPlugin(AppPlugin::class.java)) {
@@ -18,44 +19,22 @@ class ScratchPaperPlugin : Plugin<Project> {
 
         val android = project.extensions.findByType(AppExtension::class.java)
         val variants = android!!.applicationVariants
-        val config = project.extensions.create("scratchPaper", ScratchPaperExtension::class.java)
+        val config = project.extensions.create(extensionName, ScratchPaperExtension::class.java)
 
         variants.all { variant ->
-
-            if (!variant.buildType.isDebuggable) {
-                Logger.i("Skipping non-debuggable variant: ${variant.name}")
-                return@all
-            }
-
-            val buildName = variant.flavorName + variant.buildType.name.capitalize()
+            val variantCapedName = variant.buildType.name.capitalize()
+            val buildName = variant.flavorName + variantCapedName
             CacheUtils.mkdir(project, variant, buildName)
-            ResUtils.setAwtEnv()
 
-            variant.outputs.forEach { output ->
-                val processManifestTask: MergeManifests = output.processManifest as MergeManifests
-
-                output.processResources.doFirst {
-                    val processedIcons = arrayListOf<File>()
-                    val mergedManifestFile = File(processManifestTask.manifestOutputDirectory,
-                            "AndroidManifest.xml")
-                    val resDirs = variant.sourceSets[0].resDirectories
-                    val version = "@" + variant.mergedFlavor.versionName
-                    val iconName = ResUtils.getIconName(mergedManifestFile)
-                    ResUtils.findIcons(resDirs, iconName).forEach { icon ->
-                        val processedIcon = ResUtils.addTextToIcon(project, buildName,
-                                icon, config, buildName, version, config.extraInfo)
-                        processedIcons.add(processedIcon)
-                    }
-
-                    val mergeResTaskName = "merge${variant.buildType.name.capitalize()}Resources"
-                    val mergeResTask = project.tasks.getByName(mergeResTaskName) as MergeResources
-                    val mergedResDir = mergeResTask.outputDir
-                    Aapt2Utils.compileResDir(project, mergedResDir, processedIcons)
-                    if (config.enableXmlIconRemove) {
-                        ResUtils.removeXmlIconFiles(iconName, mergedResDir)
-                    }
-                }
+            if (config.enableGenerateIconOverlay ?: variant.buildType.isDebuggable) {
+                IconOverlayGenerator(GeneratorParams(project, variant, variantCapedName, buildName,
+                        config)).process()
             }
+            if (config.enableGenerateBuildInfo ?: variant.buildType.isDebuggable) {
+                BuildInfoGenerator(GeneratorParams(project, variant, variantCapedName, buildName,
+                        config)).process()
+            }
+
         }
 
     }

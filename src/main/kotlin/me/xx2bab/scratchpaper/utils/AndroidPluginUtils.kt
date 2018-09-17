@@ -1,4 +1,4 @@
-package me.xx2bab.scratchpaper
+package me.xx2bab.scratchpaper.utils
 
 import com.android.build.gradle.AppPlugin
 import com.android.build.gradle.BasePlugin
