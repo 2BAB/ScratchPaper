@@ -1,5 +1,6 @@
 package me.xx2bab.scratchpaper
 
+import com.android.build.gradle.tasks.MergeSourceSetFolders
 import me.xx2bab.scratchpaper.utils.CacheUtils
 import me.xx2bab.scratchpaper.utils.CommandUtils
 import org.json.simple.JSONArray
@@ -10,8 +11,7 @@ import java.time.LocalDateTime
 class BuildInfoGenerator(private val params: GeneratorParams) {
 
     fun process() {
-        params.project.tasks.getByName("pre${params.variantCapedName}Build").doLast(
-                "generate${params.variantCapedName}BuildInfoByScratchPaper") {
+        params.project.tasks.getByName("pre${params.variantCapedName}Build").doLast {
             val root = JSONObject()
 
             val base = generateBasicInfo()
@@ -23,10 +23,22 @@ class BuildInfoGenerator(private val params: GeneratorParams) {
             val deps = generateDependenciesInfo()
             root[deps.first] = deps.second
 
-            val buildInfoFile = File(CacheUtils.getCacheDir(params.project, params.buildName),
-                    "scratch-paper.json")
-            buildInfoFile.createNewFile()
-            buildInfoFile.writeText(root.toJSONString())
+            val buildInfoDir = File(CacheUtils.getCacheDir(params.project, params.buildName),
+                    "assets").apply {
+                mkdirs()
+            }
+            val buildInfoFile = File(buildInfoDir, "scratch-paper.json").apply {
+                createNewFile()
+                writeText(root.toJSONString())
+            }
+
+            params.project.tasks.getByName("merge${params.variantCapedName}Assets").doLast(
+                    "generate${params.variantCapedName}BuildInfoByScratchPaper") { assetsTask ->
+                val mergedAssetsDir = (assetsTask as MergeSourceSetFolders).outputDir
+                val targetBIFile = File(mergedAssetsDir, "scratch-paper.json")
+                buildInfoFile.copyTo(targetBIFile)
+            }
+
         }
     }
 
