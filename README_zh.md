@@ -10,10 +10,10 @@ ScatchPaper 可以在你的 App icon 上加一个蒙层用以区分出各个 Bui
 
 > 如果你同时打了多个测试包给测试或者产品（例如基于多个复合分支），当他们给你反馈的问题时候你和他们可能都很难分别出每个 App 对应的具体的分支或者 commit 节点。
 
-ScatchPaper 支持生成编译信息并打包到你的 Apk 及输出一份拷贝到 `/build/output` 文件夹，包括：
+ScatchPaper 支持生成编译信息并打包到你的 Apk 中（从 assets 中读取），以及输出一份拷贝到 `/intermedias/scratch-paper/assets` 文件夹，包括：
 
-- Build Time
-- Latest Commit ID
+- Base: Build Time, Build Type, etc.
+- Git: Latest Commit ID & commit branch, etc.
 - Dependencies
 - ...
 
@@ -28,7 +28,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.4'
-        classpath 'me.2bab:scratch-paper:2.0.0'
+        classpath 'me.2bab:scratch-paper:2.1.0'
     }
 }
 ```
@@ -45,7 +45,26 @@ apply plugin: 'me.2bab.scratchpaper'
 
 ![](./images/ic_launcher.png)![](./images/ic_launcher_round.png)
 
- 
+ ![](./images/scratch-paper-json.jpg)
+
+
+**0x04. Advanced Configurations**
+
+``` gradle
+scratchPaper {
+    textSize = 12
+    textColor = "#FFFFFFFF"
+    verticalLinePadding = 4
+    backgroundColor = "#99000000"
+    extraInfo = "This is a sample!"
+    enableGenerateIconOverlay = true
+    enableGenerateBuildInfo = true
+    
+    // Experimental field
+    // @see IconOverlayGenerator#removeXmlIconFiles
+    enableXmlIconRemove = false
+}
+```
 
 ## 兼容性
 

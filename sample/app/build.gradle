@@ -34,4 +34,5 @@ scratchPaper {
     extraInfo = "This is a sample!"
     enableGenerateIconOverlay = true
     enableGenerateBuildInfo = true
+    enableXmlIconRemove = false
 }

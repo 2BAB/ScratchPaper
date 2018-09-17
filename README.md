@@ -10,10 +10,10 @@ ScatchPaper can add a overlay on your icon, and put some given information on it
 
 > If you have more than one staging App for QA or other colleagues, when they found some issues you may don't know how to match the App to your commit, because all of them share the same versions like "2.1.0-SNAPSHOT".
 
-ScatchPaper supports generating build information into your artifact and also `/build/output` directory including:
+ScatchPaper supports generating build information into your artifact (which can read from /assets/scratch-paper.json) and also `/intermedias/scratch-paper/assets` directory including:
 
-- Build Time
-- Latest Commit ID
+- Base: Build Time, Build Type, etc.
+- Git: Latest Commit ID & commit branch, etc.
 - Dependencies
 - ...
 
@@ -28,7 +28,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.4'
-        classpath 'me.2bab:scratch-paper:2.0.0'
+        classpath 'me.2bab:scratch-paper:2.1.0'
     }
 }
 ```
@@ -45,7 +45,26 @@ apply plugin: 'me.2bab.scratchpaper'
 
 ![](./images/ic_launcher.png)![](./images/ic_launcher_round.png)
 
- 
+![](./images/scratch-paper-json.jpg)
+
+
+**0x04. Advanced Configurations**
+
+``` gradle
+scratchPaper {
+    textSize = 12
+    textColor = "#FFFFFFFF"
+    verticalLinePadding = 4
+    backgroundColor = "#99000000"
+    extraInfo = "This is a sample!"
+    enableGenerateIconOverlay = true
+    enableGenerateBuildInfo = true
+    
+    // Experimental field
+    // @see IconOverlayGenerator#removeXmlIconFiles
+    enableXmlIconRemove = false
+}
+```
 
 ## Compatible
 
