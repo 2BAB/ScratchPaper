@@ -13,10 +13,8 @@ cache:
   directories:
   - "$HOME/.gradle/caches/"
   - "$HOME/.gradle/wrapper/"
-
 before_deploy:
   - export AAR_FILE=$(ls build/libs | grep -v 'javadoc\|sources')
-  - echo $AAR_FILE
 deploy:
   provider: releases
   api_key:
