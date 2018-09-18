@@ -1,0 +1,28 @@
+language: java
+jdk:
+- oraclejdk8
+before_install:
+- chmod +x gradlew
+- chmod +x gradle/wrapper/gradle-wrapper.jar
+script: "./gradlew install --info --scan"
+before_cache:
+- rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+- rm -fr $HOME/.gradle/caches/*/scripts/
+cache:
+  directories:
+  - "$HOME/.gradle/caches/"
+  - "$HOME/.gradle/wrapper/"
+before_deploy:
+  - export AAR_FILE=$(ls build/libs | grep -v 'javadoc\|sources')
+deploy:
+  provider: releases
+  api_key:
+    secure: pFTmwvfLU44zBc3hD9NVCe857MiRPo2jW4VxHHnBcLaKCCn0WhpUuQkD7SITEdHV6R1r1+z4Y5ARvN1hADw9320KpNF/A3Kv7GXhCkma9CyoMtgl/D5mY68rVICj9YNBwv6OvkcuFr6mRzk9BBhHww0pB750ozxeEG8HtOE5Rm3mXY1EZvTWhmkNXnSeAJP7JWPBBY4GGX+kkfCKE3QkEPsMJGV9zBHQc4IGHhNx3c74f0REG1Q8Omujmsoho0ZT4ZfojrzJDOFuRrgYFZ66oKtxLYqB9tDCYMcKIm8vV0cqnEAb3vUjSQ51w6VxCcWsD/uSX6AHH8YgxJubIpw5PHi+vHQq5CWrJUkcRVA/j+a9FhkIvNmxqxsX5l/GKHO6LWymoW09Q8Ro2BiWxvl4HNbN/2yNohzOqXEDjAhy3Y75ztAQMFvJcvNuP3XswMV11XJn+ZO7MIT25XZU3NGlOaZsXnSGsMIIJTU/TR4oZ/KFQxlhqnA5QTYBfjaprimFTuPxeTFsX5j34Dlbg40+UDfw+OYd93BBuXmSMcp6T4uyduMLOvIBnrONLsjeHlmYEp6Z5uEKthTjCni+tRq5NcHtgQJvD7/xGOaiqVSy90kWY/hN6190mK9/7ic0YBo6QjwxHU34C1ZD2CByp/7It5RJwgdUI0hu7K9o2mx4KYo=
+  file:
+    - "build/libs/${AAR_FILE}"
+  skip_cleanup: true
+  on:
+    tags: true
+    repo: 2BAB/ScratchPaper
+    branch: master

@@ -29,11 +29,25 @@ allprojects {
     }
 }
 
+configurations.all {
+    exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jre7'
+    exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jre8'
+}
+
 dependencies {
     implementation gradleApi()
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     implementation 'com.android.tools.build:gradle:3.1.4'
+}
+
+ext.travisBuild = System.getenv("TRAVIS") == "true"
+
+if (project.extensions.findByName("buildScan") != null) {
+    buildScan {
+        licenseAgreementUrl = 'https://gradle.com/terms-of-service'
+        licenseAgree = 'yes'
+    }
 }
 
 // publish
