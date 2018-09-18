@@ -1,6 +1,6 @@
 # ScratchPaper (v2.x)
 
-[![Download](https://api.bintray.com/packages/2bab/maven/scratch-paper/images/download.svg)](https://bintray.com/2bab/maven/scratch-paper/_latestVersion) [![Apache 2](https://img.shields.io/badge/License-Apache%202-brightgreen.svg)](https://www.apache.org/licenses/LICENSE-2.0) [![Welcome PRs](https://img.shields.io/badge/PRs-Welcome-orange.svg)](https://github.com/2BAB/ScratchPaper/pulls)
+[![JCenter](https://api.bintray.com/packages/2bab/maven/scratch-paper/images/download.svg)](https://bintray.com/2bab/maven/scratch-paper/_latestVersion) [![Apache 2](https://img.shields.io/badge/License-Apache%202-brightgreen.svg)](https://www.apache.org/licenses/LICENSE-2.0) [![Welcome PRs](https://img.shields.io/badge/PRs-Welcome-orange.svg)](https://github.com/2BAB/ScratchPaper/pulls)
 
 [English][[中文说明]](./README_zh.md)
 
