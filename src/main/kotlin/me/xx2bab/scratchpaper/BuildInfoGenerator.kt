@@ -28,7 +28,7 @@ class BuildInfoGenerator(private val params: GeneratorParams) {
             root[deps.first] = deps.second
 
             buildInfoDir.mkdirs()
-            val buildInfoFile = File(buildInfoDir, buildInfoFileName).apply {
+            File(buildInfoDir, buildInfoFileName).apply {
                 createNewFile()
                 writeText(root.toJSONString())
             }
