@@ -52,6 +52,6 @@ if (project.extensions.findByName("buildScan") != null) {
 
 // publish
 group 'me.2bab'
-version '2.1.0'
+version '2.1.1'
 apply from: 'bintray.gradle'
 apply from: 'mavenlocal.gradle'
