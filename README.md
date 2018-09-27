@@ -30,7 +30,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.4'
-        classpath 'me.2bab:scratch-paper:2.1.1'
+        classpath 'me.2bab:scratch-paper:2.2.0'
     }
 }
 ```
