@@ -16,7 +16,7 @@ cache:
 before_deploy:
   - export AAR_FILE=$(ls build/libs | grep -v 'javadoc\|sources')
 deploy:
-  - provider: sh
+  - provider: script
     script: "./gradlew bintrayUpload"
     on:
       tags: true
