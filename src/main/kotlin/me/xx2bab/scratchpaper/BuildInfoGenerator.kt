@@ -12,10 +12,10 @@ class BuildInfoGenerator(private val params: GeneratorParams) {
     private val buildInfoFileName = "scratch-paper.json"
 
     fun process() {
-        val buildInfoDir = File(CacheUtils.getCacheDir(params.project, params.buildName), "assets")
+        val buildInfoDir = File(CacheUtils.getCacheDir(params.project, params.dimension), "assets")
         params.android.sourceSets.getByName(params.variant.name).assets.srcDirs(buildInfoDir)
 
-        params.project.tasks.getByName("pre${params.variantCapedName}Build").doLast { _ ->
+        params.project.tasks.getByName("pre${params.dimension}Build").doLast { _ ->
             val root = JSONObject()
 
             val base = generateBasicInfo()
@@ -45,7 +45,7 @@ class BuildInfoGenerator(private val params: GeneratorParams) {
 
     private fun generateBasicInfo(): Pair<String, JSONObject> {
         val base = JSONObject()
-        base["buildType"] = params.buildName
+        base["buildType"] = params.dimension
         base["versionName"] = params.variant.mergedFlavor.versionName
         base["buildTime"] = LocalDateTime.now().toString()
         return Pair("base", base)

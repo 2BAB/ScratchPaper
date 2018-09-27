@@ -33,7 +33,7 @@ class IconOverlayGenerator(private val params: GeneratorParams) {
         params.variant.outputs.forEach { output ->
             val processManifestTask: MergeManifests = output.processManifest as MergeManifests
 
-            output.processResources.doFirst("process${params.variantCapedName}IconsByScratchPaper") {
+            output.processResources.doFirst("process${params.dimension}IconsByScratchPaper") {
                 val processedIcons = arrayListOf<File>()
                 val mergedManifestFile = File(processManifestTask.manifestOutputDirectory,
                         "AndroidManifest.xml")
@@ -41,12 +41,12 @@ class IconOverlayGenerator(private val params: GeneratorParams) {
                 val version = "@" + params.variant.mergedFlavor.versionName
                 val iconName = getIconName(mergedManifestFile)
                 findIcons(resDirs, iconName).forEach { icon ->
-                    val processedIcon = addTextToIcon(params.project, params.buildName,
-                            icon, params.config, params.buildName, version, params.config.extraInfo)
+                    val processedIcon = addTextToIcon(params.project, params.dimension,
+                            icon, params.config, params.dimension, version, params.config.extraInfo)
                     processedIcons.add(processedIcon)
                 }
 
-                val mergeResTaskName = "merge${params.variantCapedName}Resources"
+                val mergeResTaskName = "merge${params.dimension}Resources"
                 val mergeResTask = params.project.tasks.getByName(mergeResTaskName) as MergeResources
                 val mergedResDir = mergeResTask.outputDir
                 Aapt2Utils.compileResDir(params.project, mergedResDir, processedIcons)
@@ -124,16 +124,16 @@ class IconOverlayGenerator(private val params: GeneratorParams) {
      * Draws the given background and text over an image
      *
      * @param project   The Instance of org.gradle.api.Project
-     * @param buildName The Instance of org.gradle.api.Project
+     * @param dimension The dimension contains buildType and flavor
      * @param image     The icon file that will be decorated
      * @param config    The configuration which controls how the overlay will appear
      * @param lines     The lines of text to be displayed
      */
     private fun addTextToIcon(project: Project,
-                      buildName: String,
-                      image: File,
-                      config: ScratchPaperExtension = ScratchPaperExtension.DEFAULT_CONFIG,
-                      vararg lines: String): File {
+                              dimension: String,
+                              image: File,
+                              config: ScratchPaperExtension = ScratchPaperExtension.DEFAULT_CONFIG,
+                              vararg lines: String): File {
         val bufferedImage: BufferedImage = ImageIO.read(image)
         val backgroundOverlayColor: Color = config.getBackgroundColor()
         val textColor: Color = config.getTextColor()
@@ -170,7 +170,7 @@ class IconOverlayGenerator(private val params: GeneratorParams) {
                 this.drawString(line, x, y)
             }
         }
-        val destDir = File(CacheUtils.getCacheDir(project, buildName), image.parentFile.name)
+        val destDir = File(CacheUtils.getCacheDir(project, dimension), image.parentFile.name)
         if (!destDir.exists() && !destDir.mkdirs()) {
             Logger.e("Can not create cache directory for ScratchPaper.")
         }

@@ -22,11 +22,10 @@ class ScratchPaperPlugin : Plugin<Project> {
         val config = project.extensions.create(extensionName, ScratchPaperExtension::class.java)
 
         variants.all { variant ->
-            val variantCapedName = variant.buildType.name.capitalize()
-            val buildName = variant.flavorName + variantCapedName
-            CacheUtils.mkdir(project, variant, buildName)
+            val dimension = variant.assemble.name.replace("assemble", "")
+            CacheUtils.mkdir(project, variant, dimension)
 
-            val params = GeneratorParams(project, variant, variantCapedName, buildName,
+            val params = GeneratorParams(project, variant, dimension,
                     config, android)
             if (config.enableGenerateIconOverlay ?: variant.buildType.isDebuggable) {
                 IconOverlayGenerator(params).process()

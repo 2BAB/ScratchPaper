@@ -6,7 +6,6 @@ import org.gradle.api.Project
 
 data class GeneratorParams(val project: Project,
                            val variant: BaseVariant,
-                           val variantCapedName: String,
-                           val buildName: String,
+                           val dimension: String,
                            val config: ScratchPaperExtension,
                            val android: AppExtension)
