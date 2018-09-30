@@ -41,11 +41,11 @@ dependencies {
 }
 
 scratchPaper {
-    textSize = 12
+    textSize = 11
     textColor = "#FFFFFFFF"
     verticalLinePadding = 4
     backgroundColor = "#99000000"
-    extraInfo = "This is a sample!"
+    extraInfo = new Date().format("MM-dd,HH:mm")
     enableGenerateIconOverlay = true
     enableGenerateBuildInfo = true
     enableXmlIconRemove = false

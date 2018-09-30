@@ -39,6 +39,11 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     implementation 'com.android.tools.build:gradle:3.2.0'
+    implementation 'org.jfree:jfreesvg:3.3'
+}
+
+compileJava {
+    options.compilerArgs += ["-proc:none"]
 }
 
 ext.travisBuild = System.getenv("TRAVIS") == "true"
@@ -52,6 +57,6 @@ if (project.extensions.findByName("buildScan") != null) {
 
 // publish
 group 'me.2bab'
-version '2.2.0'
+version '2.2.1-SNAPSHOT'
 apply from: 'bintray.gradle'
 apply from: 'mavenlocal.gradle'

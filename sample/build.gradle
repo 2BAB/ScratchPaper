@@ -8,7 +8,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'me.2bab:scratch-paper:2.2.0'
+        classpath 'me.2bab:scratch-paper:2.2.1-SNAPSHOT'
     }
 }
 
