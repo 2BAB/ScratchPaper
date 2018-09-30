@@ -14,6 +14,9 @@ class IconOverlayGenerator(private val params: GeneratorParams) {
 
     // default icon name of Android is ic_launcher
     private val defaultIconName = "ic_launcher"
+    private val tagApplication = "application"
+    private val attrIcon = "android:icon"
+    private val attrRoundIcon = "android:roundIcon"
 
     fun process() {
         setAwtEnv()
@@ -83,10 +86,10 @@ class IconOverlayGenerator(private val params: GeneratorParams) {
             return arrayOf()
         }
         val manifestXml = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(manifestFile)
-        var regularIconName = manifestXml.getElementsByTagName("application").item(0)
-                .attributes.getNamedItem("android:icon")?.nodeValue
-        var roundIconName = manifestXml.getElementsByTagName("application").item(0)
-                .attributes.getNamedItem("android:roundIcon")?.nodeValue
+        var regularIconName = manifestXml.getElementsByTagName(tagApplication).item(0)
+                .attributes.getNamedItem(attrIcon)?.nodeValue
+        var roundIconName = manifestXml.getElementsByTagName(tagApplication).item(0)
+                .attributes.getNamedItem(attrRoundIcon)?.nodeValue
         regularIconName = regularIconName?.split("/")?.get(1) ?: defaultIconName
         roundIconName = roundIconName?.split("/")?.get(1) ?: defaultIconName + "_round"
         return arrayOf(regularIconName, roundIconName)

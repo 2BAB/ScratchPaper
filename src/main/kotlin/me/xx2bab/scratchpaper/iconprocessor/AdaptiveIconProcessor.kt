@@ -35,6 +35,12 @@ class AdaptiveIconProcessor(project: Project,
                             lines: Array<out String>)
     : BaseIconProcessor(project, dimension, originIcon, config, lines) {
 
+    private val attrDrawable = "android:drawable"
+    private val tagForeground = "foreground"
+    private val tagLayerList = "layer-list"
+    private val tagItem = "item"
+    private val tagAdaptiveIcon = "adaptive-icon"
+
     override fun getSize(): Pair<Int, Int> {
         return Pair(width, height)
     }
@@ -71,8 +77,8 @@ class AdaptiveIconProcessor(project: Project,
         Svg2Vector.parseSvgToXml(overlaySVG, out)
 
         // append overlay to <foreground>
-        val itemDrawableElement = originIconXmlDoc.createElement("item")
-        val drawableAttr = originIconXmlDoc.createAttribute("android:drawable")
+        val itemDrawableElement = originIconXmlDoc.createElement(tagItem)
+        val drawableAttr = originIconXmlDoc.createAttribute(attrDrawable)
         drawableAttr.value = "@drawable/$overlayVectorDrawableFileName".removeSuffix(".xml")
         itemDrawableElement.setAttributeNode(drawableAttr)
         layerList.appendChild(itemDrawableElement)
@@ -101,26 +107,26 @@ class AdaptiveIconProcessor(project: Project,
         // parse foreground node & clean all attributes and childs
         var drawableInForeground: String? = null
 
-        var foregroundElement = originIconXmlDoc.getElementsByTagName("foreground").item(0)
+        var foregroundElement = originIconXmlDoc.getElementsByTagName(tagForeground).item(0)
         if (foregroundElement != null) {
-            if (foregroundElement.attributes.getNamedItem("android:drawable") != null) {
-                drawableInForeground = foregroundElement.attributes.getNamedItem("android:drawable").nodeValue
-                foregroundElement.attributes.removeNamedItem("android:drawable")
+            if (foregroundElement.attributes.getNamedItem(attrDrawable) != null) {
+                drawableInForeground = foregroundElement.attributes.getNamedItem(attrDrawable).nodeValue
+                foregroundElement.attributes.removeNamedItem(attrDrawable)
             }
         } else {
-            foregroundElement = originIconXmlDoc.createElement("foreground")
-            val adaptiveIconNode = originIconXmlDoc.getElementsByTagName("adaptive-icon").item(0)
+            foregroundElement = originIconXmlDoc.createElement(tagForeground)
+            val adaptiveIconNode = originIconXmlDoc.getElementsByTagName(tagAdaptiveIcon).item(0)
             adaptiveIconNode.appendChild(foregroundElement)
         }
 
         // add a <layer-list> as its only one child
         // append all childs & attributes to new <foreground>
-        layerList = originIconXmlDoc.createElement("layer-list")
+        layerList = originIconXmlDoc.createElement(tagLayerList)
         foregroundElement.appendChild(layerList)
 
         if (drawableInForeground != null) {
-            val itemDrawableElement = originIconXmlDoc.createElement("item")
-            val drawableAttr = originIconXmlDoc.createAttribute("android:drawable")
+            val itemDrawableElement = originIconXmlDoc.createElement(tagItem)
+            val drawableAttr = originIconXmlDoc.createAttribute(attrDrawable)
             drawableAttr.value = drawableInForeground
             itemDrawableElement.setAttributeNode(drawableAttr)
             layerList.appendChild(itemDrawableElement)
