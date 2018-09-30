@@ -10,6 +10,10 @@
 
 ScatchPaper can add a overlay on your icon, and put some given information on it.
 
+- Supported regular & round Icons 
+- Supported adaptive-icon
+- Supported AAPT2
+
 > If you have more than one staging App for QA or other colleagues, when they found some issues you may don't know how to match the App to your commit, because all of them share the same versions like "2.1.0-SNAPSHOT".
 
 ScatchPaper supports generating build information into your artifact (which can read from /assets/scratch-paper.json) and also `/intermedias/scratch-paper/assets` directory including:
@@ -29,8 +33,8 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.4'
-        classpath 'me.2bab:scratch-paper:2.2.0'
+        classpath 'com.android.tools.build:gradle:3.2.0'
+        classpath 'me.2bab:scratch-paper:2.3.0'
     }
 }
 ```
@@ -54,11 +58,11 @@ apply plugin: 'me.2bab.scratchpaper'
 
 ``` gradle
 scratchPaper {
-    textSize = 12
+    textSize = 11
     textColor = "#FFFFFFFF"
     verticalLinePadding = 4
     backgroundColor = "#99000000"
-    extraInfo = "This is a sample!"
+    extraInfo = new Date().format("MM-dd,HH:mm")
     enableGenerateIconOverlay = true
     enableGenerateBuildInfo = true
     
@@ -74,6 +78,7 @@ ScratchPaper only tests in Latest TWO Minor versions of Android Gradle Plugin.
 
 AGP Version|Compatible Status
 -----------|-----------------
+3.2.x (Aapt2) | Support
 3.1.x (Aapt2) | Support
 3.0.x (Aapt2) | Support
 2.3.x (Aapt2) | Never Tested
