@@ -54,7 +54,6 @@ class AdaptiveIconProcessor(project: Project,
         // with <Text> in SVG file, however Android Vector Converter doesn't support <Text>.
         // Since we want to get a good compatible experience, so we draw text in <Path> to solve it.
         // @see com.android.ide.common.vectordrawable.Svg2Vector#unsupportedSvgNodes
-        // val font = Font(Font.SANS_SERIF, Font.PLAIN, config.textSize / 2) // hack the text size
         val tl = TextLayout(line, getGraphic().font, getGraphic().fontRenderContext)
         tl.draw(getGraphic(), x.toFloat(), y.toFloat())
     }
@@ -94,7 +93,6 @@ class AdaptiveIconProcessor(project: Project,
         return arrayOf(destIcon, overlayVectorDrawable)
     }
 
-    //    private val vdTree: VdTree
     private val width = 100
     private val height = 100
     private val graphic: Graphics2D
