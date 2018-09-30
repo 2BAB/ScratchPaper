@@ -50,7 +50,13 @@ open class ScratchPaperExtension {
         val octetHexColor: String
 
         octetHexColor = when (colorLength) {
-            3 -> "FF" + processedHexColor.substring(0, 1) + processedHexColor.substring(0, 1) + processedHexColor.substring(1, 2) + processedHexColor.substring(1, 2) + processedHexColor.substring(2, 3) + processedHexColor.substring(2, 3)
+            3 -> "FF" + processedHexColor.let {
+                val builder = StringBuilder()
+                for (i in 0..2) {
+                    builder.append(it.substring(i, i + 1)).append(it.substring(i, i + 1))
+                }
+                builder.toString()
+            }
 
             6 -> "FF$processedHexColor"
 
@@ -62,8 +68,7 @@ open class ScratchPaperExtension {
         }
 
         for (i in 0..3) {
-            argbIntArray[i] = Integer.parseInt(octetHexColor.substring(2 * i, 2 * i + 1)
-                    + octetHexColor.substring(2 * i + 1, 2 * i + 2), 16)
+            argbIntArray[i] = octetHexColor.substring(2 * i, 2 * i + 2).toInt(16)
         }
 
         return argbIntArray

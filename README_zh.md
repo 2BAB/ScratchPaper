@@ -10,6 +10,10 @@
 
 ScatchPaper 可以在你的 App icon 上加一个蒙层用以区分出各个 BuildType 的 App，并且承载了版本信息等附加文字。
 
+- 支持 常规 和 圆形 的图标
+- 支持 adaptive-icon
+- 支持 AAPT2
+
 > 如果你同时打了多个测试包给测试或者产品（例如基于多个复合分支），当他们给你反馈的问题时候你和他们可能都很难分别出每个 App 对应的具体的分支或者 commit 节点。
 
 ScatchPaper 支持生成编译信息并打包到你的 Apk 中（从 assets 中读取），以及输出一份拷贝到 `/intermedias/scratch-paper/assets` 文件夹，包括：
@@ -29,8 +33,8 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.4'
-        classpath 'me.2bab:scratch-paper:2.2.0'
+        classpath 'com.android.tools.build:gradle:3.2.0'
+        classpath 'me.2bab:scratch-paper:2.3.0'
     }
 }
 ```
@@ -54,11 +58,11 @@ apply plugin: 'me.2bab.scratchpaper'
 
 ``` gradle
 scratchPaper {
-    textSize = 12
+    textSize = 11
     textColor = "#FFFFFFFF"
     verticalLinePadding = 4
     backgroundColor = "#99000000"
-    extraInfo = "This is a sample!"
+    extraInfo = new Date().format("MM-dd,HH:mm")
     enableGenerateIconOverlay = true
     enableGenerateBuildInfo = true
     
@@ -74,6 +78,7 @@ ScratchPaper 只会支持最新两个 Minor 版本的 Android Gradle Plugin：
 
 AGP Version|Compatible Status
 -----------|-----------------
+3.2.x (Aapt2) | Support
 3.1.x (Aapt2) | Support
 3.0.x (Aapt2) | Support
 2.3.x (Aapt2) | Never Tested

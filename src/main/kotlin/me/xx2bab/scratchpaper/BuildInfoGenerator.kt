@@ -33,13 +33,6 @@ class BuildInfoGenerator(private val params: GeneratorParams) {
                 writeText(root.toJSONString())
             }
 
-//            params.project.tasks.getByName("merge${params.variantCapedName}Assets").doLast(
-//                    "generate${params.variantCapedName}BuildInfoByScratchPaper") { assetsTask ->
-//                val mergedAssetsDir = (assetsTask as MergeSourceSetFolders).outputDir
-//                val targetBIFile = File(mergedAssetsDir, buildInfoFileName)
-//                buildInfoFile.copyTo(targetBIFile)
-//            }
-
         }
     }
 
@@ -53,8 +46,8 @@ class BuildInfoGenerator(private val params: GeneratorParams) {
 
     private fun generateGitInfo(): Pair<String, JSONObject> {
         val git = JSONObject()
-        git["branch"] = CommandUtils.runCommand("git rev-parse --abbrev-ref HEAD")?.trim()
-        git["latestCommit"] = CommandUtils.runCommand("git rev-parse HEAD")?.trim()
+        git["branch"] = CommandUtils.runCommand("git rev-parse --abbrev-ref HEAD").let { it?.trim() ?: "" }
+        git["latestCommit"] = CommandUtils.runCommand("git rev-parse HEAD").let { it?.trim() ?: "" }
         return Pair("git", git)
     }
 
