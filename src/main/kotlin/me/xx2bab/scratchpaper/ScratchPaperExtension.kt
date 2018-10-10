@@ -22,6 +22,8 @@ open class ScratchPaperExtension {
 
     var extraInfo = ""
 
+    var alwaysUpdateIconInfo = true
+
     // Experimental field
     // @see IconOverlayGenerator#removeXmlIconFiles
     var enableXmlIconRemove = false

@@ -34,7 +34,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.0'
-        classpath 'me.2bab:scratch-paper:2.3.0'
+        classpath 'me.2bab:scratch-paper:2.3.1'
     }
 }
 ```
@@ -46,15 +46,7 @@ buildscript {
 apply plugin: 'me.2bab.scratchpaper'
 ```
 
-
-**0x03. Build your App and Enjoy!**
-
-![](./images/ic_launcher.png)![](./images/ic_launcher_round.png)
-
-![](./images/scratch-paper-json.jpg)
-
-
-**0x04. Advanced Configurations**
+**0x03. Advanced Configurations**
 
 ``` gradle
 scratchPaper {
@@ -71,6 +63,12 @@ scratchPaper {
     enableXmlIconRemove = false
 }
 ```
+
+**0x04. Build your App and Enjoy!**
+
+![](./images/ic_launcher.png)![](./images/ic_launcher_round.png)
+
+![](./images/scratch-paper-json.jpg)
 
 ## Compatible
 
