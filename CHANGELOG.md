@@ -1,5 +1,9 @@
 Only place important and recommended versions here.
 
+## 2.3.1
+
+- Fixed issue #3 Didn't work on icons that placed on library modules.
+
 ## 2.3.0
 
 - Supported adaptive-icon
