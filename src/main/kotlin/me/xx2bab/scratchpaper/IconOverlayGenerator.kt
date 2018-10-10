@@ -21,15 +21,18 @@ class IconOverlayGenerator(private val params: GeneratorParams) {
     fun process() {
         setAwtEnv()
         params.variant.outputs.forEach { output ->
-            val processManifestTask: MergeManifests = output.processManifest as MergeManifests
-
+            val processManifestTask = output.processManifest as MergeManifests
+            val mergeResourcesTask = params.variant.mergeResources as MergeResources
+            if (params.config.alwaysUpdateIconInfo) {
+                output.processResources.outputs.upToDateWhen { false }
+            }
             output.processResources.doFirst("process${params.dimension}IconsByScratchPaper") {
                 val processedIcons = arrayListOf<File>()
                 val mergedManifestFile = File(processManifestTask.manifestOutputDirectory,
                         "AndroidManifest.xml")
-                val resDirs = params.variant.sourceSets[0].resDirectories
                 val version = "@" + params.variant.mergedFlavor.versionName
                 val iconNames = getIconName(mergedManifestFile)
+                val resDirs = mergeResourcesTask.computeResourceSetList0()
                 findIcons(resDirs, iconNames).forEach { icon ->
                     val icons = addTextToIcon(params.project, params.dimension,
                             icon, params.config, params.dimension, version, params.config.extraInfo)
@@ -98,10 +101,10 @@ class IconOverlayGenerator(private val params: GeneratorParams) {
     /**
      * Finds all icon files matching the icon specified in the given manifest.
      */
-    private fun findIcons(where: Collection<File>, iconNames: Array<String>): Collection<File> {
+    private fun findIcons(where: List<File>?, iconNames: Array<String>): Collection<File> {
         val result: MutableSet<File> = hashSetOf()
-        where.forEach {
-            it.walk()
+        where?.forEach {
+            it.walk().maxDepth(3)
                     .filter { dir ->
                         dir.name.contains("mipmap") || dir.name.contains("drawable")
                     }
@@ -162,5 +165,37 @@ class IconOverlayGenerator(private val params: GeneratorParams) {
         return file.isFile && file.nameWithoutExtension == namePrefix
     }
 
+    /**
+     * To get all original resources including libraries
+     *
+     * @link github.com/Mobcase/McImage/blob/master/src/main/java/com/smallsoho/mcplugin/image/utils/HookUtil.kt
+     * @author smallSohoSolo
+     */
+    private fun MergeResources.computeResourceSetList0(): List<File>? {
+        val computeResourceSetListMethod = MergeResources::class.java.declaredMethods
+                .firstOrNull { it.name == "computeResourceSetList" && it.parameterCount == 0 }
+                ?: return null
+
+        val oldIsAccessible = computeResourceSetListMethod.isAccessible
+        try {
+            computeResourceSetListMethod.isAccessible = true
+
+            val resourceSets = computeResourceSetListMethod.invoke(this) as? Iterable<*>
+
+            return resourceSets
+                    ?.mapNotNull { resourceSet ->
+                        val getSourceFiles = resourceSet?.javaClass?.methods?.find {
+                            it.name == "getSourceFiles" && it.parameterCount == 0
+                        }
+                        val files = getSourceFiles?.invoke(resourceSet)
+                        @Suppress("UNCHECKED_CAST")
+                        files as? Iterable<File>
+                    }
+                    ?.flatten()
+
+        } finally {
+            computeResourceSetListMethod.isAccessible = oldIsAccessible
+        }
+    }
 
 }
