@@ -4,7 +4,7 @@
 
 [中文说明][[English]](./README.md)
 
-## ScratchPaper 都做了些什么？
+## ScratchPaper 做了些什么？
 
 > 如果你在一台设备上安装两个 App，一个是 Debug 版一个是 Release 版，那么你很难区分出来到底哪个是哪个（不打开的情况下）。
 
@@ -22,6 +22,14 @@ ScatchPaper 支持生成编译信息并打包到你的 Apk 中（从 assets 中�
 - Git: Latest Commit ID & commit branch, etc.
 - Dependencies
 - ...
+
+## 为什么一定要试试 ScratchPaper
+
+其实市面上不乏有类似的解决方案，例如：akonior/icon-version, akaita/easylauncher-gradle-plugin。但是他们的最重要问题在于：不支持 AAPT2！由于 Google 会在 18 年底停止对 aapt1 的支持（enableAapt2=false 将被移除），所以尽早迁移到 AAPT2 其实是一个明智的选择。最后 AAPT2 还会带来额外的诸多好处：
+
+- 其实对 local debug build 时的性能是有一定提升的
+- 修复很多 AAPT1 的低级 Bug （我曾写过一个插件来修复各类 AAPT 处理 Manifest 时的 Bug，具体查阅 https://github.com/2BAB/Seal）
+- 同样有办法支持插件化的开发
 
 ## 如何使用？
 
