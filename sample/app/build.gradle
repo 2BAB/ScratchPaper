@@ -32,6 +32,15 @@ android {
             versionNameSuffix "-full"
         }
     }
+
+    splits {
+        density {
+            enable true
+            reset()
+            include ("mdpi")
+            compatibleScreens("xlarge")
+        }
+    }
 }
 
 dependencies {

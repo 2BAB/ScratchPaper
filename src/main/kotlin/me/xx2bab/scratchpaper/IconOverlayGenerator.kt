@@ -28,10 +28,8 @@ class IconOverlayGenerator(private val params: GeneratorParams) {
             }
             output.processResources.doFirst("process${params.dimension}IconsByScratchPaper") {
                 val processedIcons = arrayListOf<File>()
-                val mergedManifestFile = File(processManifestTask.manifestOutputDirectory,
-                        "AndroidManifest.xml")
                 val version = "@" + params.variant.mergedFlavor.versionName
-                val iconNames = getIconName(mergedManifestFile)
+                val iconNames = getIconName(processManifestTask.manifestOutputDirectory)
                 val resDirs = mergeResourcesTask.computeResourceSetList0()
                 findIcons(resDirs, iconNames).forEach { icon ->
                     val icons = addTextToIcon(params.project, params.dimension,
@@ -84,11 +82,29 @@ class IconOverlayGenerator(private val params: GeneratorParams) {
      * Icon name to search for in the app drawable folders
      * If no icon can be found in the manifest, IconOverlayGenerator#defaultIconName will be used
      */
-    private fun getIconName(manifestFile: File): Array<String> {
-        if (manifestFile.isDirectory || !manifestFile.exists()) {
+    private fun getIconName(manifestDirectory: File): Array<String> {
+        if (!manifestDirectory.exists()) {
             return arrayOf()
         }
-        val manifestXml = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(manifestFile)
+        var mergedManifestFile = File(manifestDirectory, "AndroidManifest.xml") // default
+        if (!mergedManifestFile.exists()) {
+            // If the user enables split apk, we can traverse the folder
+            // and find one AndroidManifest.xml, it's valid to return first one result,
+            // because split feature does't change icon definition on AndroidManifest.xml
+            val searchResult = manifestDirectory.walk().maxDepth(3)
+                    .filter { file -> file.name == "AndroidManifest.xml" }
+                    .firstOrNull()
+
+            if (searchResult != null) {
+                mergedManifestFile = searchResult
+            }
+        }
+        if (!mergedManifestFile.exists()) {
+            return arrayOf()
+        }
+
+        val manifestXml = DocumentBuilderFactory.newInstance().newDocumentBuilder()
+                .parse(mergedManifestFile)
         var regularIconName = manifestXml.getElementsByTagName(tagApplication).item(0)
                 .attributes.getNamedItem(attrIcon)?.nodeValue
         var roundIconName = manifestXml.getElementsByTagName(tagApplication).item(0)
