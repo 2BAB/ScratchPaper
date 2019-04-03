@@ -15,7 +15,7 @@ class BuildInfoGenerator(private val params: GeneratorParams) {
         val buildInfoDir = File(CacheUtils.getCacheDir(params.project, params.dimension), "assets")
         params.android.sourceSets.getByName(params.variant.name).assets.srcDirs(buildInfoDir)
 
-        params.project.tasks.getByName("pre${params.dimension}Build").doLast { _ ->
+        params.project.tasks.getByName("pre${params.dimension}Build").doLast {
             val root = JSONObject()
 
             val base = generateBasicInfo()

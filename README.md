@@ -1,4 +1,4 @@
-# ScratchPaper (v2.x)
+# ScratchPaper (v2)
 
 [![JCenter](https://api.bintray.com/packages/2bab/maven/scratch-paper/images/download.svg)](https://bintray.com/2bab/maven/scratch-paper/_latestVersion) [![Apache 2](https://img.shields.io/badge/License-Apache%202-brightgreen.svg)](https://www.apache.org/licenses/LICENSE-2.0) [![Welcome PRs](https://img.shields.io/badge/PRs-Welcome-orange.svg)](https://github.com/2BAB/ScratchPaper/pulls)
 
@@ -33,8 +33,8 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.0'
-        classpath 'me.2bab:scratch-paper:2.3.2'
+        classpath 'com.android.tools.build:gradle:3.3.2'
+        classpath 'me.2bab:scratch-paper:2.4.1'
     }
 }
 ```
@@ -72,12 +72,13 @@ scratchPaper {
 
 ## Compatible
 
-ScratchPaper only tests in Latest TWO Minor versions of Android Gradle Plugin.
+ScratchPaper is only supported & tested in Latest TWO Minor versions of Android Gradle Plugin.
 
 AGP Version|Compatible Status
 -----------|-----------------
-3.2.x (Aapt2) | Support
-3.1.x (Aapt2) | Support
+3.3.x (Aapt2) | Support (last support version - 2.4.1)
+3.2.x (Aapt2) | Support (last support version - 2.4.0)
+3.1.x (Aapt2) | Support (last support version - 2.4.0)
 3.0.x (Aapt2) | Support
 2.3.x (Aapt2) | Never Tested
 2.3.x (Aapt1) | Not Support
@@ -90,7 +91,7 @@ The v1.x `IconCover` forked from [icon-version@akonior](https://github.com/akoni
 ## License
 
 >
-> Copyright 2018 2BAB
+> Copyright 2019 2BAB
 >
 >Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

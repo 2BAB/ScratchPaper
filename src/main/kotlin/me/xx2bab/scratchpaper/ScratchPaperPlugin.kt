@@ -22,7 +22,7 @@ class ScratchPaperPlugin : Plugin<Project> {
         val config = project.extensions.create(extensionName, ScratchPaperExtension::class.java)
 
         variants.all { variant ->
-            val dimension = variant.assemble.name.replace("assemble", "")
+            val dimension = variant.assembleProvider.get().name.replace("assemble", "")
             CacheUtils.mkdir(project, variant, dimension)
 
             val params = GeneratorParams(project, variant, dimension,

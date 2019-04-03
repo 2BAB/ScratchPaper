@@ -9,7 +9,7 @@ object Aapt2Utils {
     fun compileResDir(project: Project, targetDir: File, resFiles: List<File>) {
         val androidPluginUtils = AndroidPluginUtils(project)
         val androidBuilder = androidPluginUtils.getAndroidBuilder()
-        val aapt2ExecutorPath = androidBuilder?.buildToolInfo?.getPath(BuildToolInfo.PathId.AAPT2)
+        val aapt2ExecutorPath = androidBuilder.buildToolInfo?.getPath(BuildToolInfo.PathId.AAPT2)
 
         project.exec { execSpec ->
             execSpec.executable(aapt2ExecutorPath)

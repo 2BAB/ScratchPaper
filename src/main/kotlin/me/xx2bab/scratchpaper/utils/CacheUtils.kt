@@ -7,7 +7,7 @@ import java.io.File
 object CacheUtils {
 
     fun mkdir(project: Project, variant: BaseVariant, dimension: String) {
-        variant.preBuild.doLast {
+        variant.preBuildProvider.get().doLast {
             val cacheDir = getCacheDir(project, dimension)
             if (!cacheDir.exists() && !cacheDir.mkdirs()) {
                 Logger.e("Can not create cache directory for ScratchPaper.")

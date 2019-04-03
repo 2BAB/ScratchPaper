@@ -1,6 +1,6 @@
 package me.xx2bab.scratchpaper
 
-import com.android.build.gradle.tasks.MergeManifests
+import com.android.build.gradle.tasks.ManifestProcessorTask
 import com.android.build.gradle.tasks.MergeResources
 import me.xx2bab.scratchpaper.iconprocessor.BaseIconProcessor
 import me.xx2bab.scratchpaper.utils.Aapt2Utils
@@ -21,15 +21,15 @@ class IconOverlayGenerator(private val params: GeneratorParams) {
     fun process() {
         setAwtEnv()
         params.variant.outputs.forEach { output ->
-            val processManifestTask = output.processManifest as MergeManifests
-            val mergeResourcesTask = params.variant.mergeResources as MergeResources
+            val processManifestTask = output.processManifestProvider.get() as ManifestProcessorTask
+            val mergeResourcesTask = params.variant.mergeResourcesProvider.get() as MergeResources
             if (params.config.alwaysUpdateIconInfo) {
-                output.processResources.outputs.upToDateWhen { false }
+                output.processResourcesProvider.get().outputs.upToDateWhen { false }
             }
-            output.processResources.doFirst("process${params.dimension}IconsByScratchPaper") {
+            output.processResourcesProvider.get().doFirst("process${params.dimension}IconsByScratchPaper") {
                 val processedIcons = arrayListOf<File>()
                 val version = "@" + params.variant.mergedFlavor.versionName
-                val iconNames = getIconName(processManifestTask.manifestOutputDirectory)
+                val iconNames = getIconName(processManifestTask.manifestOutputDirectory.get().asFile)
                 val resDirs = mergeResourcesTask.computeResourceSetList0()
                 findIcons(resDirs, iconNames).forEach { icon ->
                     val icons = addTextToIcon(params.project, params.dimension,
@@ -54,7 +54,7 @@ class IconOverlayGenerator(private val params: GeneratorParams) {
 
     /**
      * To hack the awt on AS and Gradle building environment,
-     * This is inherit from v1.x which forked from icon-version@akonior
+     * it's inherited from v1.x which forked from icon-version@akonior
      */
     private fun setAwtEnv() {
         // We want our font to come out looking pretty
@@ -173,7 +173,6 @@ class IconOverlayGenerator(private val params: GeneratorParams) {
                     file.delete()
                 }
             }
-
         }
     }
 

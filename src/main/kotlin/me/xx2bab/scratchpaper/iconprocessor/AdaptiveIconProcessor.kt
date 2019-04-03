@@ -51,7 +51,7 @@ class AdaptiveIconProcessor(project: Project,
 
     override fun drawText(line: String, x: Int, y: Int) {
         // Do not use Graphics2D.drawString(line: String, x: Int, y: Int), it will generates String
-        // with <Text> in SVG file, however Android Vector Converter doesn't support <Text>.
+        // with <Text> in SVG file, and Android Vector Converter doesn't support <Text>.
         // Since we want to get a good compatible experience, so we draw text in <Path> to solve it.
         // @see com.android.ide.common.vectordrawable.Svg2Vector#unsupportedSvgNodes
         val tl = TextLayout(line, getGraphic().font, getGraphic().fontRenderContext)
