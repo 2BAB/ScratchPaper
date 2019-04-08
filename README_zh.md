@@ -6,9 +6,9 @@
 
 ## ScratchPaper 做了些什么？
 
-> 如果你在一台设备上安装两个 App，一个是 Debug 版一个是 Release 版，那么你很难区分出来到底哪个是哪个（不打开的情况下）。
+> 如果你在一台设备上同时安装一个 App 的 Debug 版和 Release 版，你可能很难区分出来到底哪个你要测试的版本（不打开的情况下）。
 
-ScatchPaper 可以在你的 App icon 上加一个蒙层用以区分出各个 BuildType 的 App，并且承载了版本信息等附加文字。
+ScratchPaper 可以在你的 App icon 上加一个蒙层用以区分出各个 BuildType 的 App，并且承载了版本信息等附加文字。
 
 - 支持 常规 和 圆形 的图标
 - 支持 adaptive-icon
@@ -16,7 +16,7 @@ ScatchPaper 可以在你的 App icon 上加一个蒙层用以区分出各个 Bui
 
 > 如果你同时打了多个测试包给测试或者产品（例如基于多个复合分支），当他们给你反馈的问题时候你和他们可能都很难分别出每个 App 对应的具体的分支或者 commit 节点。
 
-ScatchPaper 支持生成编译信息并打包到你的 Apk 中（从 assets 中读取），以及输出一份拷贝到 `/intermedias/scratch-paper/assets` 文件夹，包括：
+ScratchPaper 支持生成编译信息并打包到你的 Apk 中（从 assets 中读取），以及输出一份拷贝到 `/intermedias/scratch-paper/assets` 文件夹，包括：
 
 - Base: Build Time, Build Type, etc.
 - Git: Latest Commit ID & commit branch, etc.

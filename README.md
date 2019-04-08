@@ -4,19 +4,19 @@
 
 [English][[中文说明]](./README_zh.md)
 
-## How it works
+## How does it work?
 
-> If you install your debug App and release App at the same time in one screen, you can not distinguish which one is what you want.
+> If you install both debug&release Apps in one device, you can not distinguish which is the one you want to test.
 
-ScatchPaper can add a overlay on your icon, and put some given information on it.
+ScratchPaper can add a overlay on your icon, and put given information (like buildType, buildVersion) on it.
 
-- Supported regular & round Icons 
-- Supported adaptive-icon
-- Supported AAPT2
+- Support regular & round Icons 
+- Support adaptive-icon
+- Support AAPT2
 
-> If you have more than one staging App for QA or other colleagues, when they found some issues you may don't know how to match the App to your commit, because all of them share the same versions like "2.1.0-SNAPSHOT".
+> If you have more than one staging Apps for QA or other colleagues, when they found some issues you may don't know how to match the App version to your code base (branch/commit/etc..), because all of them share the same version like "2.1.0-SNAPSHOT".
 
-ScatchPaper supports generating build information into your artifact (which can read from /assets/scratch-paper.json) and also `/intermedias/scratch-paper/assets` directory including:
+ScratchPaper supports generating build information into your artifact (which can read from /assets/scratch-paper.json) and also `/intermedias/scratch-paper/assets` directory including:
 
 - Base: Build Time, Build Type, etc.
 - Git: Latest Commit ID & commit branch, etc.
