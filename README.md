@@ -33,7 +33,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.2'
+        classpath 'com.android.tools.build:gradle:3.4.0'
         classpath 'me.2bab:scratch-paper:2.4.1'
     }
 }
@@ -76,6 +76,7 @@ ScratchPaper is only supported & tested in Latest TWO Minor versions of Android 
 
 AGP Version|Compatible Status
 -----------|-----------------
+3.4.x (Aapt2) | Support (last support version - 2.4.1)
 3.3.x (Aapt2) | Support (last support version - 2.4.1)
 3.2.x (Aapt2) | Support (last support version - 2.4.0)
 3.1.x (Aapt2) | Support (last support version - 2.4.0)
