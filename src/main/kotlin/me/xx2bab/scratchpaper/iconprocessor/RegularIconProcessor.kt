@@ -17,10 +17,6 @@ class RegularIconProcessor(project: Project,
                            lines: Array<out String>)
     : BaseIconProcessor(project, dimension, originIcon, config, lines) {
 
-
-
-
-
     override fun getSize(): Pair<Int, Int> {
         return Pair(bufferedImage.width, bufferedImage.height)
     }
