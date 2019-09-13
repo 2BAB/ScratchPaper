@@ -1,9 +1,12 @@
 package me.xx2bab.scratchpaper
 
+import com.android.build.gradle.internal.DependencyResourcesComputer
 import com.android.build.gradle.tasks.ManifestProcessorTask
 import com.android.build.gradle.tasks.MergeResources
+import com.android.build.gradle.tasks.ResourceAwareTask
 import me.xx2bab.scratchpaper.iconprocessor.BaseIconProcessor
 import me.xx2bab.scratchpaper.utils.Aapt2Utils
+import me.xx2bab.scratchpaper.utils.AndroidPluginUtils
 import me.xx2bab.scratchpaper.utils.Logger
 import org.gradle.api.Project
 import java.io.File
@@ -18,6 +21,8 @@ class IconOverlayGenerator(private val params: GeneratorParams) {
     private val attrIcon = "android:icon"
     private val attrRoundIcon = "android:roundIcon"
 
+    private val androidPluginUtils = AndroidPluginUtils(params.project)
+
     fun process() {
         setAwtEnv()
         params.variant.outputs.forEach { output ->
@@ -30,7 +35,7 @@ class IconOverlayGenerator(private val params: GeneratorParams) {
                 val processedIcons = arrayListOf<File>()
                 val version = "@" + params.variant.mergedFlavor.versionName
                 val iconNames = getIconName(processManifestTask.manifestOutputDirectory.get().asFile)
-                val resDirs = mergeResourcesTask.computeResourceSetList0()
+                val resDirs = mergeResourcesTask.computeResourceList()
                 findIcons(resDirs, iconNames).forEach { icon ->
                     val icons = addTextToIcon(params.project, params.dimension,
                             icon, params.config, params.dimension, version, params.config.extraInfo)
@@ -44,7 +49,10 @@ class IconOverlayGenerator(private val params: GeneratorParams) {
                 val mergeResTaskName = "merge${params.dimension}Resources"
                 val mergeResTask = params.project.tasks.getByName(mergeResTaskName) as MergeResources
                 val mergedResDir = mergeResTask.outputDir
-                Aapt2Utils.compileResDir(params.project, mergedResDir, processedIcons)
+                Aapt2Utils.compileResDir(params.project,
+                        androidPluginUtils,
+                        mergedResDir,
+                        processedIcons)
                 if (params.config.enableXmlIconRemove) {
                     removeXmlIconFiles(iconNames, mergedResDir)
                 }
@@ -182,35 +190,19 @@ class IconOverlayGenerator(private val params: GeneratorParams) {
 
     /**
      * To get all original resources including libraries
-     *
-     * @link github.com/Mobcase/McImage/blob/master/src/main/java/com/smallsoho/mcplugin/image/utils/HookUtil.kt
-     * @author smallSohoSolo
      */
-    private fun MergeResources.computeResourceSetList0(): List<File>? {
-        val computeResourceSetListMethod = MergeResources::class.java.declaredMethods
-                .firstOrNull { it.name == "computeResourceSetList" && it.parameterCount == 0 }
-                ?: return null
-
-        val oldIsAccessible = computeResourceSetListMethod.isAccessible
-        try {
-            computeResourceSetListMethod.isAccessible = true
-
-            val resourceSets = computeResourceSetListMethod.invoke(this) as? Iterable<*>
-
-            return resourceSets
-                    ?.mapNotNull { resourceSet ->
-                        val getSourceFiles = resourceSet?.javaClass?.methods?.find {
-                            it.name == "getSourceFiles" && it.parameterCount == 0
-                        }
-                        val files = getSourceFiles?.invoke(resourceSet)
-                        @Suppress("UNCHECKED_CAST")
-                        files as? Iterable<File>
-                    }
-                    ?.flatten()
-
-        } finally {
-            computeResourceSetListMethod.isAccessible = oldIsAccessible
-        }
+    private fun MergeResources.computeResourceList(): List<File>? {
+        val resourcesComputer = androidPluginUtils.getField(ResourceAwareTask::class.java,
+                this, "resourcesComputer") as DependencyResourcesComputer
+        val resourceSets = resourcesComputer.compute(this.processResources)
+        return resourceSets.mapNotNull { resourceSet ->
+            val getSourceFiles = resourceSet.javaClass.methods?.find {
+                it.name == "getSourceFiles" && it.parameterCount == 0
+            }
+            val files = getSourceFiles?.invoke(resourceSet)
+            @Suppress("UNCHECKED_CAST")
+            files as? Iterable<File>
+        }.flatten()
     }
 
 }

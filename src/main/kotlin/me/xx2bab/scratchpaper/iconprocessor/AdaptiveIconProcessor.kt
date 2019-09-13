@@ -89,7 +89,6 @@ class AdaptiveIconProcessor(project: Project,
         val result = StreamResult(destIcon)
         transformer.transform(source, result)
 
-
         return arrayOf(destIcon, overlayVectorDrawable)
     }
 
