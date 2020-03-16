@@ -59,13 +59,14 @@ apply plugin: 'me.2bab.scratchpaper'
 
 ``` gradle
 scratchPaper {
-    textSize = 11
+    textSize = 10
     textColor = "#FFFFFFFF"
     verticalLinePadding = 4
     backgroundColor = "#99000000"
     extraInfo = new Date().format("MM-dd,HH:mm")
     enableGenerateIconOverlay = true
     enableGenerateBuildInfo = true
+    enableApplicationIdSuffixDisplay = true
 
     // Experimental field
     // @see IconOverlayGenerator#removeXmlIconFiles
@@ -81,10 +82,11 @@ scratchPaper {
 
 ## 兼容性
 
-精力有限，ScratchPaper 只会至多支持最新两个 Minor 版本的 Android Gradle Plugin（例如最新版是 3.3.x，那同时会支持 3.2.x）：
+精力有限，ScratchPaper 只会支持最新一个 Minor 版本的 Android Gradle Plugin（例如最新版是 3.3.3, 那一般地 3.3.x 都会支持）：
 
 AGP Version|Compatible Status
 -----------|-----------------
+3.6.x (Aapt2) | Support (last support version - 2.5.0)
 3.5.x (Aapt2) | Support (last support version - 2.4.2)
 3.4.x (Aapt2) | Support (last support version - 2.4.1)
 3.3.x (Aapt2) | Support (last support version - 2.4.1)
@@ -102,7 +104,7 @@ The v1.x `IconCover` forked from [icon-version@akonior](https://github.com/akoni
 ## License
 
 >
-> Copyright 2016-2019 2BAB
+> Copyright 2016-2020 2BAB
 >
 >Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
