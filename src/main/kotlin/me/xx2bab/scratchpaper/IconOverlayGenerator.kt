@@ -33,7 +33,12 @@ class IconOverlayGenerator(private val params: GeneratorParams) {
             }
             output.processResourcesProvider.get().doFirst("process${params.dimension}IconsByScratchPaper") {
                 val processedIcons = arrayListOf<File>()
-                val version = "@" + params.variant.mergedFlavor.versionName
+                var version = "@" + params.variant.mergedFlavor.versionName
+                if (params.config.enableApplicationIdSuffixDisplay) {
+                    val buildTypeVersionSuffix = params.variant.buildType.applicationIdSuffix ?: ""
+                    val flavorVersionSuffix = params.variant.mergedFlavor.applicationIdSuffix ?: ""
+                    version += buildTypeVersionSuffix + flavorVersionSuffix
+                }
                 val iconNames = getIconName(processManifestTask.manifestOutputDirectory.get().asFile)
                 val resDirs = mergeResourcesTask.computeResourceList()
                 findIcons(resDirs, iconNames).forEach { icon ->
@@ -48,7 +53,7 @@ class IconOverlayGenerator(private val params: GeneratorParams) {
 
                 val mergeResTaskName = "merge${params.dimension}Resources"
                 val mergeResTask = params.project.tasks.getByName(mergeResTaskName) as MergeResources
-                val mergedResDir = mergeResTask.outputDir
+                val mergedResDir = mergeResTask.outputDir.get().asFile
                 Aapt2Utils.compileResDir(params.project,
                         androidPluginUtils,
                         mergedResDir,

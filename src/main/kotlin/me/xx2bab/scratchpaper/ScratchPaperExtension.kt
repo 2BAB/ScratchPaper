@@ -28,6 +28,8 @@ open class ScratchPaperExtension {
     // @see IconOverlayGenerator#removeXmlIconFiles
     var enableXmlIconRemove = false
 
+    var enableApplicationIdSuffixDisplay = true
+
 
     fun getBackgroundColor(): Color {
         val color: IntArray = hexColorToRGBIntArray(backgroundColor)
