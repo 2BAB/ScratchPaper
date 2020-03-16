@@ -63,5 +63,5 @@ scratchPaper {
     enableGenerateIconOverlay = true
     enableGenerateBuildInfo = true
     enableXmlIconRemove = false
-    enableApplicationIdSuffixDisplay = false
+    enableApplicationIdSuffixDisplay = true
 }

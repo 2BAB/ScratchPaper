@@ -33,8 +33,8 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.0'
-        classpath 'me.2bab:scratch-paper:2.4.2'
+        classpath 'com.android.tools.build:gradle:3.6.1'
+        classpath 'me.2bab:scratch-paper:2.5.0'
     }
 }
 ```
