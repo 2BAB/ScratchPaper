@@ -34,9 +34,9 @@ class IconOverlayGenerator(private val params: GeneratorParams) {
             output.processResourcesProvider.get().doFirst("process${params.dimension}IconsByScratchPaper") {
                 val processedIcons = arrayListOf<File>()
                 var version = "@" + params.variant.mergedFlavor.versionName
-                if (params.config.enableApplicationIdSuffixDisplay) {
-                    val buildTypeVersionSuffix = params.variant.buildType.applicationIdSuffix ?: ""
-                    val flavorVersionSuffix = params.variant.mergedFlavor.applicationIdSuffix ?: ""
+                if (params.config.enableVersionNameSuffixDisplay) {
+                    val buildTypeVersionSuffix = params.variant.buildType.versionNameSuffix ?: ""
+                    val flavorVersionSuffix = params.variant.mergedFlavor.versionNameSuffix ?: ""
                     version += buildTypeVersionSuffix + flavorVersionSuffix
                 }
                 val iconNames = getIconName(processManifestTask.manifestOutputDirectory.get().asFile)

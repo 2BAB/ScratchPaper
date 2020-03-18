@@ -10,16 +10,16 @@ android {
         minSdkVersion 16
         targetSdkVersion 28
         versionCode 3
-        versionName "2.5.0"
+        versionName "2.5.1"
     }
     buildTypes {
         debug {
             minifyEnabled false
             applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
         }
         release {
             minifyEnabled false
-            applicationIdSuffix ".debug"
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -63,5 +63,5 @@ scratchPaper {
     enableGenerateIconOverlay = true
     enableGenerateBuildInfo = true
     enableXmlIconRemove = false
-    enableApplicationIdSuffixDisplay = true
+    enableVersionNameSuffixDisplay = true
 }

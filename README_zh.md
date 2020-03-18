@@ -66,7 +66,7 @@ scratchPaper {
     extraInfo = new Date().format("MM-dd,HH:mm")
     enableGenerateIconOverlay = true
     enableGenerateBuildInfo = true
-    enableApplicationIdSuffixDisplay = true
+    enableVersionNameSuffixDisplay = true
 
     // Experimental field
     // @see IconOverlayGenerator#removeXmlIconFiles
@@ -86,7 +86,7 @@ scratchPaper {
 
 AGP Version|Compatible Status
 -----------|-----------------
-3.6.x (Aapt2) | Support (last support version - 2.5.0)
+3.6.x (Aapt2) | Support (last support version - 2.5.1)
 3.5.x (Aapt2) | Support (last support version - 2.4.2)
 3.4.x (Aapt2) | Support (last support version - 2.4.1)
 3.3.x (Aapt2) | Support (last support version - 2.4.1)

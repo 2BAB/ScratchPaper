@@ -28,7 +28,7 @@ open class ScratchPaperExtension {
     // @see IconOverlayGenerator#removeXmlIconFiles
     var enableXmlIconRemove = false
 
-    var enableApplicationIdSuffixDisplay = true
+    var enableVersionNameSuffixDisplay = true
 
 
     fun getBackgroundColor(): Color {
