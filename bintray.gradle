@@ -24,7 +24,7 @@ java {
 
 publishing {
     publications {
-        mavenJava(MavenPublication) {
+        myProduct(MavenPublication) {
             from components.java
             pom {
                 // Description

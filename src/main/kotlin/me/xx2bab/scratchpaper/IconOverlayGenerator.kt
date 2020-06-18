@@ -48,7 +48,7 @@ class IconOverlayGenerator(private val params: GeneratorParams) {
 
                 val mergeResTaskName = "merge${params.dimension}Resources"
                 val mergeResTask = params.project.tasks.getByName(mergeResTaskName) as MergeResources
-                val mergedResDir = mergeResTask.outputDir
+                val mergedResDir = mergeResTask.outputDir.get().asFile
                 Aapt2Utils.compileResDir(params.project,
                         androidPluginUtils,
                         mergedResDir,
