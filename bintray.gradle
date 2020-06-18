@@ -81,7 +81,7 @@ if (travisBuild) {
 bintray {
     user = btUser
     key = btApiKey
-    configurations = ['archives']
+    publications = ['myProduct']
     pkg {
         repo = 'maven'
         name = projectName
