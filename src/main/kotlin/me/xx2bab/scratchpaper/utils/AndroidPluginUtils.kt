@@ -1,9 +1,10 @@
 package me.xx2bab.scratchpaper.utils
 
-import com.android.build.gradle.AppPlugin
+
+import com.android.build.gradle.internal.plugins.AppPlugin
+import com.android.build.gradle.internal.plugins.BasePlugin
 import com.android.build.gradle.internal.scope.GlobalScope
 import com.android.sdklib.BuildToolInfo
-import org.gradle.api.Plugin
 import org.gradle.api.Project
 
 
@@ -11,8 +12,8 @@ class AndroidPluginUtils(val project: Project) {
 
     @Throws(Exception::class)
     fun buildToolInfo(): BuildToolInfo {
-        val basePlugin = project.plugins.findPlugin(AppPlugin::class.java) as Plugin<*>
-        val scope = getField(Plugin::class.java, basePlugin,
+        val basePlugin = project.plugins.findPlugin(AppPlugin::class.java) as BasePlugin
+        val scope = getField(BasePlugin::class.java, basePlugin,
                 "globalScope") as GlobalScope
         return scope.sdkComponents.buildToolInfoProvider.get()
     }
