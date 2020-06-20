@@ -24,7 +24,7 @@ java {
 
 publishing {
     publications {
-        myProduct(MavenPublication) {
+        scratchPaperPlugin(MavenPublication) {
             from components.java
             pom {
                 // Description
@@ -81,7 +81,7 @@ if (travisBuild) {
 bintray {
     user = btUser
     key = btApiKey
-    publications = ['myProduct']
+    publications = [projectName]
     pkg {
         repo = 'maven'
         name = projectName
