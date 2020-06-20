@@ -81,7 +81,7 @@ if (travisBuild) {
 bintray {
     user = btUser
     key = btApiKey
-    publications = [projectName]
+    publications = ['scratchPaperPlugin']
     pkg {
         repo = 'maven'
         name = projectName
