@@ -34,7 +34,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.0.0'
-        classpath 'me.2bab:scratch-paper:2.4.2'
+        classpath 'me.2bab:scratch-paper:2.5.2'
     }
 }
 ```
@@ -50,13 +50,14 @@ apply plugin: 'me.2bab.scratchpaper'
 
 ``` gradle
 scratchPaper {
-    textSize = 11
+    textSize = 10
     textColor = "#FFFFFFFF"
     verticalLinePadding = 4
     backgroundColor = "#99000000"
     extraInfo = new Date().format("MM-dd,HH:mm")
     enableGenerateIconOverlay = true
     enableGenerateBuildInfo = true
+    enableVersionNameSuffixDisplay = true
     
     // Experimental field
     // @see IconOverlayGenerator#removeXmlIconFiles
@@ -72,11 +73,13 @@ scratchPaper {
 
 ## Compatible
 
-ScratchPaper is only supported & tested in Latest TWO Minor versions of Android Gradle Plugin.
+ScratchPaper is only supported & tested on LATEST ONE Minor versions of Android Gradle Plugin.
 
 AGP Version|Compatible Status
 -----------|-----------------
 4.0.0 (Aapt2) | Support (2.4.2+)
+3.6.x (Aapt2) | Support (last support version - 2.5.1)
+3.5.x (Aapt2) | Support (last support version - 2.4.2)
 3.4.x (Aapt2) | Support (last support version - 2.4.1)
 3.3.x (Aapt2) | Support (last support version - 2.4.1)
 3.2.x (Aapt2) | Support (last support version - 2.4.0)
@@ -103,7 +106,7 @@ The v1.x `IconCover` forked from [icon-version@akonior](https://github.com/akoni
 ## License
 
 >
-> Copyright 2019 2BAB
+> Copyright 2016-2020 2BAB
 >
 >Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

@@ -25,7 +25,7 @@ ScratchPaper 支持生成编译信息并打包到你的 Apk 中（从 assets 中
 
 ## 为什么一定要试试 ScratchPaper
 
-其实市面上不乏有类似的解决方案，例如：akonior/icon-version, akaita/easylauncher-gradle-plugin。但是他们的最重要问题在于：不支持 AAPT2！由于 Google 会在 18 年底停止对 aapt1 的支持（enableAapt2=false 将被移除），所以尽早迁移到 AAPT2 其实是一个明智的选择。最后 AAPT2 还会带来额外的诸多好处：
+其实市面上不乏有类似的解决方案，例如：akonior/icon-version, akaita/easylauncher-gradle-plugin。但是他们的最重要问题在于：不支持 AAPT2！由于 Google 在 18 年底停止了对 aapt1 的支持（enableAapt2=false 将被移除），所以尽早迁移到 AAPT2 其实是一个明智的选择。最后 AAPT2 还会带来额外的诸多好处：
 
 - 其实对 local debug build 时的性能是有一定提升的
 - 修复很多 AAPT1 的低级 Bug （我曾写过一个插件来修复各类 AAPT 处理 Manifest 时的 Bug，具体查阅 https://github.com/2BAB/Seal）
@@ -42,7 +42,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.0.0'
-        classpath 'me.2bab:scratch-paper:2.4.2'
+        classpath 'me.2bab:scratch-paper:2.5.2'
     }
 }
 ```
@@ -59,13 +59,14 @@ apply plugin: 'me.2bab.scratchpaper'
 
 ``` gradle
 scratchPaper {
-    textSize = 11
+    textSize = 10
     textColor = "#FFFFFFFF"
     verticalLinePadding = 4
     backgroundColor = "#99000000"
     extraInfo = new Date().format("MM-dd,HH:mm")
     enableGenerateIconOverlay = true
     enableGenerateBuildInfo = true
+    enableVersionNameSuffixDisplay = true
 
     // Experimental field
     // @see IconOverlayGenerator#removeXmlIconFiles
@@ -81,11 +82,13 @@ scratchPaper {
 
 ## 兼容性
 
-精力有限，ScratchPaper 只会至多支持最新两个 Minor 版本的 Android Gradle Plugin（例如最新版是 3.3.x，那同时会支持 3.2.x）：
+精力有限，ScratchPaper 只会支持最新一个 Minor 版本的 Android Gradle Plugin（例如最新版是 3.3.3, 那一般地 3.3.x 都会支持）：
 
 AGP Version|Compatible Status
 -----------|-----------------
-4.0.0 (Aapt2) | Support (2.4.2+)
+4.0.0 (Aapt2) | Support (2.5.2+)
+3.6.x (Aapt2) | Support (last support version - 2.5.1)
+3.5.x (Aapt2) | Support (last support version - 2.4.2)
 3.4.x (Aapt2) | Support (last support version - 2.4.1)
 3.3.x (Aapt2) | Support (last support version - 2.4.1)
 3.2.x (Aapt2) | Support (last support version - 2.4.0)
@@ -112,7 +115,7 @@ The v1.x `IconCover` forked from [icon-version@akonior](https://github.com/akoni
 ## License
 
 >
-> Copyright 2019 2BAB
+> Copyright 2016-2020 2BAB
 >
 >Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

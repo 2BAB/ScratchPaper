@@ -10,9 +10,14 @@ android {
         minSdkVersion 16
         targetSdkVersion 28
         versionCode 3
-        versionName "2.4.1"
+        versionName "2.5.1"
     }
     buildTypes {
+        debug {
+            minifyEnabled false
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -50,7 +55,7 @@ dependencies {
 }
 
 scratchPaper {
-    textSize = 11
+    textSize = 9
     textColor = "#FFFFFFFF"
     verticalLinePadding = 4
     backgroundColor = "#99000000"
@@ -58,4 +63,5 @@ scratchPaper {
     enableGenerateIconOverlay = true
     enableGenerateBuildInfo = true
     enableXmlIconRemove = false
+    enableVersionNameSuffixDisplay = true
 }
