@@ -1,7 +1,9 @@
-uploadArchives {
+
+publishing {
     repositories {
-        mavenDeployer {
-            repository(url: uri(System.getProperty("user.home") + '/.m2/repository'))
+        maven {
+            name = "myMavenlocal"
+            url = System.getProperty("user.home") + '/.m2/repository'
         }
     }
 }

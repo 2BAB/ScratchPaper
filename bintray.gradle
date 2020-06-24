@@ -1,5 +1,7 @@
 apply plugin: 'com.jfrog.bintray'
-apply plugin: 'maven-publish'
+
+apply plugin: 'java-library'
+apply plugin:'maven-publish'
 
 def projectName = "scratch-paper"
 def mavenDesc = 'Add text on your Android app icon'
@@ -15,14 +17,20 @@ def inception = '2018'
 
 def username = '2BAB'
 
-install {
-    repositories {
-        mavenInstaller {
-            pom.project {
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+        scratchPaperPlugin(MavenPublication) {
+            from components.java
+            pom {
                 // Description
-                name projectName
-                description mavenDesc
-                url siteUrl
+                name = projectName
+                description = mavenDesc
+                url = siteUrl
 
                 // Archive
                 groupId project.group
@@ -30,45 +38,32 @@ install {
                 version project.version
 
                 // License
-                inceptionYear inception
+                inceptionYear = inception
                 licenses {
                     licenseNames.eachWithIndex { ln, li ->
                         license {
-                            name ln
-                            url licenseUrls[li]
+                            name = ln
+                            url = licenseUrls[li]
                         }
                     }
                 }
                 developers {
                     developer {
-                        name username
+                        name = username
                     }
                 }
                 scm {
-                    connection gitUrl
-                    developerConnection gitUrl
-                    url siteUrl
+                    connection = gitUrl
+                    developerConnection = gitUrl
+                    url = siteUrl
                 }
             }
         }
     }
-}
-
-task sourcesJar(type: Jar) {
-    from sourceSets.main.allSource
-    classifier = 'sources'
-}
 
 
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    from javadoc.destinationDir
-    classifier = 'javadoc'
 }
 
-artifacts {
-    archives javadocJar
-    archives sourcesJar
-}
 
 def btUser = null
 def btApiKey = null
@@ -86,7 +81,7 @@ if (travisBuild) {
 bintray {
     user = btUser
     key = btApiKey
-    configurations = ['archives']
+    publications = ['scratchPaperPlugin']
     pkg {
         repo = 'maven'
         name = projectName

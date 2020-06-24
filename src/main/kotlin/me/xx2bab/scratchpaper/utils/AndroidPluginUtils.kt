@@ -1,5 +1,6 @@
 package me.xx2bab.scratchpaper.utils
 
+
 import com.android.build.gradle.internal.plugins.AppPlugin
 import com.android.build.gradle.internal.plugins.BasePlugin
 import com.android.build.gradle.internal.scope.GlobalScope

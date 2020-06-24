@@ -41,8 +41,8 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.1'
-        classpath 'me.2bab:scratch-paper:2.5.1'
+        classpath 'com.android.tools.build:gradle:4.0.0'
+        classpath 'me.2bab:scratch-paper:2.5.2'
     }
 }
 ```
@@ -86,6 +86,7 @@ scratchPaper {
 
 AGP Version|Compatible Status
 -----------|-----------------
+4.0.0 (Aapt2) | Support (2.5.2+)
 3.6.x (Aapt2) | Support (last support version - 2.5.1)
 3.5.x (Aapt2) | Support (last support version - 2.4.2)
 3.4.x (Aapt2) | Support (last support version - 2.4.1)
@@ -95,6 +96,16 @@ AGP Version|Compatible Status
 3.0.x (Aapt2) | Support
 2.3.x (Aapt2) | Never Tested
 2.3.x (Aapt1) | Not Support
+
+## Git Commit Check
+
+Check this [link](https://medium.com/walmartlabs/check-out-these-5-git-tips-before-your-next-commit-c1c7a5ae34d1) to make sure everyone will make a **meaningful** commit message.
+
+So far we haven't added any hook tool, but follow the regex below:
+
+```
+(chore|feat|docs|fix|refactor|style|test|hack|release)(:)( )(.{0,80})
+```
 
 
 ## v1.x (Deprecated)
