@@ -1,9 +1,0 @@
-
-publishing {
-    repositories {
-        maven {
-            name = "myMavenlocal"
-            url = System.getProperty("user.home") + '/.m2/repository'
-        }
-    }
-}
