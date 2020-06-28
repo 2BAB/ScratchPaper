@@ -1,9 +1,7 @@
 // must keep the order among `buildscript` `plugins` `repositories` blocks
 import java.util.Properties
 buildscript {
-    dependencies {
-        classpath("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5")
-    }
+
     repositories {
         google()
         jcenter()
@@ -13,7 +11,7 @@ buildscript {
 
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.3.72"
-    `maven-publish`
+    `bintray-plugin`
 
 }
 
@@ -63,7 +61,3 @@ if (project.extensions.findByName("buildScan") != null) {
 // publish
 group = "me.2bab"
 version = "2.5.2"
-apply{
-    from("bintray.gradle.kts")
-    from("mavenlocal.gradle.kts")
-}
