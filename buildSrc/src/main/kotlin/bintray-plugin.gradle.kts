@@ -58,10 +58,6 @@ publishing {
         }
     }
 
-
-}
-
-publishing {
     repositories {
         maven {
             name = "myMavenlocal"

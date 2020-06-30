@@ -1,7 +1,6 @@
 // must keep the order among `buildscript` `plugins` `repositories` blocks
 import java.util.Properties
 buildscript {
-
     repositories {
         google()
         jcenter()
@@ -10,9 +9,8 @@ buildscript {
 }
 
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.3.72"
+    kotlin("jvm") version "1.3.72"
     `bintray-plugin`
-
 }
 
 allprojects {
