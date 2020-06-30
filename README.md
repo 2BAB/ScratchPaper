@@ -80,7 +80,7 @@ ScratchPaper is only supported & tested on LATEST ONE Minor versions of Android 
 
 AGP Version|Compatible Status
 -----------|-----------------
-4.0.0 (Aapt2) | Support (2.4.2+)
+4.0.0 (Aapt2) | Support (2.5.2+)
 3.6.x (Aapt2) | Support (last support version - 2.5.1)
 3.5.x (Aapt2) | Support (last support version - 2.4.2)
 3.4.x (Aapt2) | Support (last support version - 2.4.1)
