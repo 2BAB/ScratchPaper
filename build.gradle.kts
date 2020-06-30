@@ -55,7 +55,3 @@ if (project.extensions.findByName("buildScan") != null) {
         }
     }
 }
-
-// publish
-group = "me.2bab"
-version = "2.5.2"
