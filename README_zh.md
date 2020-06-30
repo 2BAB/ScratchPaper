@@ -6,6 +6,10 @@
 
 ## ScratchPaper 做了些什么？
 
+![](./images/ic_launcher.png)![](./images/ic_launcher_round.png)
+
+![](./images/scratch-paper-json.jpg)
+
 > 如果你在一台设备上同时安装一个 App 的 Debug 版和 Release 版，你可能很难区分出来到底哪个你要测试的版本（不打开的情况下）。
 
 ScratchPaper 可以在你的 App icon 上加一个蒙层用以区分出各个 BuildType 的 App，并且承载了版本信息等附加文字。
@@ -76,9 +80,7 @@ scratchPaper {
 
 **0x04. Build your App and Enjoy!**
 
-![](./images/ic_launcher.png)![](./images/ic_launcher_round.png)
-
-![](./images/scratch-paper-json.jpg)
+效果请看头部的截图。
 
 ## 兼容性
 
