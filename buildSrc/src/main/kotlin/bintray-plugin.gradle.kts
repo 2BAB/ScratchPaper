@@ -30,9 +30,9 @@ publishing {
                 url.set(siteUrl)
 
                 // Archive
-                groupId = "me.2bab"
+                groupId = project.group.toString()
                 artifactId = project.name
-                version = "2.5.2"
+                version = project.version.toString()
 
                 // License
                 inceptionYear.set(inception)

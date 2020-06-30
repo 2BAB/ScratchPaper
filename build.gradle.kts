@@ -1,6 +1,8 @@
 // must keep the order among `buildscript` `plugins` `repositories` blocks
-import java.util.Properties
 buildscript {
+    group = "me.2bab"
+    version = "2.5.2"
+
     repositories {
         google()
         jcenter()
