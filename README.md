@@ -6,6 +6,11 @@
 
 ## How does it work?
 
+![](./images/ic_launcher.png)![](./images/ic_launcher_round.png)
+
+![](./images/scratch-paper-json.jpg)
+
+
 > If you install both debug&release Apps in one device, you can not distinguish which is the one you want to test.
 
 ScratchPaper can add a overlay on your icon, and put given information (like buildType, buildVersion) on it.
@@ -67,9 +72,7 @@ scratchPaper {
 
 **0x04. Build your App and Enjoy!**
 
-![](./images/ic_launcher.png)![](./images/ic_launcher_round.png)
-
-![](./images/scratch-paper-json.jpg)
+Check screenshots on the top.
 
 ## Compatible
 
