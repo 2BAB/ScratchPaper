@@ -1,7 +1,7 @@
 // must keep the order among `buildscript` `plugins` `repositories` blocks
 buildscript {
     group = "me.2bab"
-    version = "2.5.2"
+    version = "2.5.3"
 
     repositories {
         google()
