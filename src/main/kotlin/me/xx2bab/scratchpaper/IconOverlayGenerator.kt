@@ -1,9 +1,7 @@
 package me.xx2bab.scratchpaper
 
 import com.android.build.gradle.internal.DependencyResourcesComputer
-import com.android.build.gradle.tasks.ManifestProcessorTask
-import com.android.build.gradle.tasks.MergeResources
-import com.android.build.gradle.tasks.ResourceAwareTask
+import com.android.build.gradle.tasks.*
 import me.xx2bab.scratchpaper.iconprocessor.BaseIconProcessor
 import me.xx2bab.scratchpaper.utils.Aapt2Utils
 import me.xx2bab.scratchpaper.utils.AndroidPluginUtils
@@ -26,8 +24,8 @@ class IconOverlayGenerator(private val params: GeneratorParams) {
     fun process() {
         setAwtEnv()
         params.variant.outputs.forEach { output ->
-            val processManifestTask = output.processManifestProvider.get() as ManifestProcessorTask
-            val mergeResourcesTask = params.variant.mergeResourcesProvider.get() as MergeResources
+            val processManifestTask = output.processManifestProvider.get() as ProcessMultiApkApplicationManifest
+            val mergeResourcesTask = params.variant.mergeResourcesProvider.get()
             if (params.config.alwaysUpdateIconInfo) {
                 output.processResourcesProvider.get().outputs.upToDateWhen { false }
             }
@@ -39,7 +37,7 @@ class IconOverlayGenerator(private val params: GeneratorParams) {
                     val flavorVersionSuffix = params.variant.mergedFlavor.versionNameSuffix ?: ""
                     version += buildTypeVersionSuffix + flavorVersionSuffix
                 }
-                val iconNames = getIconName(processManifestTask.manifestOutputDirectory.get().asFile)
+                val iconNames = getIconName(processManifestTask.mainMergedManifest.get().asFile)
                 val resDirs = mergeResourcesTask.computeResourceList()
                 findIcons(resDirs, iconNames).forEach { icon ->
                     val icons = addTextToIcon(params.project, params.dimension,
@@ -196,12 +194,12 @@ class IconOverlayGenerator(private val params: GeneratorParams) {
     /**
      * To get all original resources including libraries
      */
-    private fun MergeResources.computeResourceList(): List<File>? {
+    private fun MergeResources.computeResourceList(): List<File> {
         val resourcesComputer = androidPluginUtils.getField(ResourceAwareTask::class.java,
                 this, "resourcesComputer") as DependencyResourcesComputer
-        val resourceSets = resourcesComputer.compute(this.processResources)
+        val resourceSets = resourcesComputer.compute(this.processResources, null)
         return resourceSets.mapNotNull { resourceSet ->
-            val getSourceFiles = resourceSet.javaClass.methods?.find {
+            val getSourceFiles = resourceSet.javaClass.methods.find {
                 it.name == "getSourceFiles" && it.parameterCount == 0
             }
             val files = getSourceFiles?.invoke(resourceSet)

@@ -1,7 +1,7 @@
 // must keep the order among `buildscript` `plugins` `repositories` blocks
 buildscript {
     group = "me.2bab"
-    version = "2.5.3"
+    version = "2.5.3.1-SNAPSHOT"
 
     repositories {
         google()
@@ -38,8 +38,13 @@ dependencies {
     implementation(gradleApi())
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("com.android.tools.build:gradle:4.0.0")
+    implementation("com.android.tools.build:gradle:4.1.2")
     implementation("org.jfree:jfreesvg:3.3")
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 tasks.compileJava {

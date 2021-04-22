@@ -12,10 +12,10 @@ class AndroidPluginUtils(val project: Project) {
 
     @Throws(Exception::class)
     fun buildToolInfo(): BuildToolInfo {
-        val basePlugin = project.plugins.findPlugin(AppPlugin::class.java) as BasePlugin
+        val basePlugin = project.plugins.findPlugin(AppPlugin::class.java) as BasePlugin<*, *>
         val scope = getField(BasePlugin::class.java, basePlugin,
                 "globalScope") as GlobalScope
-        return scope.sdkComponents.buildToolInfoProvider.get()
+        return scope.sdkComponents.get().buildToolInfoProvider.get()
     }
 
     fun <T> getField(clazz: Class<T>, instance: T, fieldName: String): Any {
