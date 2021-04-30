@@ -28,6 +28,7 @@ dependencies {
     implementation(kotlin(Deps.ktStd))
     implementation(kotlin(Deps.ktReflect))
     implementation(gradleApi())
+    implementation(Deps.fastJson)
     compileOnly(Deps.agp)
     // implementation(Deps.polyfill)
     implementation(Deps.jfreesvg)

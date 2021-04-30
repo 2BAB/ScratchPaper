@@ -4,6 +4,7 @@ import me.xx2bab.scratchpaper.utils.CacheUtils
 import me.xx2bab.scratchpaper.utils.CommandUtils
 import org.json.simple.JSONArray
 import org.json.simple.JSONObject
+import com.alibaba.fastjson.JSON
 import java.io.File
 import java.time.LocalDateTime
 
@@ -16,53 +17,51 @@ class BuildInfoGenerator(private val params: GeneratorParams) {
         params.android.sourceSets.getByName(params.variant.name).assets.srcDirs(buildInfoDir)
 
         params.project.tasks.getByName("pre${params.dimension}Build").doLast {
-            val root = JSONObject()
-
-            val base = generateBasicInfo()
-            root[base.first] = base.second
-
-            val git = generateGitInfo()
-            root[git.first] = git.second
-
-            val deps = generateDependenciesInfo()
-            root[deps.first] = deps.second
-
+            val buildInfo = BuildInfo(
+                base = generateBasicInfo(),
+                git = generateGitInfo(),
+                dependencies =  generateDependenciesInfo()
+            )
             buildInfoDir.mkdirs()
             File(buildInfoDir, buildInfoFileName).apply {
                 createNewFile()
-                writeText(root.toJSONString())
+                writeText(JSON.toJSONString(buildInfo))
             }
 
         }
     }
 
-    private fun generateBasicInfo(): Pair<String, JSONObject> {
-        val base = JSONObject()
-        base["buildType"] = params.dimension
-        base["versionName"] = params.variant.mergedFlavor.versionName
-        base["buildTime"] = LocalDateTime.now().toString()
-        return Pair("base", base)
+    private fun generateBasicInfo(): Base {
+        return Base(
+            buildTime = LocalDateTime.now().toString(),
+            buildType = params.dimension,
+            versionName = params.variant.mergedFlavor.versionName ?: ""
+        )
     }
 
-    private fun generateGitInfo(): Pair<String, JSONObject> {
-        val git = JSONObject()
-        git["branch"] = CommandUtils.runCommand("git rev-parse --abbrev-ref HEAD").let { it?.trim() ?: "" }
-        git["latestCommit"] = CommandUtils.runCommand("git rev-parse HEAD").let { it?.trim() ?: "" }
-        return Pair("git", git)
+    private fun generateGitInfo(): Git {
+        return Git(
+            branch =  CommandUtils.runCommand("git rev-parse --abbrev-ref HEAD").let { it?.trim() ?: "" },
+            head = CommandUtils.runCommand("git rev-parse HEAD").let { it?.trim() ?: "" }
+        )
     }
 
-    private fun generateDependenciesInfo(): Pair<String, JSONObject> {
-        val deps = JSONObject()
+    private fun generateDependenciesInfo(): List<Dependency> {
+        val deps = mutableListOf<Dependency>()
         params.project.configurations.all { config ->
-            val configObj = JSONArray()
+            val singleDimensionSet = mutableListOf<String>()
             config.allDependencies.forEach { dep ->
-                configObj.add(dep.toString())
+                singleDimensionSet.add(dep.toString())
             }
-            if (!configObj.isEmpty()) {
-                deps[config.name] = configObj
+            if (!singleDimensionSet.isEmpty()) {
+                val dep = Dependency(
+                    config.name,
+                    singleDimensionSet
+                )
+                deps.add(dep)
             }
         }
-        return Pair("dependencies", deps)
+        return deps
     }
 
 }
