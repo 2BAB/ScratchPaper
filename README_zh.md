@@ -1,6 +1,6 @@
 <img src="./sp-banner.png" alt="ScratchPaper" width="771px">
 
-[![JCenter](https://api.bintray.com/packages/2bab/maven/scratch-paper/images/download.svg)](https://bintray.com/2bab/maven/scratch-paper/_latestVersion) [![Apache 2](https://img.shields.io/badge/License-Apache%202-brightgreen.svg)](https://www.apache.org/licenses/LICENSE-2.0) [![Welcome PRs](https://img.shields.io/badge/PRs-Welcome-orange.svg)](https://github.com/2BAB/ScratchPaper/pulls)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/me.2bab/scratchpaper/badge.svg)](https://search.maven.org/artifact/me.2bab/scratchpaper) [![Actions Status](https://github.com/2bab/ScratchPaper/workflows/CI/badge.svg)](https://github.com/2bab/ScratchPaper/actions) [![Apache 2](https://img.shields.io/badge/License-Apache%202-brightgreen.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
 [中文说明][[English]](./README.md)
 
@@ -45,8 +45,8 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.0'
-        classpath 'me.2bab:scratch-paper:2.5.2'
+        classpath 'com.android.tools.build:gradle:4.1.2'
+        classpath 'me.2bab:scratch-paper:2.5.4'
     }
 }
 ```
@@ -86,15 +86,16 @@ scratchPaper {
 
 精力有限，ScratchPaper 只会支持最新一个 Minor 版本的 Android Gradle Plugin（例如最新版是 3.3.3, 那一般地 3.3.x 都会支持）：
 
-AGP Version|Compatible Status
+AGP Version|Latest Support Version
 -----------|-----------------
-4.0.0 (Aapt2) | Support (2.5.2+)
-3.6.x (Aapt2) | Support (last support version - 2.5.1)
-3.5.x (Aapt2) | Support (last support version - 2.4.2)
-3.4.x (Aapt2) | Support (last support version - 2.4.1)
-3.3.x (Aapt2) | Support (last support version - 2.4.1)
-3.2.x (Aapt2) | Support (last support version - 2.4.0)
-3.1.x (Aapt2) | Support (last support version - 2.4.0)
+4.1.x | 2.5.4
+4.0.x | 2.5.3
+3.6.x | 2.5.1
+3.5.x | 2.4.2
+3.4.x | 2.4.1
+3.3.x | 2.4.1
+3.2.x | 2.4.0
+3.1.x | 2.4.0
 3.0.x (Aapt2) | Support
 2.3.x (Aapt2) | Never Tested
 2.3.x (Aapt1) | Not Support
@@ -117,7 +118,7 @@ The v1.x `IconCover` forked from [icon-version@akonior](https://github.com/akoni
 ## License
 
 >
-> Copyright 2016-2020 2BAB
+> Copyright 2016-2021 2BAB
 >
 >Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
