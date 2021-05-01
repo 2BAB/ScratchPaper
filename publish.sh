@@ -1,0 +1,1 @@
+./gradlew clean :scratch-paper:plugin:publishSPPluginPublicationToSonatypeRepository :scratch-paper:plugin:releaseArtifactsToGithub

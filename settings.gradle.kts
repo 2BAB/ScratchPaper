@@ -1,4 +1,8 @@
-rootProject.name = "scratch-paper"
-plugins{
-    id("com.gradle.enterprise") version("3.3.4")
+rootProject.name = "scratch-paper-root"
+include(":test-app")
+includeBuild("scratch-paper"){
+    dependencySubstitution {
+        substitute(module("me.2bab:scratchpaper"))
+            .with(project(":plugin"))
+    }
 }
