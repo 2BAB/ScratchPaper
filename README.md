@@ -76,7 +76,7 @@ Check screenshots on the top.
 
 ## Compatible
 
-ScratchPaper is only supported & tested on LATEST ONE Minor versions of Android Gradle Plugin.
+ScratchPaper is only supported & tested on LATEST ONE Minor versions of Android Gradle Plugin. Since `2.5.4`, the publish repository has been shifted from Jcenter to **Maven Central**.
 
 AGP Version|Latest Support Version
 -----------|-----------------

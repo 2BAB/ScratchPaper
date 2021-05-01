@@ -84,7 +84,7 @@ scratchPaper {
 
 ## 兼容性
 
-精力有限，ScratchPaper 只会支持最新一个 Minor 版本的 Android Gradle Plugin（例如最新版是 3.3.3, 那一般地 3.3.x 都会支持）：
+精力有限，ScratchPaper 只会支持最新一个 Minor 版本的 Android Gradle Plugin（例如最新版是 3.3.3, 那一般地 3.3.x 都会支持）。从 `2.5.4` 开始，ScratchPaper 发布的仓库从 Jcenter 迁移到 **Maven Central**。
 
 AGP Version|Latest Support Version
 -----------|-----------------
