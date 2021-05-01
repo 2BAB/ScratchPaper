@@ -42,11 +42,12 @@ ScratchPaper 支持生成编译信息并打包到你的 Apk 中（从 assets 中
 ``` gradle
 buildscript {
     repositories {
-        jcenter()
+        ...
+        mavenCentral() // 从 2.5.4 开始，ScratchPaper 从 Jcenter 迁移到了 Maven Central
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.2'
-        classpath 'me.2bab:scratch-paper:2.5.4'
+        classpath 'me.2bab:scratchpaper:2.5.4' // 从 2.5.4 开始，ScratchPaper 的 artifactId 从 scratch-paper 改为 scratchpaper
     }
 }
 ```
@@ -57,7 +58,6 @@ buildscript {
 // On Application's build.gradle (do not use in Library project)
 apply plugin: 'me.2bab.scratchpaper'
 ```
-
 
 **0x03. Advanced Configurations**
 

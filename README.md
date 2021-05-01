@@ -35,11 +35,12 @@ ScratchPaper supports generating build information into your artifact (which can
 ``` gradle
 buildscript {
     repositories {
-        jcenter()
+        ...
+        mavenCentral() // Since 2.5.4, the publish repository has been shifted from Jcenter to Maven Central.
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.2'
-        classpath 'me.2bab:scratch-paper:2.5.4'
+        classpath 'me.2bab:scratchpaper:2.5.4' // Since 2.5.4, the artifactId of ScratchPaper changed from scratch-paper to scratchpaper
     }
 }
 ```
