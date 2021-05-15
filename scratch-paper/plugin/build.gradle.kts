@@ -18,7 +18,7 @@ gradlePlugin {
     plugins {
         create("scratchpaper") {
             id = "me.2bab.scratchpaper"
-            implementationClass ="me.xx2bab.scratchpaper.ScratchPaperPlugin"
+            implementationClass = "me.xx2bab.scratchpaper.ScratchPaperPlugin"
         }
     }
 }
@@ -29,7 +29,7 @@ dependencies {
     implementation(gradleApi())
     implementation(Deps.fastJson)
     compileOnly(Deps.agp)
-    // implementation(Deps.polyfill)
+    implementation(Deps.polyfill)
     implementation(Deps.jfreesvg)
 
     testImplementation(gradleTestKit())

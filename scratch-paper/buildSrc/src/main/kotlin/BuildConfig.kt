@@ -17,7 +17,7 @@ object BuildConfig {
         const val ktStd = "stdlib-jdk8"
         const val ktReflect = "reflect"
         val agp by lazy { "com.android.tools.build:gradle:${props["agpVersion"]}" }
-        const val polyfill = "me.2bab:polyfill:0.2.1"
+        const val polyfill = "me.2bab:polyfill:0.3.1"
 
         const val jfreesvg = "org.jfree:jfreesvg:3.3"
 

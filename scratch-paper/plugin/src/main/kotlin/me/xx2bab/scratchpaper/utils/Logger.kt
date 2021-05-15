@@ -7,23 +7,26 @@ object Logger {
 
     private const val TAG = "[ScratchPaper]: "
 
-    private lateinit var logUtil: Logger
+    private lateinit var gradleLogger: Logger
 
     fun init (project: Project){
-        logUtil = project.logger
+        gradleLogger = project.logger
     }
 
     fun d(message: String) {
-        logUtil.debug(TAG + message)
+        gradleLogger.debug(TAG + message)
     }
 
     fun i(message: String) {
-        logUtil.info(TAG + message)
+        gradleLogger.info(TAG + message)
     }
 
     fun e(message: String) {
-        logUtil.error(TAG + message)
+        gradleLogger.error(TAG + message)
     }
 
+    fun l(message: String) {
+        gradleLogger.lifecycle(TAG + message)
+    }
 
 }

@@ -1,9 +1,7 @@
 package me.xx2bab.scratchpaper
 
 import me.xx2bab.scratchpaper.utils.CacheUtils
-import me.xx2bab.scratchpaper.utils.CommandUtils
-import org.json.simple.JSONArray
-import org.json.simple.JSONObject
+import me.xx2bab.polyfill.matrix.tool.CommandLineKit
 import com.alibaba.fastjson.JSON
 import java.io.File
 import java.time.LocalDateTime
@@ -14,7 +12,7 @@ class BuildInfoGenerator(private val params: GeneratorParams) {
 
     fun process() {
         val buildInfoDir = File(CacheUtils.getCacheDir(params.project, params.dimension), "assets")
-        params.android.sourceSets.getByName(params.variant.name).assets.srcDirs(buildInfoDir)
+        params.android.sourceSets.getByName(params.classicVariant.name).assets.srcDirs(buildInfoDir)
 
         params.project.tasks.getByName("pre${params.dimension}Build").doLast {
             val buildInfo = BuildInfo(
@@ -35,14 +33,14 @@ class BuildInfoGenerator(private val params: GeneratorParams) {
         return Base(
             buildTime = LocalDateTime.now().toString(),
             buildType = params.dimension,
-            versionName = params.variant.mergedFlavor.versionName ?: ""
+            versionName = params.classicVariant.mergedFlavor.versionName ?: ""
         )
     }
 
     private fun generateGitInfo(): Git {
         return Git(
-            branch =  CommandUtils.runCommand("git rev-parse --abbrev-ref HEAD").let { it?.trim() ?: "" },
-            head = CommandUtils.runCommand("git rev-parse HEAD").let { it?.trim() ?: "" }
+            branch =  CommandLineKit.runCommand("git rev-parse --abbrev-ref HEAD").let { it?.trim() ?: "" },
+            head = CommandLineKit.runCommand("git rev-parse HEAD").let { it?.trim() ?: "" }
         )
     }
 

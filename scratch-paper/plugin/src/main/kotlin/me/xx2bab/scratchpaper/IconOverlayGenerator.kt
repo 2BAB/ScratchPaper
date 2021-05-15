@@ -2,9 +2,9 @@ package me.xx2bab.scratchpaper
 
 import com.android.build.gradle.internal.DependencyResourcesComputer
 import com.android.build.gradle.tasks.*
+import me.xx2bab.polyfill.matrix.tool.ReflectionKit
 import me.xx2bab.scratchpaper.iconprocessor.BaseIconProcessor
 import me.xx2bab.scratchpaper.utils.Aapt2Utils
-import me.xx2bab.scratchpaper.utils.AndroidPluginUtils
 import me.xx2bab.scratchpaper.utils.Logger
 import org.gradle.api.Project
 import java.io.File
@@ -19,29 +19,33 @@ class IconOverlayGenerator(private val params: GeneratorParams) {
     private val attrIcon = "android:icon"
     private val attrRoundIcon = "android:roundIcon"
 
-    private val androidPluginUtils = AndroidPluginUtils(params.project)
-
     fun process() {
         setAwtEnv()
-        params.variant.outputs.forEach { output ->
+        params.classicVariant.outputs.forEach { output ->
             val processManifestTask = output.processManifestProvider.get() as ProcessMultiApkApplicationManifest
-            val mergeResourcesTask = params.variant.mergeResourcesProvider.get()
+            val mergeResourcesTask = params.classicVariant.mergeResourcesProvider.get()
             if (params.config.alwaysUpdateIconInfo) {
                 output.processResourcesProvider.get().outputs.upToDateWhen { false }
             }
             output.processResourcesProvider.get().doFirst("process${params.dimension}IconsByScratchPaper") {
                 val processedIcons = arrayListOf<File>()
-                var version = "@" + params.variant.mergedFlavor.versionName
-                if (params.config.enableVersionNameSuffixDisplay) {
-                    val buildTypeVersionSuffix = params.variant.buildType.versionNameSuffix ?: ""
-                    val flavorVersionSuffix = params.variant.mergedFlavor.versionNameSuffix ?: ""
-                    version += buildTypeVersionSuffix + flavorVersionSuffix
+                val version = "@" + if (params.config.enableVersionNameSuffixDisplay) {
+                    params.classicVariant.versionName
+                } else {
+                    params.classicVariant.mergedFlavor.versionName
                 }
                 val iconNames = getIconName(processManifestTask.mainMergedManifest.get().asFile)
                 val resDirs = mergeResourcesTask.computeResourceList()
                 findIcons(resDirs, iconNames).forEach { icon ->
-                    val icons = addTextToIcon(params.project, params.dimension,
-                            icon, params.config, params.dimension, version, params.config.extraInfo)
+                    val icons = addTextToIcon(
+                        params.project,
+                        params.dimension,
+                        icon,
+                        params.config,
+                        params.dimension,
+                        version,
+                        params.config.extraInfo
+                    )
                     if (icons != null) {
                         for (file in icons) {
                             processedIcons.add(file)
@@ -52,10 +56,12 @@ class IconOverlayGenerator(private val params: GeneratorParams) {
                 val mergeResTaskName = "merge${params.dimension}Resources"
                 val mergeResTask = params.project.tasks.getByName(mergeResTaskName) as MergeResources
                 val mergedResDir = mergeResTask.outputDir.get().asFile
-                Aapt2Utils.compileResDir(params.project,
-                        androidPluginUtils,
-                        mergedResDir,
-                        processedIcons)
+                Aapt2Utils.compileResDir(
+                    params.classicVariant,
+                    params.polyfill,
+                    mergedResDir,
+                    processedIcons
+                )
                 if (params.config.enableXmlIconRemove) {
                     removeXmlIconFiles(iconNames, mergedResDir)
                 }
@@ -103,8 +109,8 @@ class IconOverlayGenerator(private val params: GeneratorParams) {
             // and find one AndroidManifest.xml, it's valid to return first one result,
             // because split feature does't change icon definition on AndroidManifest.xml
             val searchResult = manifestDirectory.walk().maxDepth(3)
-                    .filter { file -> file.name == "AndroidManifest.xml" }
-                    .firstOrNull()
+                .filter { file -> file.name == "AndroidManifest.xml" }
+                .firstOrNull()
 
             if (searchResult != null) {
                 mergedManifestFile = searchResult
@@ -115,11 +121,11 @@ class IconOverlayGenerator(private val params: GeneratorParams) {
         }
 
         val manifestXml = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-                .parse(mergedManifestFile)
+            .parse(mergedManifestFile)
         var regularIconName = manifestXml.getElementsByTagName(tagApplication).item(0)
-                .attributes.getNamedItem(attrIcon)?.nodeValue
+            .attributes.getNamedItem(attrIcon)?.nodeValue
         var roundIconName = manifestXml.getElementsByTagName(tagApplication).item(0)
-                .attributes.getNamedItem(attrRoundIcon)?.nodeValue
+            .attributes.getNamedItem(attrRoundIcon)?.nodeValue
         regularIconName = regularIconName?.split("/")?.get(1) ?: defaultIconName
         roundIconName = roundIconName?.split("/")?.get(1) ?: defaultIconName + "_round"
         return arrayOf(regularIconName, roundIconName)
@@ -132,18 +138,18 @@ class IconOverlayGenerator(private val params: GeneratorParams) {
         val result: MutableSet<File> = hashSetOf()
         where?.forEach {
             it.walk().maxDepth(3)
-                    .filter { dir ->
-                        dir.name.contains("mipmap") || dir.name.contains("drawable")
-                    }
-                    .forEach { file ->
-                        file.walk().forEach { image ->
-                            iconNames.forEach { iconName ->
-                                if (isIconFile(iconName, image)) {
-                                    result.add(image)
-                                }
+                .filter { dir ->
+                    dir.name.contains("mipmap") || dir.name.contains("drawable")
+                }
+                .forEach { file ->
+                    file.walk().forEach { image ->
+                        iconNames.forEach { iconName ->
+                            if (isIconFile(iconName, image)) {
+                                result.add(image)
                             }
                         }
                     }
+                }
         }
         return result
     }
@@ -158,11 +164,13 @@ class IconOverlayGenerator(private val params: GeneratorParams) {
      * @param config    The configuration which controls how the overlay will appear
      * @param lines     The lines of text to be displayed
      */
-    private fun addTextToIcon(project: Project,
-                              dimension: String,
-                              image: File,
-                              config: ScratchPaperExtension = ScratchPaperExtension.DEFAULT_CONFIG,
-                              vararg lines: String): Array<File>? {
+    private fun addTextToIcon(
+        project: Project,
+        dimension: String,
+        image: File,
+        config: ScratchPaperExtension = ScratchPaperExtension.DEFAULT_CONFIG,
+        vararg lines: String
+    ): Array<File>? {
         return BaseIconProcessor.getProcessor(project, dimension, image, config, lines)?.process()
     }
 
@@ -195,8 +203,11 @@ class IconOverlayGenerator(private val params: GeneratorParams) {
      * To get all original resources including libraries
      */
     private fun MergeResources.computeResourceList(): List<File> {
-        val resourcesComputer = androidPluginUtils.getField(ResourceAwareTask::class.java,
-                this, "resourcesComputer") as DependencyResourcesComputer
+        val resourcesComputer = ReflectionKit.getField(
+            ResourceAwareTask::class.java,
+            this,
+            "resourcesComputer"
+        ) as DependencyResourcesComputer
         val resourceSets = resourcesComputer.compute(this.processResources, null)
         return resourceSets.mapNotNull { resourceSet ->
             val getSourceFiles = resourceSet.javaClass.methods.find {
