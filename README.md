@@ -4,12 +4,11 @@
 
 [English][[中文说明]](./README_zh.md)
 
+ScratchPaper is a Gradle Plugin helps distinguish the buildType/flavor/version via APK icon overlay, bases on [Polyfill](https://github.com/2BAB/Polyfill).
+
 ## How does it work?
 
-![](./images/ic_launcher.png)![](./images/ic_launcher_round.png)
-
-![](./images/scratch-paper-json.jpg)
-
+![](./images/launchers_json.jpg)
 
 > If you install both debug&release Apps in one device, you can not distinguish which is the one you want to test.
 
@@ -18,6 +17,7 @@ ScratchPaper can add a overlay on your icon, and put given information (like bui
 - Support regular & round Icons 
 - Support adaptive-icon
 - Support AAPT2
+- Support custom text
 
 > If you have more than one staging Apps for QA or other colleagues, when they found some issues you may don't know how to match the App version to your code base (branch/commit/etc..), because all of them share the same version like "2.1.0-SNAPSHOT".
 
@@ -27,6 +27,15 @@ ScratchPaper supports generating build information into your artifact (which can
 - Git: Latest Commit ID & commit branch, etc.
 - Dependencies
 - ...
+
+## Why choose ScratchPaper?
+
+We can find some similar solutions from Github，such as：akonior/icon-version, akaita/easylauncher-gradle-plugin。But the pain points of them are:
+
+- Some do not support AAPT2
+- Some do not support latest AGP
+
+You should try ScratchPaper if you keep using latest build tools.
 
 ## Usage
 
@@ -39,8 +48,8 @@ buildscript {
         mavenCentral() // Since 2.5.4, the publish repository has been shifted from Jcenter to Maven Central.
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.2'
-        classpath 'me.2bab:scratchpaper:2.5.4' // Since 2.5.4, the artifactId of ScratchPaper changed from scratch-paper to scratchpaper
+        classpath 'com.android.tools.build:gradle:4.2.0'
+        classpath 'me.2bab:scratchpaper:2.6.0' // Since 2.5.4, the artifactId of ScratchPaper changed from scratch-paper to scratchpaper
     }
 }
 ```
@@ -81,6 +90,7 @@ ScratchPaper is only supported & tested on LATEST ONE Minor versions of Android 
 
 AGP Version|Latest Support Version
 -----------|-----------------
+4.2.x | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/me.2bab/scratchpaper/badge.svg)](https://search.maven.org/artifact/me.2bab/scratchpaper)
 4.1.x | 2.5.4
 4.0.x | 2.5.3
 3.6.x | 2.5.1
