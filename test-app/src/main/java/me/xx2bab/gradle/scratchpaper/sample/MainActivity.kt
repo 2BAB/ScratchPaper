@@ -1,9 +1,9 @@
 package me.xx2bab.gradle.scratchpaper.sample
 
 import android.os.Bundle
-import android.text.method.ScrollingMovementMethod
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.paulvarry.jsonviewer.JsonViewer
+import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
 
@@ -11,9 +11,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        findViewById<TextView>(R.id.json).apply {
-            text = loadScratchPaper()
-            movementMethod = ScrollingMovementMethod()
+        findViewById<JsonViewer>(R.id.json_view).apply {
+            setJson(JSONObject(loadScratchPaper()))
+            expandJson()
         }
     }
 

@@ -18,7 +18,7 @@ android {
         minSdkVersion(23)
         targetSdkVersion(30)
         versionCode = 1
-        versionName = "1.0"
+        versionName = "2.6.0"
     }
 
     buildTypes {
@@ -74,6 +74,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.2.0")
     implementation("com.google.android.material:material:1.2.1")
     implementation("androidx.constraintlayout:constraintlayout:2.0.1")
+    implementation("com.github.pvarry:android-json-viewer:v1.1")
 }
 
 scratchPaper {
@@ -82,6 +83,7 @@ scratchPaper {
     verticalLinePadding = 4
     backgroundColor = "#99000000"
     extraInfo = LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM-dd,HH:mm"))
+//    extraInfo = "This is a sample."
     enableGenerateIconOverlay = true
     enableGenerateBuildInfo = true
     enableXmlIconRemove = false
