@@ -3,6 +3,7 @@ import BuildConfig.Deps
 plugins {
     kotlin("jvm")
     id("java-gradle-plugin")
+    `kotlin-dsl`
     `github-release`
     `maven-central-publish`
     `functional-test-setup`
@@ -27,9 +28,11 @@ dependencies {
     implementation(kotlin(Deps.ktStd))
     implementation(kotlin(Deps.ktReflect))
     implementation(gradleApi())
-    implementation(Deps.fastJson)
     compileOnly(Deps.agp)
+    compileOnly(Deps.sdkCommon)
+    compileOnly(Deps.sdkLib)
     implementation(Deps.polyfill)
+    implementation(Deps.polyfillRes)
     implementation(Deps.jfreesvg)
 
     testImplementation(gradleTestKit())

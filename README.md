@@ -30,7 +30,7 @@ ScratchPaper supports generating build information into your artifact (which can
 
 ## Why choose ScratchPaper?
 
-We can find some similar solutions from Github，such as：akonior/icon-version, akaita/easylauncher-gradle-plugin。But the pain points of them are:
+We can find some similar solutions from Github，such as：akonior/icon-version, akaita/easylauncher-gradle-plugin. But the pain points of them are:
 
 - Some do not support AAPT2
 - Some do not support latest AGP

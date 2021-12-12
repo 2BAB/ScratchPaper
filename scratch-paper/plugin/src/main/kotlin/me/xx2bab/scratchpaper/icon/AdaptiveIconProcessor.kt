@@ -1,10 +1,8 @@
-package me.xx2bab.scratchpaper.iconprocessor
+package me.xx2bab.scratchpaper.icon
 
 import com.android.ide.common.vectordrawable.Svg2Vector
 import me.xx2bab.scratchpaper.ScratchPaperExtension
-import me.xx2bab.scratchpaper.utils.CacheUtils
 import me.xx2bab.scratchpaper.utils.Logger
-import org.gradle.api.Project
 import org.jfree.graphics2d.svg.SVGGraphics2D
 import org.jfree.graphics2d.svg.SVGUtils
 import org.w3c.dom.Document
@@ -28,12 +26,11 @@ import javax.xml.transform.stream.StreamResult
  * @link https://github.com/jfree/jfree-demos
  * @link https://xmlgraphics.apache.org/batik/using/svg-generator.html
  */
-class AdaptiveIconProcessor(project: Project,
-                            dimension: String,
-                            originIcon: File,
-                            config: ScratchPaperExtension,
-                            lines: Array<out String>)
-    : BaseIconProcessor(project, dimension, originIcon, config, lines) {
+class AdaptiveIconProcessor(
+    originIcon: File,
+    destDir: File,
+    param: IconProcessorParam
+) : BaseIconProcessor(originIcon, destDir, param) {
 
     private val attrDrawable = "android:drawable"
     private val tagForeground = "foreground"
@@ -59,12 +56,15 @@ class AdaptiveIconProcessor(project: Project,
     }
 
     override fun writeIcon(): Array<File> {
-        // prepare destination file
-        val destDir = File(CacheUtils.getCacheDir(project, dimension), originIcon.parentFile.name)
-        if (!destDir.exists() && !destDir.mkdirs()) {
+        // prepare destination file and its directory.
+        // Creating a directory is to separate images from different pixel dimensions,
+        // and support the AAPT2 compiling correctly(it requires the resource file
+        // is put inside a res-dimension dir like "mipmap-xxhdpi").
+        val imageParentFile = File(destDir, originIcon.parentFile.name)
+        if (!imageParentFile.exists() && !imageParentFile.mkdirs()) {
             Logger.e("Can not create cache directory for ScratchPaper.")
         }
-        val destIcon = File(destDir, originIcon.name).apply { createNewFile() }
+        val destIcon = File(imageParentFile, originIcon.name).apply { createNewFile() }
 
         // generate overlay svg & convert svg to vector drawable xml
         val commonDrawableDir = File(destIcon.parentFile.parent + File.separator + "drawable").apply { mkdir() }
@@ -96,7 +96,7 @@ class AdaptiveIconProcessor(project: Project,
     private val height = 100
     private val graphic: Graphics2D
     private val originIconXmlDoc: Document = DocumentBuilderFactory.newInstance()
-            .newDocumentBuilder().parse(originIcon)
+        .newDocumentBuilder().parse(originIcon)
     private var layerList: Element
 
     init {

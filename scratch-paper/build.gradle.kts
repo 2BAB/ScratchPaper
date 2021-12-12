@@ -20,18 +20,6 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        mavenLocal()
     }
 }
-
-
-
-//project.extra["travisBuild"] = System.getenv("TRAVIS") == "true"
-//
-//if (project.extensions.findByName("buildScan") != null) {
-//    gradleEnterprise {
-//        buildScan {
-//            termsOfServiceUrl = "https://gradle.com/terms-of-service"
-//            termsOfServiceAgree = "yes"
-//        }
-//    }
-//}

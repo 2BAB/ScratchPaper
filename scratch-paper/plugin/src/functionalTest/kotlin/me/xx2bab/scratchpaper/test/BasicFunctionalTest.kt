@@ -1,7 +1,5 @@
 package me.xx2bab.scratchpaper.test
 
-import com.alibaba.fastjson.JSON
-import me.xx2bab.scratchpaper.BuildInfo
 import org.gradle.testkit.runner.GradleRunner
 import org.junit.Assert
 import org.junit.BeforeClass
@@ -21,7 +19,7 @@ class BasicFunctionalTest {
             println("Building...")
             GradleRunner.create()
                 .forwardOutput()
-                .withArguments("clean", "assembleDebug", "--stacktrace")
+                .withArguments("clean", "assembleFullDebug", "--stacktrace")
                 .withProjectDir(File(testProjectPath))
                 .build()
 
@@ -31,11 +29,7 @@ class BasicFunctionalTest {
 
     @Test
     fun flavorSupport_Successfully() {
-        val demoDebug = File("$spIntermediates/DemoDebug/")
-        val fullDebug = File("$spIntermediates/FullDebug/")
-        Assert.assertTrue(demoDebug.exists())
-        Assert.assertTrue(demoDebug.isDirectory)
-        Assert.assertTrue(demoDebug.listFiles().isNotEmpty())
+        val fullDebug = File("$spIntermediates/icons-fullDebug/")
         Assert.assertTrue(fullDebug.exists())
         Assert.assertTrue(fullDebug.isDirectory)
         Assert.assertTrue(fullDebug.listFiles().isNotEmpty())
@@ -50,8 +44,8 @@ class BasicFunctionalTest {
             "mipmap-hdpi",
             "mipmap-mdpi"
         ).forEach {
-            val normalAppIcon = File("$spIntermediates/DemoDebug/$it/ic_launcher.png")
-            val roundAppIcon = File("$spIntermediates/DemoDebug/$it/ic_launcher_round.png")
+            val normalAppIcon = File("$spIntermediates/icons-fullDebug/$it/ic_launcher.png")
+            val roundAppIcon = File("$spIntermediates/icons-fullDebug/$it/ic_launcher_round.png")
             Assert.assertTrue(normalAppIcon.exists())
             Assert.assertTrue(roundAppIcon.exists())
         }
@@ -59,8 +53,8 @@ class BasicFunctionalTest {
 
     @Test
     fun xmlIconsAreGenerated_Successfully() {
-        val normalAppIcon = File("$spIntermediates/DemoDebug/mipmap-anydpi-v26/ic_launcher.xml")
-        val roundAppIcon = File("$spIntermediates/DemoDebug/mipmap-anydpi-v26/ic_launcher_round.xml")
+        val normalAppIcon = File("$spIntermediates/icons-fullDebug/mipmap-anydpi-v26/ic_launcher.xml")
+        val roundAppIcon = File("$spIntermediates/icons-fullDebug/mipmap-anydpi-v26/ic_launcher_round.xml")
         Assert.assertTrue(normalAppIcon.exists())
         Assert.assertTrue(roundAppIcon.exists())
         Assert.assertTrue(normalAppIcon.readText().contains("ic_launcher_overlay"))
@@ -72,24 +66,8 @@ class BasicFunctionalTest {
             "ic_launcher_round_overlay.svg",
             "ic_launcher_round_overlay.xml"
         ).forEach {
-            Assert.assertTrue(File("$spIntermediates/DemoDebug/drawable/$it").exists())
+            Assert.assertTrue(File("$spIntermediates/icons-fullDebug/drawable/$it").exists())
         }
-    }
-
-    @Test
-    fun metaJsonIsGenerated_Successfully() {
-        val metaJson = "$spIntermediates/DemoDebug/assets/scratch-paper.json"
-        val jsonFile = File(metaJson)
-        Assert.assertTrue(jsonFile.exists())
-        val buildInfo = JSON.parseObject(jsonFile.readText(),
-            BuildInfo::class.javaObjectType)
-        Assert.assertTrue(buildInfo.base.versionName.isNotBlank())
-        Assert.assertTrue(buildInfo.base.buildTime.isNotBlank())
-        Assert.assertTrue(buildInfo.base.buildType.isNotBlank())
-        Assert.assertTrue(buildInfo.git.branch.isNotBlank())
-        Assert.assertTrue(buildInfo.git.head.isNotBlank())
-        Assert.assertTrue(buildInfo.dependencies.isNotEmpty())
-        Assert.assertTrue(buildInfo.dependencies[0].list.isNotEmpty())
     }
 
     @Test
