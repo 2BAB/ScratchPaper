@@ -1,7 +1,7 @@
 object BuildConfig {
 
     object Versions {
-        const val scratchPaperVersion = "2.6.0"
+        const val scratchPaperVersion = "3.0.0"
     }
 
 }

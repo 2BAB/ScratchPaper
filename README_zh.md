@@ -1,42 +1,31 @@
 <img src="./sp-banner.png" alt="ScratchPaper" width="771px">
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/me.2bab/scratchpaper/badge.svg)](https://search.maven.org/artifact/me.2bab/scratchpaper) [![Actions Status](https://github.com/2bab/ScratchPaper/workflows/CI/badge.svg)](https://github.com/2bab/ScratchPaper/actions) [![Apache 2](https://img.shields.io/badge/License-Apache%202-brightgreen.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/me.2bab/scratchpaper/badge.svg)](https://search.maven.org/artifact/me.2bab/scratchpaper) 
+[![Actions Status](https://github.com/2bab/ScratchPaper/workflows/CI/badge.svg)](https://github.com/2bab/ScratchPaper/actions) 
+[![Apache 2](https://img.shields.io/badge/License-Apache%202-brightgreen.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
 [中文说明][[English]](./README.md)
 
-ScratchPaper 是给 APK 图标添加 buildType/flavor/version 等构建信息来快速区分不同版本的 Gradle 插件，基于 [Polyfill](https://github.com/2BAB/Polyfill) 框架编写。
+ScratchPaper 是一个 Gradle 插件，用来给 APK 图标添加 variant/version/git-commit-id 等信息以区分不同版本，由 [Polyfill](https://github.com/2BAB/Polyfill) 框架驱动。
 
 ## ScratchPaper 解决了什么问题？
 
-![](./images/launchers_json.jpg)
+![](./images/launcher_icons.png)
 
 > 如果你在一台设备上同时安装一个 App 的 Debug 版和 Release 版，你可能很难区分出来到底哪个你要测试的版本（不打开的情况下）。
 
-ScratchPaper 可以在你的 App icon 上加一个蒙层用以区分出各个 BuildType 的 App，并且承载了版本信息等附加文字。
+> 如果你同时打了多个测试包给测试或者产品（例如前后打了三次 "2.1.0-SNAPSHOT"），当他们给你反馈的问题时候你和他们可能都很难分别出每个 App 对应的具体的分支或者 commit 节点。
+
+ScratchPaper 可以在你的 App 启动图标上加一个蒙层用以区分不同变体的 App，其承载了版本信息等附加文字。
 
 - 支持 常规 和 圆形 的图标
 - 支持 adaptive-icon
 - 支持 AAPT2
-- 支持自定义文字内容
-
-> 如果你同时打了多个测试包给测试或者产品（例如基于多个复合分支），当他们给你反馈的问题时候你和他们可能都很难分别出每个 App 对应的具体的分支或者 commit 节点。
-
-ScratchPaper 支持生成编译信息并打包到你的 Apk 中（从 assets 中读取），以及输出一份拷贝到 `/intermedias/scratch-paper/assets` 文件夹，包括：
-
-- Base: Build Time, Build Type, etc.
-- Git: Latest Commit ID & commit branch, etc.
-- Dependencies
-- ...
+- 支持多行自定义文字内容（包括一些内置的内容）
 
 ## 为什么一定要试试 ScratchPaper
 
-其实市面上不乏有类似的解决方案，例如：akonior/icon-version, akaita/easylauncher-gradle-plugin。但是他们的最重要问题在于：不支持 AAPT2 和新版的 AGP。由于 Google 在 18 年底停止了对 aapt1 的支持（enableAapt2=false 将被移除），所以尽早迁移到 AAPT2 其实是一个明智的选择。最后 AAPT2 还会带来额外的诸多好处：
-
-- 其实对 local debug build 时的性能是有一定提升的
-- 修复很多 AAPT1 的低级 Bug （我曾写过一个插件来修复各类 AAPT 处理 Manifest 时的 Bug，具体查阅 https://github.com/2BAB/Seal）
-- 同样有办法支持插件化的开发
-
-而保持使用新版本的 AGP 是提升编译速度最简单有效的方式。
+其实市面上不乏有类似的解决方案，但是他们的最重要问题在于：多数都不支持 AAPT2 和新版的 AGP。ScratchPaper 提供了朴素的文字蒙层叠加，支持最新的 AGP 和 adaptive icons，以及 Gradle 惰性配置的特性（可减少配置期耗时）。如果你不需要多行文字的特性，也可以选择另外一个比较流行并且还在维护的方案 [sefulness/easylauncher-gradle-plugin](https://github.com/usefulness/easylauncher-gradle-plugin)。
 
 ## 如何使用？
 
@@ -49,8 +38,8 @@ buildscript {
         mavenCentral() // 从 2.5.4 开始，ScratchPaper 从 Jcenter 迁移到了 Maven Central
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.0'
-        classpath 'me.2bab:scratchpaper:2.6.0' // 从 2.5.4 开始，ScratchPaper 的 artifactId 从 scratch-paper 改为 scratchpaper
+        classpath 'com.android.tools.build:gradle:7.0.4'
+        classpath 'me.2bab:scratchpaper:3.0.0' // 从 2.5.4 开始，ScratchPaper 的 artifactId 从 scratch-paper 改为 scratchpaper
     }
 }
 ```
@@ -64,20 +53,39 @@ apply plugin: 'me.2bab.scratchpaper'
 
 **0x03. Advanced Configurations**
 
-``` gradle
+``` kotlin
 scratchPaper {
-    textSize = 10
-    textColor = "#FFFFFFFF"
-    verticalLinePadding = 4
-    backgroundColor = "#99000000"
-    extraInfo = new Date().format("MM-dd,HH:mm")
-    enableGenerateIconOverlay = true
-    enableGenerateBuildInfo = true
-    enableVersionNameSuffixDisplay = true
+    // 可以根据 variant 开启
+    // Can not be lazily set, it's valid only before "afterEvaluate{}".
+    // In this way, only "FullDebug" variant will get icon overlays
+    enableByVariant { variant ->
+        variant.name.contains("debug", true)
+                && variant.name.contains("full", true)
+    }
 
-    // Experimental field
-    // @see IconOverlayGenerator#removeXmlIconFiles
-    enableXmlIconRemove = false
+    // !!! Mandatory field.
+    // Can be lazily set even after configuration phrase.
+    iconNames.set("ic_launcher, ic_launcher_round")
+
+    // Some sub-feature flags
+    enableXmlIconsRemoval.set(false) // Can be lazily set even after configuration phrase.
+    forceUpdateIcons = true // Can not be lazily set, it's valid only before "afterEvaluate{}".
+
+    // ICON_OVERLAY styles, contents.
+    style {
+        textSize.set(9)
+        textColor.set("#FFFFFFFF") // Accepts 3 kinds of format: "FFF", "FFFFFF", "FFFFFFFF".
+        lineSpace.set(4)
+        backgroundColor.set("#99000000") // Same as textColor.
+    }
+
+    content {
+        showVersionName.set(true)
+        showVariantName.set(true)
+        showGitShortId.set(true)
+        showDateTime.set(true)
+        extraInfo.set("For QA")
+    }
 }
 ```
 
@@ -91,7 +99,8 @@ scratchPaper {
 
 AGP Version|Latest Support Version
 -----------|-----------------
-4.2.x | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/me.2bab/scratchpaper/badge.svg)](https://search.maven.org/artifact/me.2bab/scratchpaper)
+7.0.x | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/me.2bab/scratchpaper/badge.svg)](https://search.maven.org/artifact/me.2bab/scratchpaper)
+4.2.x | 2.6.0
 4.1.x | 2.5.4
 4.0.x | 2.5.3
 3.6.x | 2.5.1
@@ -122,7 +131,7 @@ The v1.x `IconCover` forked from [icon-version@akonior](https://github.com/akoni
 ## License
 
 >
-> Copyright 2016-2021 2BAB
+> Copyright 2016-2022 2BAB
 >
 >Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
