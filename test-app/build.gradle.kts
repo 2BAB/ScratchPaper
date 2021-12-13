@@ -1,14 +1,8 @@
-import java.util.Properties
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-
 plugins {
     id("com.android.application")
     kotlin("android")
     id("me.2bab.scratchpaper")
 }
-val props = Properties()
-file("../scratch-paper/buildSrc/src/main/resources/versions.properties").inputStream().use { props.load(it) }
 
 android {
     compileSdk = 31
@@ -68,15 +62,13 @@ android {
 
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:${props["kotlinVersion"]}")
-    implementation("androidx.core:core-ktx:1.7.0")
+    implementation(deps.kotlin.std)
     implementation("androidx.appcompat:appcompat:1.4.0")
-    implementation("com.google.android.material:material:1.4.0")
 }
 
 // Run `./gradlew clean assembleFullDebug` for testing
 scratchPaper {
-    // Main feature flags.
+    // Main feature flags. !!! Mandatory field.
     // Can not be lazily set, it's valid only before "afterEvaluate{}".
     // In this way, only "FullDebug" variant will get icon overlays
     enableByVariant { variant ->
@@ -84,12 +76,12 @@ scratchPaper {
                 && variant.name.contains("full", true)
     }
 
-    // Mandatory field
+    // !!! Mandatory field.
     // Can be lazily set even after configuration phrase.
     iconNames.set("ic_launcher, ic_launcher_round")
 
     // Some sub-feature flags
-    enableXmlIconsRemoval.set(true) // Can be lazily set even after configuration phrase.
+    enableXmlIconsRemoval.set(false) // Can be lazily set even after configuration phrase.
     forceUpdateIcons = true // Can not be lazily set, it's valid only before "afterEvaluate{}".
 
     // ICON_OVERLAY styles, contents.

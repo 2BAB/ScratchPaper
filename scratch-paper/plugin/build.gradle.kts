@@ -1,5 +1,3 @@
-import BuildConfig.Deps
-
 plugins {
     kotlin("jvm")
     id("java-gradle-plugin")
@@ -8,6 +6,10 @@ plugins {
     `maven-central-publish`
     `functional-test-setup`
 }
+
+group = "me.2bab"
+version = BuildConfig.Versions.scratchPaperVersion
+
 
 java {
     withSourcesJar()
@@ -25,18 +27,20 @@ gradlePlugin {
 }
 
 dependencies {
-    implementation(kotlin(Deps.ktStd))
-    implementation(kotlin(Deps.ktReflect))
     implementation(gradleApi())
-    compileOnly(Deps.agp)
-    compileOnly(Deps.sdkCommon)
-    compileOnly(Deps.sdkLib)
-    implementation(Deps.polyfill)
-    implementation(Deps.polyfillRes)
-    implementation(Deps.jfreesvg)
+
+    implementation(deps.kotlin.std)
+
+    compileOnly(deps.android.gradle.plugin)
+    compileOnly(deps.android.tools.sdkcommon)
+    compileOnly(deps.android.tools.sdklib)
+
+    implementation(deps.polyfill.main)
+    implementation(deps.polyfill.res)
+    implementation(deps.jfreesvg)
 
     testImplementation(gradleTestKit())
-    testImplementation(Deps.junit)
-    testImplementation(Deps.mockito)
-    testImplementation(Deps.mockitoInline)
+    testImplementation(deps.junit)
+    testImplementation(deps.mockito)
+    testImplementation(deps.mockitoInline)
 }
