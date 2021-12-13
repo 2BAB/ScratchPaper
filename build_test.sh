@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
-./gradlew clean assembleDemoDebug
+./gradlew clean assembleFullDebug
 
 echo 'Done. Check the outputs on ./app/build/intermediates/scratch-paper/'

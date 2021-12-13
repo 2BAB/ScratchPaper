@@ -1,41 +1,31 @@
 <img src="./sp-banner.png" alt="ScratchPaper" width="771px">
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/me.2bab/scratchpaper/badge.svg)](https://search.maven.org/artifact/me.2bab/scratchpaper) [![Actions Status](https://github.com/2bab/ScratchPaper/workflows/CI/badge.svg)](https://github.com/2bab/ScratchPaper/actions) [![Apache 2](https://img.shields.io/badge/License-Apache%202-brightgreen.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/me.2bab/scratchpaper/badge.svg)](https://search.maven.org/artifact/me.2bab/scratchpaper) 
+[![Actions Status](https://github.com/2bab/ScratchPaper/workflows/CI/badge.svg)](https://github.com/2bab/ScratchPaper/actions) 
+[![Apache 2](https://img.shields.io/badge/License-Apache%202-brightgreen.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
 [English][[中文说明]](./README_zh.md)
 
-ScratchPaper is a Gradle Plugin helps distinguish the buildType/flavor/version via APK icon overlay, bases on [Polyfill](https://github.com/2BAB/Polyfill).
+ScratchPaper is a Gradle Plugin helps distinguish the variant/version/git-commit-id by adding a launcher icon overlay, powered by [Polyfill](https://github.com/2BAB/Polyfill).
 
 ## How does it work?
 
-![](./images/launchers_json.jpg)
+![](./images/launcher_icons.png)
 
-> If you install both debug&release Apps in one device, you can not distinguish which is the one you want to test.
+> If you install both debug&release Apps on one device, you can not distinguish which one you is your target for testing.
 
-ScratchPaper can add a overlay on your icon, and put given information (like buildType, buildVersion) on it.
+> If you have more than one staging Apps for QAs, when they found some issues you may don't know how to match the App version to your code base (branch/commit/etc..), because all of them share the same version like "2.1.0-SNAPSHOT".
+
+ScratchPaper can add an overlay on your launcher icon, and put given information on it.
 
 - Support regular & round Icons 
 - Support adaptive-icon
 - Support AAPT2
-- Support custom text
-
-> If you have more than one staging Apps for QA or other colleagues, when they found some issues you may don't know how to match the App version to your code base (branch/commit/etc..), because all of them share the same version like "2.1.0-SNAPSHOT".
-
-ScratchPaper supports generating build information into your artifact (which can read from /assets/scratch-paper.json) and also `/intermedias/scratch-paper/assets` directory including:
-
-- Base: Build Time, Build Type, etc.
-- Git: Latest Commit ID & commit branch, etc.
-- Dependencies
-- ...
+- Support custom text of multiple lines with some built-in content
 
 ## Why choose ScratchPaper?
 
-We can find some similar solutions from Github，such as：akonior/icon-version, akaita/easylauncher-gradle-plugin。But the pain points of them are:
-
-- Some do not support AAPT2
-- Some do not support latest AGP
-
-You should try ScratchPaper if you keep using latest build tools.
+We can find some similar solutions from Github, but the pain points of them are: most of them do not support latest AAPT2/AGP. ScratchPaper supports latest AAPT2/AGP, adaptive icons, and use new Variant API / Gradle lazy properties to gain a better performance. Apart from that, [usefulness/easylauncher-gradle-plugin](https://github.com/usefulness/easylauncher-gradle-plugin) is one of the most popular solution that is still under maintained, it supports fancy filters and additional pngs to add on badges. If you don't need multiple lines text, that is a great choice as well.
 
 ## Usage
 
@@ -48,8 +38,8 @@ buildscript {
         mavenCentral() // Since 2.5.4, the publish repository has been shifted from Jcenter to Maven Central.
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.0'
-        classpath 'me.2bab:scratchpaper:2.6.0' // Since 2.5.4, the artifactId of ScratchPaper changed from scratch-paper to scratchpaper
+        classpath 'com.android.tools.build:gradle:7.0.4'
+        classpath 'me.2bab:scratchpaper:3.0.0' // Since 2.5.4, the artifactId of ScratchPaper changed from scratch-paper to scratchpaper
     }
 }
 ```
@@ -63,20 +53,39 @@ apply plugin: 'me.2bab.scratchpaper'
 
 **0x03. Advanced Configurations**
 
-``` gradle
+``` kotlin
 scratchPaper {
-    textSize = 10
-    textColor = "#FFFFFFFF"
-    verticalLinePadding = 4
-    backgroundColor = "#99000000"
-    extraInfo = new Date().format("MM-dd,HH:mm")
-    enableGenerateIconOverlay = true
-    enableGenerateBuildInfo = true
-    enableVersionNameSuffixDisplay = true
-    
-    // Experimental field
-    // @see IconOverlayGenerator#removeXmlIconFiles
-    enableXmlIconRemove = false
+    // Main feature flags. Mandatory field.
+    // Can not be lazily set, it's valid only before "afterEvaluate{}".
+    // In this way, only "FullDebug" variant will get icon overlays
+    enableByVariant { variant ->
+        variant.name.contains("debug", true)
+                && variant.name.contains("full", true)
+    }
+
+    // Mandatory field.
+    // Can be lazily set even after configuration phrase.
+    iconNames.set("ic_launcher, ic_launcher_round")
+
+    // Some sub-feature flags
+    enableXmlIconsRemoval.set(false) // Can be lazily set even after configuration phrase.
+    forceUpdateIcons = true // Can not be lazily set, it's valid only before "afterEvaluate{}".
+
+    // ICON_OVERLAY styles, contents.
+    style {
+        textSize.set(9)
+        textColor.set("#FFFFFFFF") // Accepts 3 kinds of format: "FFF", "FFFFFF", "FFFFFFFF".
+        lineSpace.set(4)
+        backgroundColor.set("#99000000") // Same as textColor.
+    }
+
+    content {
+        showVersionName.set(true)
+        showVariantName.set(true)
+        showGitShortId.set(true)
+        showDateTime.set(true)
+        extraInfo.set("For QA")
+    }
 }
 ```
 
@@ -90,7 +99,8 @@ ScratchPaper is only supported & tested on LATEST ONE Minor versions of Android 
 
 AGP Version|Latest Support Version
 -----------|-----------------
-4.2.x | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/me.2bab/scratchpaper/badge.svg)](https://search.maven.org/artifact/me.2bab/scratchpaper)
+7.0.x | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/me.2bab/scratchpaper/badge.svg)](https://search.maven.org/artifact/me.2bab/scratchpaper)
+4.2.x | 2.6.0
 4.1.x | 2.5.4
 4.0.x | 2.5.3
 3.6.x | 2.5.1
@@ -121,7 +131,7 @@ The v1.x `IconCover` forked from [icon-version@akonior](https://github.com/akoni
 ## License
 
 >
-> Copyright 2016-2021 2BAB
+> Copyright 2016-2022 2BAB
 >
 >Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

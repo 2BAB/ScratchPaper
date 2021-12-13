@@ -1,24 +1,17 @@
-import java.util.Properties
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-
 plugins {
     id("com.android.application")
     kotlin("android")
     id("me.2bab.scratchpaper")
 }
-val props = Properties()
-file("../scratch-paper/buildSrc/src/main/resources/versions.properties").inputStream().use { props.load(it) }
 
 android {
-    compileSdkVersion(30)
-    buildToolsVersion("30.0.3")
+    compileSdk = 31
     defaultConfig {
         applicationId = "me.xx2bab.scratchpaper.sample"
-        minSdkVersion(23)
-        targetSdkVersion(30)
+        minSdk = 23
+        targetSdk = 31
         versionCode = 1
-        versionName = "2.6.0"
+        versionName = "3.0.0"
     }
 
     buildTypes {
@@ -32,15 +25,15 @@ android {
         }
     }
 
-    flavorDimensions("version")
+    flavorDimensions += "featureScope"
     productFlavors {
         create("demo") {
-            setDimension("version")
+            dimension = "featureScope"
             applicationIdSuffix = ".demo"
             versionNameSuffix = "-demo"
         }
         create("full") {
-            setDimension("version")
+            dimension = "featureScope"
             applicationIdSuffix = ".full"
             versionNameSuffix = "-full"
         }
@@ -50,7 +43,7 @@ android {
         density {
             isEnable = true
             reset()
-            include ("mdpi")
+            include("mdpi")
             compatibleScreens("xlarge")
         }
     }
@@ -69,23 +62,41 @@ android {
 
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:${props["kotlinVersion"]}")
-    implementation("androidx.core:core-ktx:1.3.1")
-    implementation("androidx.appcompat:appcompat:1.2.0")
-    implementation("com.google.android.material:material:1.2.1")
-    implementation("androidx.constraintlayout:constraintlayout:2.0.1")
-    implementation("com.github.pvarry:android-json-viewer:v1.1")
+    implementation(deps.kotlin.std)
+    implementation("androidx.appcompat:appcompat:1.4.0")
 }
 
+// Run `./gradlew clean assembleFullDebug` for testing
 scratchPaper {
-    textSize = 9
-    textColor = "#FFFFFFFF"
-    verticalLinePadding = 4
-    backgroundColor = "#99000000"
-    extraInfo = LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM-dd,HH:mm"))
-//    extraInfo = "This is a sample."
-    enableGenerateIconOverlay = true
-    enableGenerateBuildInfo = true
-    enableXmlIconRemove = false
-    enableVersionNameSuffixDisplay = true
+    // Main feature flags. !!! Mandatory field.
+    // Can not be lazily set, it's valid only before "afterEvaluate{}".
+    // In this way, only "FullDebug" variant will get icon overlays
+    enableByVariant { variant ->
+        variant.name.contains("debug", true)
+                && variant.name.contains("full", true)
+    }
+
+    // !!! Mandatory field.
+    // Can be lazily set even after configuration phrase.
+    iconNames.set("ic_launcher, ic_launcher_round")
+
+    // Some sub-feature flags
+    enableXmlIconsRemoval.set(false) // Can be lazily set even after configuration phrase.
+    forceUpdateIcons = true // Can not be lazily set, it's valid only before "afterEvaluate{}".
+
+    // ICON_OVERLAY styles, contents.
+    style {
+        textSize.set(9)
+        textColor.set("#FFFFFFFF") // Accepts 3 kinds of format: "FFF", "FFFFFF", "FFFFFFFF".
+        lineSpace.set(4)
+        backgroundColor.set("#99000000") // Same as textColor.
+    }
+
+    content {
+        showVersionName.set(true)
+        showVariantName.set(true)
+        showGitShortId.set(true)
+        showDateTime.set(true)
+        extraInfo.set("For QA")
+    }
 }
