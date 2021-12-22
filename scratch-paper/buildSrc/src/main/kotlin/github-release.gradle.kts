@@ -29,7 +29,7 @@ val token: String = if (!tokenFromEnv.isNullOrBlank()) {
 
 val repo = "ScratchPaper"
 val tagBranch = "master"
-val version = project.version.toString()
+val version = BuildConfig.Versions.scratchPaperVersion
 val releaseNotes = ""
 createGithubReleaseTaskInternal(artifacts, token, repo, tagBranch, version, releaseNotes)
 
@@ -47,7 +47,7 @@ fun createGithubReleaseTaskInternal(artifacts: DirectoryProperty,
         setRepo(repo)
         setTagName(version)
         setTargetCommitish(tagBranch)
-        setReleaseName("v${version}")
+        setReleaseName(version)
         setBody(releaseNotes)
         setDraft(false)
         setPrerelease(false)
