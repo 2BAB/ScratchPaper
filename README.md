@@ -23,6 +23,8 @@ ScratchPaper can add an overlay on your launcher icon, and put given information
 - Support AAPT2
 - Support custom text of multiple lines with some built-in content
 
+In addition, the plugin can be enabled/disabled for per variant respectively.
+
 ## Why choose ScratchPaper?
 
 We can find some similar solutions from Github, but the pain points of them are: most of them do not support latest AAPT2/AGP. ScratchPaper supports latest AAPT2/AGP, adaptive icons, and use new Variant API / Gradle lazy properties to gain a better performance. Apart from that, [usefulness/easylauncher-gradle-plugin](https://github.com/usefulness/easylauncher-gradle-plugin) is one of the most popular solution that is still under maintained, it supports fancy filters and additional pngs to add on badges. If you don't need multiple lines text, that is a great choice as well.
