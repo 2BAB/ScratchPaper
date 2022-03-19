@@ -40,8 +40,8 @@ buildscript {
         mavenCentral() // Since 2.5.4, the publish repository has been shifted from Jcenter to Maven Central.
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.4'
-        classpath 'me.2bab:scratchpaper:3.0.0' // Since 2.5.4, the artifactId of ScratchPaper changed from scratch-paper to scratchpaper
+        classpath 'com.android.tools.build:gradle:7.1.2'
+        classpath 'me.2bab:scratchpaper:3.1.0' // Since 2.5.4, the artifactId of ScratchPaper changed from scratch-paper to scratchpaper
     }
 }
 ```
@@ -101,7 +101,8 @@ ScratchPaper is only supported & tested on LATEST ONE Minor versions of Android 
 
 AGP Version|Latest Support Version
 -----------|-----------------
-7.0.x | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/me.2bab/scratchpaper/badge.svg)](https://search.maven.org/artifact/me.2bab/scratchpaper)
+7.1.x | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/me.2bab/scratchpaper/badge.svg)](https://search.maven.org/artifact/me.2bab/scratchpaper)
+7.0.x | 3.0.0
 4.2.x | 2.6.0
 4.1.x | 2.5.4
 4.0.x | 2.5.3

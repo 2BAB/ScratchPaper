@@ -1,1 +1,1 @@
-./gradlew clean :scratch-paper:plugin:assemble :scratch-paper:plugin:publishToMavenLocal
+./gradlew clean :scratch-paper:plugin:assemble :scratch-paper:plugin:publishSPPluginPublicationToMavenLocal
