@@ -38,8 +38,8 @@ buildscript {
         mavenCentral() // 从 2.5.4 开始，ScratchPaper 从 Jcenter 迁移到了 Maven Central
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.4'
-        classpath 'me.2bab:scratchpaper:3.0.0' // 从 2.5.4 开始，ScratchPaper 的 artifactId 从 scratch-paper 改为 scratchpaper
+        classpath 'com.android.tools.build:gradle:7.1.2'
+        classpath 'me.2bab:scratchpaper:3.1.0' // 从 2.5.4 开始，ScratchPaper 的 artifactId 从 scratch-paper 改为 scratchpaper
     }
 }
 ```
@@ -99,8 +99,8 @@ scratchPaper {
 
 AGP Version|Latest Support Version
 -----------|-----------------
-7.0.x | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/me.2bab/scratchpaper/badge.svg)](https://search.maven.org/artifact/me.2bab/scratchpaper)
-4.2.x | 2.6.0
+7.1.x | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/me.2bab/scratchpaper/badge.svg)](https://search.maven.org/artifact/me.2bab/scratchpaper)
+7.0.x | 3.0.0
 4.1.x | 2.5.4
 4.0.x | 2.5.3
 3.6.x | 2.5.1

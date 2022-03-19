@@ -1,8 +1,7 @@
-package me.xx2bab.scratchpaper.iconprocessor
+package me.xx2bab.scratchpaper.icon
 
-import me.xx2bab.polyfill.matrix.tool.CommandLineKit
+import me.xx2bab.polyfill.tools.CommandLineKit
 import java.io.File
-import java.util.*
 
 fun compileResDir(
     aapt2ExecutorPath: String, targetDir: File, resFiles: List<File>

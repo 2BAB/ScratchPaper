@@ -11,7 +11,7 @@ android {
         minSdk = 23
         targetSdk = 31
         versionCode = 1
-        versionName = "3.0.0"
+        versionName = "3.1.0"
     }
 
     buildTypes {
@@ -63,7 +63,7 @@ android {
 
 dependencies {
     implementation(deps.kotlin.std)
-    implementation("androidx.appcompat:appcompat:1.4.0")
+    implementation("androidx.appcompat:appcompat:1.4.1")
 }
 
 // Run `./gradlew clean assembleFullDebug` for testing
