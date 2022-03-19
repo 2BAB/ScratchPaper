@@ -63,7 +63,7 @@ android {
 
 dependencies {
     implementation(deps.kotlin.std)
-    implementation("androidx.appcompat:appcompat:1.4.0")
+    implementation("androidx.appcompat:appcompat:1.4.1")
 }
 
 // Run `./gradlew clean assembleFullDebug` for testing

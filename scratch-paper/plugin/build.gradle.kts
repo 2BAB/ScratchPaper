@@ -1,5 +1,4 @@
 plugins {
-    kotlin("jvm")
     id("java-gradle-plugin")
     `kotlin-dsl`
     `github-release`
@@ -36,7 +35,6 @@ dependencies {
     compileOnly(deps.android.tools.sdklib)
 
     implementation(deps.polyfill.main)
-    implementation(deps.polyfill.res)
     implementation(deps.jfreesvg)
 
     testImplementation(gradleTestKit())

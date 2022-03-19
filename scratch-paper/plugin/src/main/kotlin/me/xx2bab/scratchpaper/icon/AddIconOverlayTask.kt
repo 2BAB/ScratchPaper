@@ -1,11 +1,10 @@
 package me.xx2bab.scratchpaper.icon
 
 import com.android.sdklib.BuildToolInfo
-import me.xx2bab.polyfill.matrix.tool.CommandLineKit
+import me.xx2bab.polyfill.tools.CommandLineKit
 import me.xx2bab.scratchpaper.IconOverlayContent
 import me.xx2bab.scratchpaper.IconOverlayStyle
 import me.xx2bab.scratchpaper.ScratchPaperExtension
-import me.xx2bab.scratchpaper.iconprocessor.compileResDir
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileSystemLocation
