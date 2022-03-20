@@ -6,7 +6,7 @@
 
 [中文说明][[English]](./README.md)
 
-ScratchPaper 是一个 Gradle 插件，用来给 APK 图标添加 variant/version/git-commit-id 等信息以区分不同版本，由 [Polyfill](https://github.com/2BAB/Polyfill) 框架驱动。
+ScratchPaper 是一个 Gradle 插件，用来给 APK 图标添加 variant/version/git-commit-id 等信息以区分不同版本，由[全新的 Variant/Artifact API](https://developer.android.com/studio/build/extend-agp) 和 [Polyfill](https://github.com/2BAB/Polyfill) 框架驱动。
 
 ## ScratchPaper 解决了什么问题？
 
