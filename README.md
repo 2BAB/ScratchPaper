@@ -6,7 +6,7 @@
 
 [English][[中文说明]](./README_zh.md)
 
-ScratchPaper is a Gradle Plugin helps distinguish the variant/version/git-commit-id by adding a launcher icon overlay, powered by [New Variant/Artifact API](https://developer.android.com/studio/build/extend-agp) & [Polyfill](https://github.com/2BAB/Polyfill).
+ScratchPaper is a Gradle Plugin helps distinguish the variant/version/git-commit-id by adding a launcher icon overlay, powered by [New Variant/Artifact API](https://developer.android.com/studio/build/extend-agp) & [Polyfill](https://github.com/2BAB/Polyfill). Accepted by [Google Dev Library](https://devlibrary.withgoogle.com/products/android/repos/2BAB-ScratchPaper].
 
 ## How does it work?
 
