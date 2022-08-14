@@ -3,14 +3,13 @@ package me.xx2bab.scratchpaper
 import com.android.build.api.variant.ApplicationAndroidComponentsExtension
 import com.android.build.api.variant.VariantOutput
 import me.xx2bab.polyfill.*
-import me.xx2bab.scratchpaper.icon.AddIconOverlayTask
+import me.xx2bab.scratchpaper.icon.AddIconOverlayTaskAction
 import me.xx2bab.scratchpaper.utils.CacheLocation
 import me.xx2bab.scratchpaper.utils.Logger
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.create
-import org.gradle.kotlin.dsl.register
 
 class ScratchPaperPlugin : Plugin<Project> {
 
@@ -41,30 +40,21 @@ class ScratchPaperPlugin : Plugin<Project> {
             }
 
             // Add icon overlay
-            val addIconOverlayTaskProvider = project.tasks.register<AddIconOverlayTask>(
-                "add${variantName}IconsOverlay"
-            ) {
-                group = groupName
-                versionNameProvider.set(mainOutput.versionName)
-                variantNameProvider.set(variantName)
-                iconNamesProvider.set(config.iconNames)
-                enableXmlIconsRemovalProvider.set(config.enableXmlIconsRemoval)
-                iconCacheDirProvider.set(
-                    CacheLocation.getCacheDir(
-                        project,
-                        "icons-${variant.name}"
-                    )
-                )
-                allInputResourcesProvider.set(
-                    variant.artifactsPolyfill.getAll(PolyfilledMultipleArtifact.ALL_RESOURCES)
-                )
-                buildToolInfoProvider.set(variant.getBuildToolInfo())
-                styleConfigProvider.set(config.style)
-                contentConfigProvider.set(config.content)
-            }
+            val addIconOverlayTaskProvider = AddIconOverlayTaskAction(
+                buildToolInfoProvider = variant.getBuildToolInfo(project),
+                allInputResourcesProvider = variant.artifactsPolyfill.getAll(
+                    PolyfilledMultipleArtifact.ALL_RESOURCES
+                ),
+                variantName = variantName,
+                versionName = mainOutput.versionName,
+                iconNamesProvider = config.iconNames,
+                enableXmlIconsRemovalProvider = config.enableXmlIconsRemoval,
+                styleConfigProvider = config.style,
+                contentConfigProvider = config.content,
+                iconCacheDirProvider = CacheLocation.getCacheDir(project, "icons-${variant.name}")
+            )
             variant.artifactsPolyfill.use(
-                taskProvider = addIconOverlayTaskProvider,
-                wiredWith = AddIconOverlayTask::mergedResourceDirProvider,
+                action = addIconOverlayTaskProvider,
                 toInPlaceUpdate = PolyfilledSingleArtifact.MERGED_RESOURCES
             )
 

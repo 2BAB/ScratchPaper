@@ -1,67 +1,86 @@
 package me.xx2bab.scratchpaper.icon
 
 import com.android.sdklib.BuildToolInfo
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonNull
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import me.xx2bab.polyfill.PolyfillAction
 import me.xx2bab.polyfill.tools.CommandLineKit
 import me.xx2bab.scratchpaper.IconOverlayContent
 import me.xx2bab.scratchpaper.IconOverlayStyle
 import me.xx2bab.scratchpaper.ScratchPaperExtension
-import org.gradle.api.DefaultTask
-import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.file.FileSystemLocation
+import org.gradle.api.Task
+import org.gradle.api.file.Directory
 import org.gradle.api.provider.Property
-import org.gradle.api.provider.SetProperty
-import org.gradle.api.tasks.*
+import org.gradle.api.provider.Provider
 import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-abstract class AddIconOverlayTask : DefaultTask() {
+class AddIconOverlayTaskAction(
+    private val buildToolInfoProvider: Provider<BuildToolInfo>,
+    private val allInputResourcesProvider: Provider<List<Directory>>,
+    private val variantName: String,
+    private val versionName: Property<String?>,
+    private val iconNamesProvider: Property<String>,
+    private val enableXmlIconsRemovalProvider: Property<Boolean>,
+    private val styleConfigProvider: IconOverlayStyle,
+    private val contentConfigProvider: IconOverlayContent,
+    private val iconCacheDirProvider: Provider<Directory>,
+) : PolyfillAction<Directory> {
 
-    @get:Internal
-    abstract val buildToolInfoProvider: Property<BuildToolInfo>
+    override fun onTaskConfigure(task: Task) {
+        task.inputs.property("variantName", variantName)
+        task.inputs.property("versionName", versionName.get())
+        task.inputs.property("iconNamesProvider", iconNamesProvider.get())
+        task.inputs.property("enableXmlIconsRemovalProvider", enableXmlIconsRemovalProvider.get())
 
-    @get:InputFiles
-    abstract val allInputResourcesProvider: SetProperty<FileSystemLocation>
+        styleConfigProvider.apply {
+            val map = mapOf(
+                "textSize" to textSize.get(),
+                "textColor" to textColor.get(),
+                "lineSpace" to lineSpace.get(),
+                "backgroundColor" to backgroundColor.get()
+            ).toJsonObject()
+            task.inputs.property("styleConfigProvider", map.toString())
+        }
 
-    @get:Input
-    abstract val variantNameProvider: Property<String>
+        contentConfigProvider.apply {
+            val map = mapOf(
+                "showVersionName" to showVersionName.get(),
+                "showVariantName" to showVariantName.get(),
+                "showGitShortId" to showGitShortId.get(),
+                "showDateTime" to showDateTime.get(),
+                "extraInfo" to extraInfo.get()
+            ).toJsonObject()
+            task.inputs.property("contentConfigProvider", map.toString())
+        }
+    }
 
-    @get:Input
-    abstract val versionNameProvider: Property<String>
 
-    @get:Input
-    abstract val iconNamesProvider: Property<String>
-
-    @get:Input
-    abstract val enableXmlIconsRemovalProvider: Property<Boolean>
-
-    @get:Nested
-    abstract val styleConfigProvider: Property<IconOverlayStyle>
-
-    @get:Nested
-    abstract val contentConfigProvider: Property<IconOverlayContent>
-
-    @get:OutputDirectory
-    abstract val mergedResourceDirProvider: DirectoryProperty
-
-    @get:OutputDirectory
-    abstract val iconCacheDirProvider: DirectoryProperty
-
-    @TaskAction
-    fun addOverlay() {
+    override fun onExecute(mergedResourceDirProvider: Provider<Directory>) {
         val processedIcons = arrayListOf<File>()
         val destDir = iconCacheDirProvider.get().asFile
         val mergedResourceDir = mergedResourceDirProvider.get().asFile
         val resDirs = allInputResourcesProvider.get().map { it.asFile }
         val iconNames = iconNamesProvider.get().split(",")
-        val styleConfig = styleConfigProvider.get()
-        val contentConfig = contentConfigProvider.get()
+        val styleConfig = styleConfigProvider
+        val contentConfig = contentConfigProvider
 
         val text = mutableListOf<String>()
-        if (contentConfig.showVariantName.get()) { text.add(variantNameProvider.get()) }
-        if (contentConfig.showVersionName.get()) { text.add(versionNameProvider.get()) }
-        if (contentConfig.showGitShortId.get()) { text.add(generateGitShortId()) }
-        if (contentConfig.showDateTime.get()) {text.add(generateDateTime()) }
+        if (contentConfig.showVariantName.get()) {
+            text.add(variantName)
+        }
+        if (contentConfig.showVersionName.get()) {
+            text.add(versionName.get())
+        }
+        if (contentConfig.showGitShortId.get()) {
+            text.add(generateGitShortId())
+        }
+        if (contentConfig.showDateTime.get()) {
+            text.add(generateDateTime())
+        }
         text.add(contentConfig.extraInfo.get() ?: "")
 
         val iconProcessorParam = IconProcessorParam(
@@ -174,5 +193,17 @@ abstract class AddIconOverlayTask : DefaultTask() {
         }
     }
 
+    private fun Map<*, *>.toJsonObject(): JsonObject = JsonObject(
+        mapNotNull {
+            (it.key as? String ?: return@mapNotNull null) to it.value.toJsonElement()
+        }.toMap(),
+    )
+
+    private fun Any?.toJsonElement(): JsonElement = when (this) {
+        null -> JsonNull
+        is Map<*, *> -> toJsonElement()
+        is Collection<*> -> toJsonElement()
+        else -> JsonPrimitive(toString())
+    }
 
 }

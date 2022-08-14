@@ -4,6 +4,7 @@ plugins {
     `github-release`
     `maven-central-publish`
     `functional-test-setup`
+    kotlin("plugin.serialization")
 }
 
 group = "me.2bab"
@@ -29,6 +30,7 @@ dependencies {
     implementation(gradleApi())
 
     implementation(deps.kotlin.std)
+    implementation(deps.kotlin.serialization)
 
     compileOnly(deps.android.gradle.plugin)
     compileOnly(deps.android.tools.sdkcommon)

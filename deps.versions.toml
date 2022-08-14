@@ -1,17 +1,20 @@
 [versions]
-kotlinVer = "1.6.10"
-# 7.2.0-beta04
-agpVer = "7.1.2"
-# 30.1.0-beta04
-androidToolVer = "30.0.4"
-polyfillVer = "0.5.0"
+kotlinVer = "1.6.21"
+androidToolVer = "30.1.0"
+polyfillVer = "0.7.0"
 mockitoVer = "3.9.0"
+
+agpVer = "7.2.2"
+agpPatchIgnoredVer = "7.2.0" # To be used by backport version matching
+agpBackportVer = "7.1.3"
+agpBackportPatchIgnoredVer = "7.1.0" # To be used by backport version matching, e.g. apply backport patches when (7.1.0 <= ver < 7.2.0)
 
 [libraries]
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "agpVer" }
 android-tools-sdkcommon = { module = "com.android.tools:sdk-common", version.ref = "androidToolVer" }
 android-tools-sdklib = { module = "com.android.tools:sdklib", version.ref = "androidToolVer" }
 kotlin-std = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlinVer" }
+kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.3.2" }
 polyfill-main = { module = "me.2bab:polyfill", version.ref = "polyfillVer" }
 polyfill-res = { module = "me.2bab:polyfill-res", version.ref = "polyfillVer" }
 jfreesvg = { module = "org.jfree:jfreesvg", version = "3.3" }
