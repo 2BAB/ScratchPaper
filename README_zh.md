@@ -31,15 +31,32 @@ ScratchPaper 可以在你的 App 启动图标上加一个蒙层用以区分不�
 
 **0x01. Add the plugin to classpath:**
 
-``` gradle
+``` kotlin
+// 可选方式 1.
+// 添加 `mavenCentral` 到 `settings.gradle.kts`（或根目录 `build.gradle.kts`） 的 `pluginManagement{}` 内， 
+// 并且声明 scratchpaper 插件的 id.
+pluginManagement {
+	repositories {
+        ...
+        mavenCentral()
+    }
+    plugins {
+    	...
+    	id("me.2bab.scratchpaper") version "3.2.0" apply false
+    }
+}
+
+
+// 可选方式 2.
+// 使用经典的 `buildscript{}` 引入方式（在根目录的 build.gradle.kts）.
 buildscript {
     repositories {
         ...
-        mavenCentral() // 从 2.5.4 开始，ScratchPaper 从 Jcenter 迁移到了 Maven Central
+        mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.1.2'
-        classpath 'me.2bab:scratchpaper:3.1.0' // 从 2.5.4 开始，ScratchPaper 的 artifactId 从 scratch-paper 改为 scratchpaper
+    	...
+        classpath("me.2bab:scratchpaper:3.2.0")
     }
 }
 ```
@@ -47,8 +64,11 @@ buildscript {
 **0x02. Apply Plugin:**
 
 ``` gradle
-// On Application's build.gradle (do not use in Library project)
-apply plugin: 'me.2bab.scratchpaper'
+// 在 Application 模块的 build.gradle.kts (不要在 Library 模块使用)
+plugin {
+    ...
+    id("me.2bab.scratchpaper")
+}
 ```
 
 **0x03. Advanced Configurations**
@@ -95,10 +115,11 @@ scratchPaper {
 
 ## 兼容性
 
-精力有限，ScratchPaper 只会支持最新一个 Minor 版本的 Android Gradle Plugin（例如最新版是 3.3.3, 那一般地 3.3.x 都会支持）。从 `2.5.4` 开始，ScratchPaper 发布的仓库从 Jcenter 迁移到 **Maven Central**。
+精力有限，ScratchPaper 只会支持最新两个 Minor 版本的 Android Gradle Plugin。从 `2.5.4` 开始，ScratchPaper 发布的仓库从 Jcenter 迁移到 **Maven Central**。
 
 AGP Version|Latest Support Version
 -----------|-----------------
+7.2.x | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/me.2bab/scratchpaper/badge.svg)](https://search.maven.org/artifact/me.2bab/scratchpaper)
 7.1.x | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/me.2bab/scratchpaper/badge.svg)](https://search.maven.org/artifact/me.2bab/scratchpaper)
 7.0.x | 3.0.0
 4.1.x | 2.5.4
