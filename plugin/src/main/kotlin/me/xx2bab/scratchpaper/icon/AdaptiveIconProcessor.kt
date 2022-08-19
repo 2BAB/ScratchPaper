@@ -1,7 +1,6 @@
 package me.xx2bab.scratchpaper.icon
 
 import com.android.ide.common.vectordrawable.Svg2Vector
-import me.xx2bab.scratchpaper.ScratchPaperExtension
 import me.xx2bab.scratchpaper.utils.Logger
 import org.jfree.graphics2d.svg.SVGGraphics2D
 import org.jfree.graphics2d.svg.SVGUtils

@@ -71,11 +71,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       JAVA_TOOL_OPTIONS: -Xmx4g
-      AGP_VERSION: ${{ matrix.agp-version }}
-    strategy:
-      matrix:
-        agp-version: [ 7.1.2, 7.2.0-beta04 ]
-
     steps:
       - uses: actions/checkout@v2
       - uses: gradle/wrapper-validation-action@v1
@@ -89,8 +84,8 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
-          key: ${{ runner.os }}-${{ github.job }}-${{ matrix.agp-version }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
+          key: ${{ runner.os }}-${{ github.job }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
           restore-keys: |
-            ${{ runner.os }}-${{ github.job }}-${{ matrix.agp-version }}-
+            ${{ runner.os }}-${{ github.job }}-
       - run: |
-          ./gradlew :scratch-paper:plugin:functionalTest
+          ./gradlew clean :functional-test:functionalTest

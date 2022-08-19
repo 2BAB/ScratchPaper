@@ -1,30 +1,18 @@
 rootProject.name = "scratch-paper-root"
 
-enableFeaturePreview("VERSION_CATALOGS")
-
 pluginManagement {
     val versions = file("deps.versions.toml").readText()
     val regexPlaceHolder = "%s\\s\\=\\s\\\"([A-Za-z0-9\\.\\-]+)\\\""
     val getVersion = { s: String -> regexPlaceHolder.format(s).toRegex().find(versions)!!.groupValues[1] }
 
     plugins {
-        kotlin("android") version getVersion("kotlinVer") apply false
-        id("com.android.application") version getVersion("agpVer") apply false
-    }
-    resolutionStrategy {
-        eachPlugin {
-            if(requested.id.id == "me.2bab.scratchpaper") {
-                // It will be replaced by a local module using `includeBuild` below,
-                // thus we just put a generic version (+) here.
-                useModule("me.2bab:scratchpaper:+")
-            }
-        }
+        kotlin("jvm") version getVersion("kotlinVer") apply false
+        kotlin("plugin.serialization") version getVersion("kotlinVer") apply false
     }
     repositories {
         mavenCentral()
         google()
         gradlePluginPortal()
-        mavenLocal()
     }
 }
 
@@ -36,15 +24,18 @@ dependencyResolutionManagement {
     }
     versionCatalogs {
         create("deps") {
-            from(files("./deps.versions.toml"))
+            from(files("deps.versions.toml"))
         }
     }
 }
 
-include(":test-app")
-includeBuild("scratch-paper"){
-    dependencySubstitution {
-        substitute(module("me.2bab:scratchpaper"))
-            .with(project(":plugin"))
-    }
-}
+include(":plugin", ":functional-test")
+
+//if (file("../../Polyfill").run { exists() && isDirectory }) {
+//    includeBuild("../../Polyfill") {
+//        dependencySubstitution {
+//            substitute(module("me.2bab:polyfill"))
+//                .with(project(":polyfill"))
+//        }
+//    }
+//}

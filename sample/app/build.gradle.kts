@@ -11,7 +11,7 @@ android {
         minSdk = 23
         targetSdk = 31
         versionCode = 1
-        versionName = "3.1.0"
+        versionName = "3.2.0"
     }
 
     buildTypes {
@@ -82,11 +82,11 @@ scratchPaper {
 
     // Some sub-feature flags
     enableXmlIconsRemoval.set(false) // Can be lazily set even after configuration phrase.
-    forceUpdateIcons = true // Can not be lazily set, it's valid only before "afterEvaluate{}".
+    forceUpdateIcons = false // Can not be lazily set, it's valid only before "afterEvaluate{}".
 
     // ICON_OVERLAY styles, contents.
     style {
-        textSize.set(9)
+        textSize.set(10)
         textColor.set("#FFFFFFFF") // Accepts 3 kinds of format: "FFF", "FFFFFF", "FFFFFFFF".
         lineSpace.set(4)
         backgroundColor.set("#99000000") // Same as textColor.

@@ -60,34 +60,11 @@ publishing {
             pom {
                 // Description
                 name.set(projectName)
-                description.set(mavenDesc)
-                url.set(siteUrl)
 
                 // Archive
                 groupId = groupName
                 artifactId = projectName
                 version = BuildConfig.Versions.scratchPaperVersion
-
-                // License
-                inceptionYear.set(inception)
-                licenses {
-                    licenseNames.forEachIndexed { ln, li ->
-                        license {
-                            name.set(li)
-                            url.set(licenseUrls[ln])
-                        }
-                    }
-                }
-                developers {
-                    developer {
-                        name.set(username)
-                    }
-                }
-                scm {
-                    connection.set(gitUrl)
-                    developerConnection.set(gitUrl)
-                    url.set(siteUrl)
-                }
             }
         }
     }
@@ -115,4 +92,40 @@ publishing {
 
 signing {
     sign(publishing.publications)
+}
+
+afterEvaluate {
+    publishing.publications.all {
+        val publicationName = this.name
+        (this as MavenPublication).apply {
+            pom {
+                if (publicationName == "pluginMaven") {
+                    name.set(project.name)
+                }
+
+                description.set(mavenDesc)
+                url.set(siteUrl)
+
+                inceptionYear.set(inception)
+                licenses {
+                    licenseNames.forEachIndexed { ln, li ->
+                        license {
+                            name.set(li)
+                            url.set(licenseUrls[ln])
+                        }
+                    }
+                }
+                developers {
+                    developer {
+                        name.set(username)
+                    }
+                }
+                scm {
+                    connection.set(gitUrl)
+                    developerConnection.set(gitUrl)
+                    url.set(siteUrl)
+                }
+            }
+        }
+    }
 }
