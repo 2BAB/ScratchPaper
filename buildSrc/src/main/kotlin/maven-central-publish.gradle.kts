@@ -55,6 +55,9 @@ publishing {
 
     publications {
         create<MavenPublication>("SPPlugin") {
+            groupId = groupName
+            artifactId = projectName
+            version = BuildConfig.Versions.scratchPaperVersion
             artifact(javadocJar.get())
             from(components["java"])
             pom {
@@ -97,10 +100,11 @@ signing {
 afterEvaluate {
     publishing.publications.all {
         val publicationName = this.name
+        println("maven publication: " + this.name)
         (this as MavenPublication).apply {
             pom {
-                if (publicationName == "pluginMaven") {
-                    name.set(project.name)
+                if (publicationName == "pluginMaven" || publicationName == "scratchpaperPluginMarkerMaven") {
+                    name.set(projectName)
                 }
 
                 description.set(mavenDesc)
