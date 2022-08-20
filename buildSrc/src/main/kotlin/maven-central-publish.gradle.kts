@@ -1,4 +1,4 @@
-plugins{
+plugins {
     `maven-publish`
     signing
 }
@@ -32,6 +32,7 @@ if (secretPropsFile.exists()) {
 val javadocJar by tasks.registering(Jar::class) {
     archiveClassifier.set("javadoc")
 }
+
 fun getExtraString(name: String) = ext[name]?.toString()
 
 
@@ -102,10 +103,11 @@ afterEvaluate {
         val publicationName = this.name
         println("maven publication: " + this.name)
         (this as MavenPublication).apply {
+            if (publicationName == "pluginMaven" || publicationName == "scratchpaperPluginMarkerMaven") {
+                artifact(javadocJar.get())
+            }
             pom {
-                if (publicationName == "pluginMaven" || publicationName == "scratchpaperPluginMarkerMaven") {
-                    name.set(projectName)
-                }
+                name.set(projectName)
 
                 description.set(mavenDesc)
                 url.set(siteUrl)
