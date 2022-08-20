@@ -44,7 +44,14 @@ class BasicFunctionalTest {
                         File(testProjectPath).copyRecursively(targetProject)
                         val settings = File(targetProject, "settings.gradle.kts")
                         val newSettings = settings.readText()
-                            .replace("= \"../\"", "= \"../../../\"") // Redirect the base dir
+                            .replace(
+                                "= \"../\"",
+                                "= \"../../../\""
+                            ) // Redirect the base dir
+                            .replace(
+                                "enabledCompositionBuild = true",
+                                "enabledCompositionBuild = false"
+                            ) // Force the app to find plugin from maven local
                             .replace(
                                 "getVersion(\"agpVer\")",
                                 "\"$agpVer\""

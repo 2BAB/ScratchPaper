@@ -2,9 +2,11 @@ rootProject.name = "scratch-paper-root"
 
 pluginManagement {
     extra["externalDependencyBaseDir"] = "../"
-    val versions = file(extra["externalDependencyBaseDir"].toString() + "deps.versions.toml").readText()
+    val versions =
+        file(extra["externalDependencyBaseDir"].toString() + "deps.versions.toml").readText()
     val regexPlaceHolder = "%s\\s\\=\\s\\\"([A-Za-z0-9\\.\\-]+)\\\""
-    val getVersion = { s: String -> regexPlaceHolder.format(s).toRegex().find(versions)!!.groupValues[1] }
+    val getVersion =
+        { s: String -> regexPlaceHolder.format(s).toRegex().find(versions)!!.groupValues[1] }
 
     plugins {
         kotlin("android") version getVersion("kotlinVer") apply false
@@ -14,7 +16,7 @@ pluginManagement {
     }
     resolutionStrategy {
         eachPlugin {
-            if(requested.id.id == "me.2bab.scratchpaper") {
+            if (requested.id.id == "me.2bab.scratchpaper") {
                 // It will be replaced by a local module using `includeBuild` below,
                 // thus we just put a generic version (+) here.
                 useModule("me.2bab:scratchpaper:+")
@@ -30,6 +32,8 @@ pluginManagement {
 }
 
 val externalDependencyBaseDir = extra["externalDependencyBaseDir"].toString()
+val enabledCompositionBuild = true
+
 dependencyResolutionManagement {
     repositories {
         mavenLocal()
@@ -44,9 +48,11 @@ dependencyResolutionManagement {
 }
 
 include(":app")
-includeBuild(externalDependencyBaseDir){
-    dependencySubstitution {
-        substitute(module("me.2bab:scratchpaper"))
-            .with(project(":plugin"))
+if (enabledCompositionBuild) {
+    includeBuild(externalDependencyBaseDir) {
+        dependencySubstitution {
+            substitute(module("me.2bab:scratchpaper"))
+                .with(project(":plugin"))
+        }
     }
 }
