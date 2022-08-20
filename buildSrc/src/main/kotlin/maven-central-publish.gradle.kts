@@ -135,3 +135,9 @@ afterEvaluate {
         }
     }
 }
+
+tasks.whenTaskAdded {
+    if (this.name.startsWith("publishPluginMavenPublication")) {
+        this.enabled = false
+    }
+}
