@@ -3,7 +3,6 @@ plugins {
     `kotlin-dsl`
     `github-release`
     `maven-central-publish`
-    `functional-test-setup`
     kotlin("plugin.serialization")
 }
 
