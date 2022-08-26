@@ -21,6 +21,7 @@ gradlePlugin {
         create("scratchpaper") {
             id = "me.2bab.scratchpaper"
             implementationClass = "me.xx2bab.scratchpaper.ScratchPaperPlugin"
+            displayName = "me.2bab.scratchpaper"
         }
     }
 }
