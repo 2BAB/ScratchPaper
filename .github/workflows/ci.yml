@@ -65,7 +65,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-${{ github.job }}-
       - run: |
-          ./gradlew :plugin:test
+          ./gradlew :scratchpaper:test
   functional-tests:
     name: Functional tests
     runs-on: ubuntu-latest

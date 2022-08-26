@@ -52,7 +52,7 @@ if (enabledCompositionBuild) {
     includeBuild(externalDependencyBaseDir) {
         dependencySubstitution {
             substitute(module("me.2bab:scratchpaper"))
-                .with(project(":plugin"))
+                .with(project(":scratchpaper"))
         }
     }
 }
