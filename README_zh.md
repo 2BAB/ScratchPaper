@@ -42,7 +42,7 @@ pluginManagement {
     }
     plugins {
     	...
-    	id("me.2bab.scratchpaper") version "3.2.0" apply false
+    	id("me.2bab.scratchpaper") version "3.2.1" apply false
     }
 }
 
@@ -56,7 +56,7 @@ buildscript {
     }
     dependencies {
     	...
-        classpath("me.2bab:scratchpaper:3.2.0")
+        classpath("me.2bab:scratchpaper:3.2.1")
     }
 }
 ```
