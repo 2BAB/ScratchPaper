@@ -53,26 +53,6 @@ val username = "2BAB"
 
 
 publishing {
-
-    publications {
-        create<MavenPublication>("SPPlugin") {
-            groupId = groupName
-            artifactId = projectName
-            version = BuildConfig.Versions.scratchPaperVersion
-            artifact(javadocJar.get())
-            from(components["java"])
-            pom {
-                // Description
-                name.set(projectName)
-
-                // Archive
-                groupId = groupName
-                artifactId = projectName
-                version = BuildConfig.Versions.scratchPaperVersion
-            }
-        }
-    }
-
     // Configure MavenCentral repository
     repositories {
         maven {
@@ -101,13 +81,18 @@ signing {
 afterEvaluate {
     publishing.publications.all {
         val publicationName = this.name
-        println("maven publication: " + this.name)
         (this as MavenPublication).apply {
-            if (publicationName == "pluginMaven" || publicationName == "scratchpaperPluginMarkerMaven") {
-                artifact(javadocJar.get())
+            if (publicationName == "pluginMaven") {
+                groupId = groupName
+                artifactId = projectName
             }
+            version = BuildConfig.Versions.scratchPaperVersion
+            artifact(javadocJar.get())
+
             pom {
-                name.set(projectName)
+                if (publicationName == "pluginMaven") {
+                    name.set(project.name)
+                }
 
                 description.set(mavenDesc)
                 url.set(siteUrl)
@@ -133,11 +118,5 @@ afterEvaluate {
                 }
             }
         }
-    }
-}
-
-tasks.whenTaskAdded {
-    if (this.name.startsWith("publishPluginMavenPublication")) {
-        this.enabled = false
     }
 }

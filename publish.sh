@@ -1,1 +1,1 @@
-./gradlew clean :plugin:publishAllPublicationsToSonatypeRepository :plugin:releaseArtifactsToGithub
+./gradlew clean :scratchpaper:publishAllPublicationsToSonatypeRepository :scratchpaper:releaseArtifactsToGithub

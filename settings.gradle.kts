@@ -29,7 +29,7 @@ dependencyResolutionManagement {
     }
 }
 
-include(":plugin", ":functional-test")
+include(":scratchpaper", ":functional-test")
 
 //if (file("../../Polyfill").run { exists() && isDirectory }) {
 //    includeBuild("../../Polyfill") {
