@@ -5,13 +5,14 @@ plugins {
 }
 
 android {
-    compileSdk = 31
+    namespace = "me.xx2bab.scratchpaper.sample"
+    compileSdk = 34
     defaultConfig {
         applicationId = "me.xx2bab.scratchpaper.sample"
         minSdk = 23
-        targetSdk = 31
+        targetSdk = 34
         versionCode = 1
-        versionName = "3.2.0"
+        versionName = "3.3.0"
     }
 
     buildTypes {
@@ -51,19 +52,19 @@ android {
     sourceSets["main"].java.srcDir("src/main/kotlin")
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 }
 
 
 dependencies {
     implementation(deps.kotlin.std)
-    implementation("androidx.appcompat:appcompat:1.4.1")
+    implementation("androidx.appcompat:appcompat:1.6.1")
 }
 
 // Run `./gradlew clean assembleFullDebug` for testing
@@ -86,9 +87,9 @@ scratchPaper {
 
     // ICON_OVERLAY styles, contents.
     style {
-        textSize.set(10)
+        textSize.set(8)
         textColor.set("#FFFFFFFF") // Accepts 3 kinds of format: "FFF", "FFFFFF", "FFFFFFFF".
-        lineSpace.set(4)
+        lineSpace.set(2)
         backgroundColor.set("#99000000") // Same as textColor.
     }
 

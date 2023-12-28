@@ -44,7 +44,7 @@ abstract class BaseIconProcessor(val originIcon: File,
 
                 var x = 0
                 if (imgWidth >= strWidth) {
-                    x = ((imgWidth - strWidth) / 2)
+                    x = (imgWidth - strWidth) / 2
                 }
 
                 val y = imgHeight - (fontSize * i) - ((i + 1) * linePadding) - marginTop

@@ -24,12 +24,12 @@ class BasicFunctionalTest {
         @BeforeAll
         @JvmStatic
         fun buildTestProject() {
-//            if (File("../local.properties").exists()) {
-//                println("Publishing libraries to MavenLocal...")
-//                ("./gradlew" + " :plugin:publishAllPublicationsToMyMavenlocalRepository"
-//                        + " --stacktrace").runCommand(File("../"))
-//                println("All libraries published.")
-//            }
+            if (File("../local.properties").exists()) {
+                println("Publishing libraries to MavenLocal...")
+                ("./gradlew" + " :scratchpaper:publishToMavenLocal"
+                        + " --stacktrace").runCommand(File("../"))
+                println("All libraries published.")
+            }
             runBlocking(Dispatchers.IO) {
                 agpVerProvider().map { agpVer ->
                     async {
@@ -61,7 +61,7 @@ class BasicFunctionalTest {
                         println("assembleFullDebug for [$agpVer]")
 
                         GradleRunner.create()
-                            .withGradleVersion("7.4.2")
+                            .withGradleVersion("8.5")
                             .forwardOutput()
                             .withArguments("clean", "assembleFullDebug", "--stacktrace")
                             .withProjectDir(targetProject)
@@ -155,7 +155,7 @@ class BasicFunctionalTest {
     @ParameterizedTest
     @MethodSource("agpVerProvider")
     fun pngOverlayContentIsAttached_Correctly() {
-        // TODO: Haven't found a simple&royal-free OCR framework
+        // TODO: Haven't found a simple&free OCR framework
         //  to fulfill the test requirement. Will add the test once seeked.
     }
 

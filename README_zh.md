@@ -42,7 +42,7 @@ pluginManagement {
     }
     plugins {
     	...
-    	id("me.2bab.scratchpaper") version "3.2.1" apply false
+    	id("me.2bab.scratchpaper") version "3.3.0" apply false
     }
 }
 
@@ -56,7 +56,7 @@ buildscript {
     }
     dependencies {
     	...
-        classpath("me.2bab:scratchpaper:3.2.1")
+        classpath("me.2bab:scratchpaper:3.3.0")
     }
 }
 ```
@@ -119,8 +119,10 @@ scratchPaper {
 
 AGP Version|Latest Support Version
 -----------|-----------------
-7.2.x | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/me.2bab/scratchpaper/badge.svg)](https://search.maven.org/artifact/me.2bab/scratchpaper)
-7.1.x | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/me.2bab/scratchpaper/badge.svg)](https://search.maven.org/artifact/me.2bab/scratchpaper)
+8.1.x | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/me.2bab/scratchpaper/badge.svg)](https://search.maven.org/artifact/me.2bab/scratchpaper)
+8.0.x | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/me.2bab/scratchpaper/badge.svg)](https://search.maven.org/artifact/me.2bab/scratchpaper)
+7.2.x | 3.2.1
+7.1.x | 3.2.1
 7.0.x | 3.0.0
 4.1.x | 2.5.4
 4.0.x | 2.5.3
@@ -152,7 +154,7 @@ The v1.x `IconCover` forked from [icon-version@akonior](https://github.com/akoni
 ## License
 
 >
-> Copyright 2016-2022 2BAB
+> Copyright Since 2016 2BAB
 >
 >Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

@@ -1,13 +1,13 @@
 [versions]
-kotlinVer = "1.6.21"
-androidToolVer = "30.1.0"
-polyfillVer = "0.7.0"
+kotlinVer = "1.9.22"
+androidToolVer = "31.2.0"
+polyfillVer = "0.9.1"
 mockitoVer = "3.9.0"
 
-agpVer = "7.2.2"
-agpPatchIgnoredVer = "7.2.0" # To be used by backport version matching
-agpBackportVer = "7.1.3"
-agpBackportPatchIgnoredVer = "7.1.0" # To be used by backport version matching, e.g. apply backport patches when (7.1.0 <= ver < 7.2.0)
+agpVer = "8.1.2"
+agpPatchIgnoredVer = "8.1.0" # To be used by backport version matching
+agpBackportVer = "8.0.1"
+agpBackportPatchIgnoredVer = "8.0.0" # To be used by backport version matching, e.g. apply backport patches when (7.1.0 <= ver < 7.2.0)
 
 [libraries]
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "agpVer" }
