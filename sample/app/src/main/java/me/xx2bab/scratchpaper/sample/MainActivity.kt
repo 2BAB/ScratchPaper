@@ -1,4 +1,4 @@
-package me.xx2bab.gradle.scratchpaper.sample
+package me.xx2bab.scratchpaper.sample
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

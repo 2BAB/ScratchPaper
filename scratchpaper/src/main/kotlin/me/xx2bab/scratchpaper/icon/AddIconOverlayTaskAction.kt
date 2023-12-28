@@ -99,11 +99,7 @@ class AddIconOverlayTaskAction(
                 destDir,
                 iconProcessorParam
             )?.process()
-            if (icons != null) {
-                for (file in icons) {
-                    processedIcons.add(file)
-                }
-            }
+            icons?.forEach(processedIcons::add)
         }
 
         // Compiled images to .flat files using aapt2 and replaced previous compiled icons,
@@ -207,3 +203,4 @@ class AddIconOverlayTaskAction(
     }
 
 }
+

@@ -2,7 +2,12 @@ package me.xx2bab.scratchpaper
 
 import com.android.build.api.variant.ApplicationAndroidComponentsExtension
 import com.android.build.api.variant.VariantOutput
-import me.xx2bab.polyfill.*
+import me.xx2bab.polyfill.PolyfilledMultipleArtifact
+import me.xx2bab.polyfill.PolyfilledSingleArtifact
+import me.xx2bab.polyfill.artifactsPolyfill
+import me.xx2bab.polyfill.getBuildToolInfo
+import me.xx2bab.polyfill.getCapitalizedName
+import me.xx2bab.polyfill.getTaskContainer
 import me.xx2bab.scratchpaper.icon.AddIconOverlayTaskAction
 import me.xx2bab.scratchpaper.utils.CacheLocation
 import me.xx2bab.scratchpaper.utils.Logger
@@ -59,7 +64,7 @@ class ScratchPaperPlugin : Plugin<Project> {
             )
 
             // To decide whether the merge task should always run for
-            // collecting the latest icons that con contain timestamp update.
+            // collecting the latest icons that can contain timestamp update.
             if (config.forceUpdateIcons) {
                 project.afterEvaluate {
                     val mergeTask = variant.getTaskContainer().mergeResourcesTask.get()

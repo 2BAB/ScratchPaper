@@ -72,7 +72,7 @@ class AdaptiveIconProcessor(
         val overlayVectorDrawable = File(commonDrawableDir, overlayVectorDrawableFileName).apply { createNewFile() }
         SVGUtils.writeToSVG(overlaySVG, (getGraphic() as SVGGraphics2D).svgElement)
         val out = overlayVectorDrawable.outputStream()
-        Svg2Vector.parseSvgToXml(overlaySVG, out)
+        Svg2Vector.parseSvgToXml(overlaySVG.toPath(), out)
 
         // append overlay to <foreground>
         val itemDrawableElement = originIconXmlDoc.createElement(tagItem)
